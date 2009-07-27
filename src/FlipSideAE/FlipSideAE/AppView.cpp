@@ -28,8 +28,8 @@
 #include <be/support/String.h>
 #include <String/String.h>
 #include <AEEncoder/AEEncoder.h>
-#include "AudioInfo/AudioAttributes.h"
-#include "AudioInfo/GenreList.h"
+#include "../AudioInfo/AudioAttributes.h"
+#include "../AudioInfo/GenreList.h"
 #include <Santa/CLVRefListItem.h>
 #include "AppDefs.h"
 #include "AppView.h"

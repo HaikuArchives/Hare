@@ -1,7 +1,7 @@
-EXECUTABLE = FlipSideAE
+EXECUTABLE = Hare
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
-RELEASE_DIR = ../../../release/FlipSideAE
+RELEASE_DIR = ../../../release/Hare
 
 HDRS =	Application.h\
 			AppView.h\
@@ -25,7 +25,8 @@ SRCS =	Application.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
-RSRCS = FlipsideAE.rsrc
+RDEFS = Hare.rdef
+RSRCS = Hare.rsrc
 
 LIBS = -lbe -lroot -lsanta -lstring -laudioinfo -laeencoder -ltag
 
@@ -33,11 +34,13 @@ CC = g++
 CFLAGS = -DDEBUG -g
 LD = g++
 LDFLAGS = -Xlinker -L$(LIBRARY_DIR)
+RC = rc
 XRES = xres
 MIMESET = mimeset
 
-$(EXECUTABLE) : $(OBJS) $(RSRCS)
+$(EXECUTABLE) : $(OBJS) $(RDEFS) $(RSRCS)
 	$(LD) -o $(EXECUTABLE) $(OBJS) $(LDFLAGS) $(LIBS)
+	$(RC) $(RDEFS)
 	$(XRES) -o ""$(EXECUTABLE)"" $(RSRCS)
 	$(MIMESET) -f "$(EXECUTABLE)"
 	chmod 755 $(EXECUTABLE)

@@ -14,7 +14,7 @@
 #include <be/storage/Entry.h>
 #include <be/support/Debug.h>
 #include <be/support/List.h>
-#include "AudioInfo/GenreList.h"
+#include "../AudioInfo/GenreList.h"
 #include <Santa/CLVRefListItem.h>
 #include "AppDefs.h"
 #include "CommandConstants.h"
