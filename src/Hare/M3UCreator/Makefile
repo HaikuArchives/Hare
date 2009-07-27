@@ -1,4 +1,4 @@
-ADDON = M3U\ Creator
+ADDON = M3UCreator
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
 RELEASE_DIR = ../../../release/Hare
