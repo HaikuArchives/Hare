@@ -38,9 +38,11 @@ RC = rc
 XRES = xres
 MIMESET = mimeset
 
-$(EXECUTABLE) : $(OBJS) $(RDEFS) $(RSRCS)
-	$(LD) -o $(EXECUTABLE) $(OBJS) $(LDFLAGS) $(LIBS)
+$(RSRCS) : $(RDEFS)
 	$(RC) $(RDEFS) -o $(RSRCS)
+
+$(EXECUTABLE) : $(OBJS) $(RSRCS)
+	$(LD) -o $(EXECUTABLE) $(OBJS) $(LDFLAGS) $(LIBS)
 	$(XRES) -o ""$(EXECUTABLE)"" $(RSRCS)
 	$(MIMESET) -f "$(EXECUTABLE)"
 	chmod 755 $(EXECUTABLE)
