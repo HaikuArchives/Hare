@@ -1,7 +1,7 @@
 ADDON = MP3-GoGo
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
-RELEASE_DIR = ../../../release/FlipSide\ A.E.
+RELEASE_DIR = ../../../release/Hare
 ADDON_DIR = $(RELEASE_DIR)/add-ons
 
 HDRS =	GoGoEncoder.h

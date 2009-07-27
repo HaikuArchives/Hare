@@ -1,7 +1,7 @@
 ADDON = BeEncoder
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
-RELEASE_DIR = ../../../release/FlipSideAE
+RELEASE_DIR = ../../../release/Hare
 ADDON_DIR = $(RELEASE_DIR)/add-ons
 
 HDRS =	BeEncoder.h\

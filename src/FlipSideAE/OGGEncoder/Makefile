@@ -1,8 +1,8 @@
 ADDON = OGG-Encoder
-HEADER_DIR = ../../../include/AEEncoder
+HEADER_DIR = ../../../include/Hare
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
-RELEASE_DIR = ../../../release/FlipSideAE
+RELEASE_DIR = ../../../release/Hare
 ADDON_DIR = $(RELEASE_DIR)/add-ons
 
 HDRS =	OggEncoder.h

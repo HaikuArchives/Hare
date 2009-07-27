@@ -2,8 +2,8 @@ LIBRARY = libaeencoder.a
 HEADER_DIR = ../../../include/AEEncoder
 INCLUDE_DIR = ../../../include
 LIBRARY_DIR = ../../../lib
-HEADER_INSTALL_DIR = ../../../release/FlipSideAE/SDK/include
-LIBRARY_INSTALL_DIR = ../../../release/FlipSideAE/SDK/lib
+HEADER_INSTALL_DIR = ../../../release/Hare/SDK/include
+LIBRARY_INSTALL_DIR = ../../../release/Hare/SDK/lib
 
 HDRS =	AEEncoder.h
 

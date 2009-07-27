@@ -159,7 +159,7 @@ M3UCreator::LoadDefaultPattern()
 	return B_OK;
 }
 
-//function called by Flipside A.E. to get new AEEncoder subclass
+//function called to get new AEEncoder subclass
 AEEncoder*
 load_encoder()
 {

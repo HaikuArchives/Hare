@@ -10,8 +10,8 @@
 #include <be/storage/NodeInfo.h>
 #include <be/storage/Volume.h>
 #include <be/support/Debug.h>
-#include "AudioInfo/AudioAttributes.h"
-#include "AudioInfo/ID3Tags.h"
+#include "../AudioInfo/AudioAttributes.h"
+#include "../AudioInfo/ID3Tags.h"
 #include <String/String.h>
 
 #include "BeEncoder.h"

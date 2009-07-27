@@ -1,6 +1,6 @@
 install:
 	$(MAKE) --directory=./AEEncoder install
-	$(MAKE) --directory=./FlipSideAE install
+	$(MAKE) --directory=./Hare install
 	$(MAKE) --directory=./BeEncoder install
 	$(MAKE) --directory=./MP3GoGo install
 	$(MAKE) --directory=./MP3Lame install
@@ -9,7 +9,7 @@ install:
 
 cleaninstall:
 	$(MAKE) --directory=./AEEncoder cleaninstall
-	$(MAKE) --directory=./FlipSideAE cleaninstall
+	$(MAKE) --directory=./Hare cleaninstall
 	$(MAKE) --directory=./BeEncoder cleaninstall
 	$(MAKE) --directory=./MP3GoGo cleaninstall
 	$(MAKE) --directory=./MP3Lame cleaninstall
@@ -18,7 +18,7 @@ cleaninstall:
 
 clean:
 	$(MAKE) --directory=./AEEncoder clean
-	$(MAKE) --directory=./FlipSideAE clean
+	$(MAKE) --directory=./Hare clean
 	$(MAKE) --directory=./BeEncoder clean
 	$(MAKE) --directory=./MP3GoGo clean
 	$(MAKE) --directory=./MP3Lame clean
@@ -27,7 +27,7 @@ clean:
 
 release:
 	$(MAKE) --directory=./AEEncoder release
-	$(MAKE) --directory=./FlipSideAE release
+	$(MAKE) --directory=./Hare release
 	$(MAKE) --directory=./BeEncoder release
 	$(MAKE) --directory=./MP3GoGo release
 	$(MAKE) --directory=./MP3Lame release
@@ -35,4 +35,4 @@ release:
 	$(MAKE) --directory=./M3UCreator release
 
 cleansettings :
-	rm -rf /boot/home/config/settings/FlipSide\ Software/$(NAME)
+	rm -rf /boot/home/config/settings/Hare/$(NAME)
