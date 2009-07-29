@@ -59,9 +59,11 @@ EditorView::InitView()
 		GENRE_COLUMN,
 		0};
 	float leftWidth = 0;
-	float rightWidth = 0;
+	float rightWidth = 400;
 
 	int i=0;
+
+/*
 	while(left[i])
 	{
 		if(StringWidth(left[i]) > leftWidth)
@@ -80,6 +82,7 @@ EditorView::InitView()
 		}
 		i++;
 	}
+*/
 
 	//use cb to determine spacing of box at different fonts
 	BCheckBox cb(BRect(0,0,0,0),0,0,0);
@@ -87,8 +90,8 @@ EditorView::InitView()
 
 	BRect leftCB = Bounds();
 	leftCB.InsetBy(space,2*space);
-	leftCB.right = leftCB.left + leftWidth + cb.Frame().Width();
-	leftCB.bottom = leftCB.top + height;
+	leftCB.right = 200; //leftCB.left + leftWidth + cb.Frame().Width();
+	leftCB.bottom = 100; //leftCB.top + height;
 
 	BRect leftTC = leftCB;
 	leftTC.left = leftCB.right + space/2;
@@ -145,7 +148,7 @@ EditorView::InitView()
 			new BMessage(MSG_GENRE_CB));
 
 	rightTC.top += (10 - space);
-	rightTC.bottom = rightTC.top + (5*space) + (2*height);
+	rightTC.bottom = 150; // rightTC.top + (5*space) + (2*height);
 	genreBox = new BBox(rightTC,"genreBox",B_WILL_DRAW|B_FRAME_EVENTS);
 
 	// INSIDE THE BOX
@@ -269,8 +272,8 @@ EditorView::GetPreferredSize(float* width, float* height)
 
 	*width = commentTextControl->Frame().right + space;
 	*height = yearTextControl->Frame().bottom + space;
-	float ht = genreBox->Frame().bottom + 3*space +
-		applyButton->Frame().Height();
+	float ht = 100; //genreBox->Frame().bottom + 3*space +
+	//	applyButton->Frame().Height();
 	if(ht > *height)
 	{
 		*height = ht;

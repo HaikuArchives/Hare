@@ -67,6 +67,8 @@ AppView::InitView()
 
 	BRect fileNameFrame = Bounds();
 	fileNameFrame.InsetBy(space,space);
+	fileNameFrame.bottom = 200;
+	fileNameFrame.right = 200;
 	fileNamePatternView = new FileNamePatternView(fileNameFrame);
 	AddChild(fileNamePatternView);
 	fileNameFrame = fileNamePatternView->Frame(); //it resizes itself
@@ -93,6 +95,7 @@ AppView::InitView()
 
 	BRect buttonFrame = Bounds();
 	buttonFrame.InsetBy(space,space);
+	// buttonFrame.bottom = buttonFrame.bottom - 2;
 	buttonFrame.top = buttonFrame.bottom - 30;
 	buttonFrame.left = buttonFrame.right - 70;
 	encodeButton = new BButton(buttonFrame,"encodeButton",ENCODE_BTN,
@@ -113,6 +116,8 @@ AppView::InitView()
 	BRect statusBarFrame = buttonFrame;
 	statusBarFrame.left = Bounds().left + space;
 	statusBarFrame.right = buttonFrame.left - space;
+	statusBarFrame.top = statusBarFrame.top-4;
+	// statusBarFrame.bottom = statusBarFrame.bottom-4;
 	BString remaining(STATUS_TRAILING_LABEL);
 	remaining << 0;
 	statusBar = new BStatusBar(statusBarFrame,"statusBar",STATUS_LABEL,

@@ -35,14 +35,14 @@ FileNamePatternView::InitView()
 	font_height fh;
 	GetFontHeight(&fh);
 	float height = fh.ascent + fh.descent + fh.leading;
-
 	char* left[] = {ARTIST_LABEL,YEAR_LABEL,0};
 	char* center[] = {ALBUM_LABEL,TRACK_LABEL,0};
 	char* right[] = {TITLE_LABEL,GENRE_LABEL,0};
 	float leftWidth = 0;
-	float centerWidth = 0;
-	float rightWidth = 0;
+	float centerWidth = 100;
+	float rightWidth = 200;
 
+/*
 	int i=0;
 	while(left[i])
 	{
@@ -72,11 +72,11 @@ FileNamePatternView::InitView()
 		}
 		i++;
 	}
-
+*/
 	BRect leftFrame = Bounds();
 	leftFrame.InsetBy(space,2*space);
-	leftFrame.right = leftFrame.left + leftWidth;
-	leftFrame.bottom = leftFrame.top + height;
+	leftFrame.right = 200; //leftFrame.left + leftWidth;
+	leftFrame.bottom = 100; //leftFrame.top + height;
 	BRect centerFrame = leftFrame;
 	centerFrame.left = leftFrame.right + space;
 	centerFrame.right = centerFrame.left + centerWidth;
@@ -107,6 +107,7 @@ FileNamePatternView::InitView()
 	tcFrame.InsetBy(space,space);
 	tcFrame.top = leftFrame.bottom + space;
 	tcFrame.bottom = tcFrame.top + height;
+	tcFrame.right = tcFrame.left + 400;
 	AEEncoder* encoder = settings->Encoder();
 	BString str;
 	if(encoder)
@@ -114,7 +115,7 @@ FileNamePatternView::InitView()
 		str = encoder->GetPattern();
 	}
 	fileNamePatternTextControl = new BTextControl(tcFrame,
-			"fileNamePatternTextControl",0,str.String(),0,B_FOLLOW_LEFT_RIGHT);
+			"fileNamePatternTextControl",0,str.String(),0,B_FOLLOW_LEFT);
 
 	BRect buttonFrame = Bounds();
 	buttonFrame.InsetBy(space,space);

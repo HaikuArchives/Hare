@@ -27,15 +27,15 @@
 
 #define WIN_LEFT        200
 #define WIN_TOP         200
-#define WIN_RIGHT       810
-#define WIN_BOTTOM      600
-#define WIN_MIN_WIDTH   610
-#define WIN_MAX_WIDTH  2000
-#define WIN_MIN_HEIGHT  400
-#define WIN_MAX_HEIGHT 2000
+#define WIN_RIGHT       700 // was 810
+#define WIN_BOTTOM      200 // was 600
+#define WIN_MIN_WIDTH   1000 // was 610
+#define WIN_MAX_WIDTH	1000
+#define WIN_MIN_HEIGHT  500 // was 400
+#define WIN_MAX_HEIGHT  500 // was 1000
 
 AppWindow::AppWindow() : BWindow(BRect(WIN_LEFT,WIN_TOP,WIN_RIGHT,WIN_BOTTOM),
-	APPLICATION,B_TITLED_WINDOW,B_ASYNCHRONOUS_CONTROLS)
+	APPLICATION, B_TITLED_WINDOW, B_NOT_RESIZABLE /*B_ASYNCHRONOUS_CONTROLS*/)
 {
 	PRINT(("AppWindow::AppWindow()\n"));
 
