@@ -798,7 +798,7 @@ AppView::EncodeThread(void* args)
 			PRINT(("ERROR: exe not found\n"));
 			BString msg("The addon could not find the required executable.");
 			msg << "\n";
-			msg << "Please check the addon's dccumentation.\n";
+			msg << "Please check the addon's documentation.\n";
 			view->AlertUser(msg.String());
 		}
 		system_beep(SYSTEM_BEEP_ENCODING_DONE);
