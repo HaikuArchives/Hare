@@ -3,7 +3,7 @@
 #include <be/storage/File.h>
 #include <be/support/Debug.h>
 #include <be/support/TypeConstants.h>
-#include <String/String.h>
+#include <be/support/String.h>
 #include "AudioAttributes.h"
 #include "AudioAttribute.h"
 
@@ -350,9 +350,9 @@ AudioAttributes::ReadTrack()
 	int retval = track->Read();
 	if(track->Value() && strlen(track->Value()) == 1)
 	{
-		String tmp = "0";
+		BString tmp = "0";
 		tmp += track->Value();
-		track->SetValue(tmp.Value());
+		track->SetValue(tmp.String());
 	}
 	return retval;
 }

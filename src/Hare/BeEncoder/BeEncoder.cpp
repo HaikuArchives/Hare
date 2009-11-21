@@ -10,9 +10,9 @@
 #include <be/storage/NodeInfo.h>
 #include <be/storage/Volume.h>
 #include <be/support/Debug.h>
+#include <be/support/String.h>
 #include "../AudioInfo/AudioAttributes.h"
 #include "../AudioInfo/ID3Tags.h"
-#include <String/String.h>
 
 #include "BeEncoder.h"
 #include "MediaMenuItem.h"
@@ -29,7 +29,7 @@ BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME)
 			error = B_ERROR;
 			return;
 		}
-		String markedItem = marked->Label();
+		BString markedItem = marked->Label();
 
 		BMenuItem* item;
 		int32 numItems = menu->CountItems();
@@ -319,10 +319,10 @@ BeEncoder::AddEncoderEntries(BMenu* encoderMenu)
 					== B_OK)
 			{
 				//create the item
-				String name = mff.short_name;
+				BString name = mff.short_name;
 				name += "/";
 				name += mci.pretty_name;
-				item = new MediaMenuItem(name.Value(),&mff,&mci);
+				item = new MediaMenuItem(name.String(),&mff,&mci);
 				encoderMenu->AddItem(item);
 			}
 		}

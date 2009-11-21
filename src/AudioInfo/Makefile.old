@@ -19,7 +19,7 @@ SRCS =	AudioAttribute.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
-LIBS = $(LIBRARY_DIR)/libstring.a
+LIBS = 
 CC = g++
 CFLAGS = -DDEBUG -g
 EXTRACT = ar

@@ -9,8 +9,8 @@
 #include <be/storage/NodeInfo.h>
 #include <be/support/Debug.h>
 #include <be/support/TypeConstants.h>
+#include <be/support/String.h>
 
-#include "String/String.h"
 #include "AudioAttribute.h"
 
 
@@ -202,10 +202,10 @@ AudioAttribute::SetValue(const char* val)
 
 	if(val && (strcmp(val,"") != 0))
 	{
-		String tmp = val;
+		BString tmp = val;
 		tmp.Trim();
 		this->value = new char[tmp.Length()+1];
-		strcpy(this->value,tmp.Value());
+		strcpy(this->value,tmp.String());
 	}
 }
 

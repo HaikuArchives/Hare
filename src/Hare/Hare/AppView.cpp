@@ -26,7 +26,6 @@
 #include <be/support/Beep.h>
 #include <be/support/Debug.h>
 #include <be/support/String.h>
-#include <String/String.h>
 #include <AEEncoder/AEEncoder.h>
 #include "../AudioInfo/AudioAttributes.h"
 #include "../AudioInfo/GenreList.h"
@@ -399,16 +398,16 @@ AppView::InitializeColumn(CLVRefListItem* item)
 		volume.GetName(volume_name);
 		if(strcmp(volume_name,"Audio CD") != 0)
 		{
-			String artist(volume_name);
+			BString artist(volume_name);
 			int index = artist.FindFirst(" - ");
-			artist.Substring(0,index);
-			String album(volume_name);
+			artist.Truncate(index);
+			BString album(volume_name);
 			index += 3;
-			album.Substring(index);
+			album.Remove(index, album.Length() - index);
 			artist.Trim();
 			album.Trim();
-			item->SetColumnContent(ARTIST_COLUMN_INDEX,artist.Value());
-			item->SetColumnContent(ALBUM_COLUMN_INDEX,album.Value());
+			item->SetColumnContent(ARTIST_COLUMN_INDEX,artist.String());
+			item->SetColumnContent(ALBUM_COLUMN_INDEX,album.String());
 			item->SetColumnContent(TITLE_COLUMN_INDEX,ref->name);
 		}
 		else

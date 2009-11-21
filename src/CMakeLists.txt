@@ -6,6 +6,4 @@ add_subdirectory(Matcher)
 
 add_subdirectory(Santa)
 
-add_subdirectory(String)
-
 add_subdirectory(Hare)

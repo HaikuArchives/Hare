@@ -28,7 +28,7 @@ OBJS = $(SRCS:.cpp=.o)
 RDEFS = Hare.rdef
 RSRCS = Hare.rsrc
 
-LIBS = -lbe -lroot -lsanta -lstring -laudioinfo -laeencoder -ltag
+LIBS = -lbe -lroot -lsanta -laudioinfo -laeencoder -ltag
 
 CC = g++
 CFLAGS = -DDEBUG -g

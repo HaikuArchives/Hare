@@ -6,5 +6,3 @@ add_library(audioinfo STATIC
 				GenreList.cpp
 				ID3Tag.cpp
 				ID3Tags.cpp)
-
-target_link_libraries(audioinfo "string")

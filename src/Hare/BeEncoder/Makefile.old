@@ -12,7 +12,7 @@ SRCS =	BeEncoder.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
-LIBS = -lbe -lroot -lmedia -laudioinfo -laeencoder -lstring -ltag
+LIBS = -lbe -lroot -lmedia -laudioinfo -laeencoder -ltag
 CC = g++
 CFLAGS = -DDEBUG -g
 LD = g++
