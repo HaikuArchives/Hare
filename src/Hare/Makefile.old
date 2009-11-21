@@ -1,0 +1,38 @@
+install:
+	$(MAKE) --directory=./AEEncoder -f Makefile.old install
+	$(MAKE) --directory=./BeEncoder -f Makefile.old install
+	$(MAKE) --directory=./MP3GoGo -f Makefile.old install
+	$(MAKE) --directory=./MP3Lame -f Makefile.old install
+	$(MAKE) --directory=./OGGEncoder -f Makefile.old install
+	$(MAKE) --directory=./M3UCreator -f Makefile.old install
+	$(MAKE) --directory=./Hare -f Makefile.old install
+
+cleaninstall:
+	$(MAKE) --directory=./AEEncoder -f Makefile.old cleaninstall
+	$(MAKE) --directory=./BeEncoder -f Makefile.old cleaninstall
+	$(MAKE) --directory=./MP3GoGo -f Makefile.old cleaninstall
+	$(MAKE) --directory=./MP3Lame -f Makefile.old cleaninstall
+	$(MAKE) --directory=./OGGEncoder -f Makefile.old cleaninstall
+	$(MAKE) --directory=./M3UCreator -f Makefile.old cleaninstall
+	$(MAKE) --directory=./Hare -f Makefile.old cleaninstall
+
+clean:
+	$(MAKE) --directory=./AEEncoder -f Makefile.old clean
+	$(MAKE) --directory=./BeEncoder -f Makefile.old clean
+	$(MAKE) --directory=./MP3GoGo -f Makefile.old clean
+	$(MAKE) --directory=./MP3Lame -f Makefile.old clean
+	$(MAKE) --directory=./OGGEncoder -f Makefile.old clean
+	$(MAKE) --directory=./M3UCreator -f Makefile.old clean
+	$(MAKE) --directory=./Hare -f Makefile.old clean
+
+release:
+	$(MAKE) --directory=./AEEncoder -f Makefile.old release
+	$(MAKE) --directory=./BeEncoder -f Makefile.old release
+	$(MAKE) --directory=./MP3GoGo -f Makefile.old release
+	$(MAKE) --directory=./MP3Lame -f Makefile.old release
+	$(MAKE) --directory=./OGGEncoder -f Makefile.old release
+	$(MAKE) --directory=./M3UCreator -f Makefile.old release
+	$(MAKE) --directory=./Hare -f Makefile.old release
+
+cleansettings :
+	rm -rf /boot/home/config/settings/Hare/$(NAME)
