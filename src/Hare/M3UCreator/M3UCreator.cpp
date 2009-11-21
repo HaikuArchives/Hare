@@ -23,7 +23,7 @@ M3UCreator::~M3UCreator()
 	int32 numFiles = fileList.CountItems();
 	for(int32 i=0;i<numFiles;i++)
 	{
-		delete fileList.ItemAt(0);
+		delete (BString*)fileList.ItemAt(0);
 	}
 }
 
@@ -143,7 +143,7 @@ M3UCreator::UninitEncoder()
 	int32 numFiles = fileList.CountItems();
 	for(int32 i=0;i<numFiles;i++)
 	{
-		delete fileList.RemoveItem((int32)0);
+		delete (BString*)fileList.RemoveItem((int32)0);
 	}
 
 	return B_OK;
