@@ -149,7 +149,7 @@ EditorView::InitView()
 
 	rightTC.top += (10 - space);
 	rightTC.bottom = 150; // rightTC.top + (5*space) + (2*height);
-	genreBox = new BBox(rightTC,"genreBox",B_WILL_DRAW|B_FRAME_EVENTS);
+	genreBox = new BBox(rightTC,"genreBox");
 
 	// INSIDE THE BOX
 	{
