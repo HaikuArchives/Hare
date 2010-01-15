@@ -3,51 +3,45 @@
 #include <String.h>
 #include "ID3Tag.h"
 
-ID3Tag::ID3Tag(TagLib::FileRef * file, TagLib::Tag * tag, int tag_item)
-	:	file		(file),
-		tag			(tag),
-		tag_item	(tag_item),
-		value		()
-{
+ID3Tag::ID3Tag(TagLib::FileRef* file, TagLib::Tag* tag, int tag_item)
+	:	file(file),
+		tag(tag),
+		tag_item(tag_item),
+		value() {
 	PRINT(("ID3Tag::ID3Tag(TagLib::FileRef*, TagLib::Tag*, int)\n"));
 
 }
 
-ID3Tag::~ID3Tag()
-{
+ID3Tag::~ID3Tag() {
 	PRINT(("ID3Tag::~ID3Tag()\n"));
 
 }
 
 const char *
-ID3Tag::Value()
-{
+ID3Tag::Value() {
 	PRINT(("ID3Tag::Value()\n"));
 
-	if(value.Length() == 0)
+	if (value.Length() == 0)
 		return NULL;
 
 	return this->value.String();
 }
 
 void
-ID3Tag::SetValue(const char * string)
-{
+ID3Tag::SetValue(const char* string) {
 	PRINT(("ID3Tag::SetValue(const char*)\n"));
 
-	if(string)
+	if (string)
 		value = string;
 	else
 		value.Truncate(0);
 }
 
 status_t
-ID3Tag::Read()
-{
+ID3Tag::Read() {
 	PRINT(("ID3Tag::Read()\n"));
 
-	switch (tag_item)
-	{
+	switch (tag_item) {
 		case TITLE_TAG:
 			value = tag->title().toCString(true);
 			break;
@@ -85,24 +79,21 @@ ID3Tag::Read()
 }
 
 status_t
-ID3Tag::Write()
-{
+ID3Tag::Write() {
 	PRINT(("ID3Tag::Write()\n"));
-	
-    enum 
-    {
-      Latin1 = 0,
-      UTF16 = 1,
-      UTF16BE = 2,
-      UTF8 = 3
-    };
-	
-//	TagLib::String::Type type = UTF8;
-	
-	TagLib::String string (value.String(), (TagLib::String::Type) 3);  // 3 = UTF8
 
-	switch (tag_item)
-	{
+	enum {
+		Latin1 = 0,
+		UTF16 = 1,
+		UTF16BE = 2,
+		UTF8 = 3
+	};
+
+//	TagLib::String::Type type = UTF8;
+
+	TagLib::String string(value.String(), (TagLib::String::Type) 3);   // 3 = UTF8
+
+	switch (tag_item) {
 		case TITLE_TAG:
 			tag->setTitle(string);
 			break;
@@ -120,8 +111,8 @@ ID3Tag::Write()
 			break;
 		case YEAR_TAG:
 			PRINT(("ID3Tag::Write() *** value.String(): %s\n", value.String()));
-			PRINT(("ID3Tag::Write() *** tag->year(): %u\n", tag->year()));	
-			PRINT(("ID3Tag::Write() *** tag->year(): %u\n", tag->year()));	
+			PRINT(("ID3Tag::Write() *** tag->year(): %u\n", tag->year()));
+			PRINT(("ID3Tag::Write() *** tag->year(): %u\n", tag->year()));
 			tag->setYear(atoi(value.String()));
 			PRINT(("ID3Tag::Write() atoi(value.String(): %ld\n", atoi(value.String())));
 			PRINT(("ID3Tag::Write() *** tag->year(): %u\n", tag->year()));

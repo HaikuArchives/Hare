@@ -4,10 +4,9 @@
 #include <be/interface/Bitmap.h>
 #include "CheckMarkData.h"
 
-class CheckMark : public BBitmap
-{
-	public:
-		CheckMark();
+class CheckMark : public BBitmap {
+public:
+	CheckMark();
 };
 
 #endif

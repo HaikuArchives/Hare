@@ -7,21 +7,20 @@
 class BArchivable;
 class BMessage;
 
-class MediaMenuItem : public BMenuItem
-{
-	public:
-		MediaMenuItem(const char* label, media_file_format* mfi,
-				media_codec_info* mci);
-		MediaMenuItem(BMessage* archive);
-		virtual status_t Archive(BMessage* archive, bool deep=true) const;
-		static BArchivable* Instantiate(BMessage* archive);
+class MediaMenuItem : public BMenuItem {
+public:
+	MediaMenuItem(const char* label, media_file_format* mfi,
+				  media_codec_info* mci);
+	MediaMenuItem(BMessage* archive);
+	virtual status_t Archive(BMessage* archive, bool deep = true) const;
+	static BArchivable* Instantiate(BMessage* archive);
 
-		const media_file_format* MediaFileFormat();
-		const media_codec_info* MediaCodecInfo();
+	const media_file_format* MediaFileFormat();
+	const media_codec_info* MediaCodecInfo();
 
-	private:
-		media_file_format mff;
-		media_codec_info mci;
+private:
+	media_file_format mff;
+	media_codec_info mci;
 };
 
 #endif

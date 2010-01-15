@@ -15,19 +15,17 @@
 
 
 AudioAttribute::AudioAttribute(BFile* file, const char* name,
-		const char* attribute, type_code type)
-{
+							   const char* attribute, type_code type) {
 	PRINT(("AudioAttribute::AudioAttribute(BFile*,const char*)\n"));
 
-	strcpy(this->name,name);
-	strcpy(this->attribute,attribute);
+	strcpy(this->name, name);
+	strcpy(this->attribute, attribute);
 	this->type = type;
 	this->file = file;
 	this->value = 0;
 }
 
-AudioAttribute::~AudioAttribute()
-{
+AudioAttribute::~AudioAttribute() {
 	PRINT(("AudioAttribute::~AudioAttribute()\n"));
 
 	delete [] value;
@@ -35,40 +33,33 @@ AudioAttribute::~AudioAttribute()
 }
 
 bool
-AudioAttribute::Exists()
-{
+AudioAttribute::Exists() {
 	PRINT(("AudioAttribute::Exists()\n"));
 
 	BNodeInfo nodeInfo(file);
-	if(nodeInfo.InitCheck() != B_OK)
-	{
+	if (nodeInfo.InitCheck() != B_OK) {
 		return false;
 	}
 
 	char type[B_MIME_TYPE_LENGTH];
-	if(nodeInfo.GetType(type) != B_OK)
-	{
+	if (nodeInfo.GetType(type) != B_OK) {
 		return false;
 	}
 
 	BMimeType mimeType(type);
-	if(mimeType.InitCheck() != B_OK)
-	{
+	if (mimeType.InitCheck() != B_OK) {
 		return false;
 	}
 
 	BMessage attributes;
-	if(mimeType.GetAttrInfo(&attributes) != B_OK)
-	{
+	if (mimeType.GetAttrInfo(&attributes) != B_OK) {
 		return false;
 	}
 
 	const char* name;
 	int32 index = 0;
-	while(attributes.FindString("attr:name",index,&name) == B_OK)
-	{
-		if(strcmp(name,this->attribute) == 0)
-		{
+	while (attributes.FindString("attr:name", index, &name) == B_OK) {
+		if (strcmp(name, this->attribute) == 0) {
 			return true;
 		}
 		index++;
@@ -78,46 +69,40 @@ AudioAttribute::Exists()
 }
 
 int32
-AudioAttribute::Create()
-{
+AudioAttribute::Create() {
 	PRINT(("AudioAttribute::Create()\n"));
 
 	BNodeInfo nodeInfo(file);
-	if(nodeInfo.InitCheck() != B_OK)
-	{
+	if (nodeInfo.InitCheck() != B_OK) {
 		return B_ERROR;
 	}
 
 	char type[B_MIME_TYPE_LENGTH];
-	if(nodeInfo.GetType(type) != B_OK)
-	{
+	if (nodeInfo.GetType(type) != B_OK) {
 		return B_ERROR;
 	}
 
 	BMimeType mimeType(type);
-	if(mimeType.InitCheck() != B_OK)
-	{
+	if (mimeType.InitCheck() != B_OK) {
 		return B_ERROR;
 	}
 
 	BMessage attributes;
-	if(mimeType.GetAttrInfo(&attributes) != B_OK)
-	{
+	if (mimeType.GetAttrInfo(&attributes) != B_OK) {
 		return B_ERROR;
 	}
 
-	attributes.AddString("attr:name",this->attribute);
-	attributes.AddString("attr:public_name",this->name);
-	attributes.AddInt32("attr:type",this->type);
-	attributes.AddBool("attr:public",true);
-	attributes.AddBool("attr:viewable",true);
-	attributes.AddBool("attr:editable",true);
-	attributes.AddInt32("attr:width",30);
-	attributes.AddInt32("attr:alignment",B_ALIGN_LEFT);
-	attributes.AddBool("attr:extra",false);
+	attributes.AddString("attr:name", this->attribute);
+	attributes.AddString("attr:public_name", this->name);
+	attributes.AddInt32("attr:type", this->type);
+	attributes.AddBool("attr:public", true);
+	attributes.AddBool("attr:viewable", true);
+	attributes.AddBool("attr:editable", true);
+	attributes.AddInt32("attr:width", 30);
+	attributes.AddInt32("attr:alignment", B_ALIGN_LEFT);
+	attributes.AddBool("attr:extra", false);
 
-	if(mimeType.SetAttrInfo(&attributes) != B_OK)
-	{
+	if (mimeType.SetAttrInfo(&attributes) != B_OK) {
 		return B_ERROR;
 	}
 
@@ -125,19 +110,15 @@ AudioAttribute::Create()
 }
 
 bool
-AudioAttribute::IsIndexed(dev_t device)
-{
+AudioAttribute::IsIndexed(dev_t device) {
 	PRINT(("AudioAttribute::IsIndexed(dev_t)\n"));
 
 	bool found = false;
 	DIR* index_dir = fs_open_index_dir(device);
-	if(index_dir)
-	{
+	if (index_dir) {
 		dirent* entry;
-		while(entry = fs_read_index_dir(index_dir))
-		{
-			if(strcmp(entry->d_name,this->attribute) == 0)
-			{
+		while (entry = fs_read_index_dir(index_dir)) {
+			if (strcmp(entry->d_name, this->attribute) == 0) {
 				found = true;
 				break;
 			}
@@ -149,17 +130,14 @@ AudioAttribute::IsIndexed(dev_t device)
 }
 
 int32
-AudioAttribute::Index(dev_t device)
-{
+AudioAttribute::Index(dev_t device) {
 	PRINT(("AudioAttribute::Index(dev_t)\n"));
 
-	if(IsIndexed(device))
-	{
+	if (IsIndexed(device)) {
 		return B_OK;
 	}
 
-	if(fs_create_index(device,this->attribute,this->type,0) != 0)
-	{
+	if (fs_create_index(device, this->attribute, this->type, 0) != 0) {
 		return B_ERROR;
 	}
 
@@ -167,17 +145,14 @@ AudioAttribute::Index(dev_t device)
 }
 
 int32
-AudioAttribute::RemoveIndex(dev_t device)
-{
+AudioAttribute::RemoveIndex(dev_t device) {
 	PRINT(("AudioAttribute::RemoveIndex(dev_t)\n"));
 
-	if(!IsIndexed(device))
-	{
+	if (!IsIndexed(device)) {
 		return B_OK;
 	}
 
-	if(fs_remove_index(device,this->attribute) != 0)
-	{
+	if (fs_remove_index(device, this->attribute) != 0) {
 		return B_ERROR;
 	}
 
@@ -185,79 +160,68 @@ AudioAttribute::RemoveIndex(dev_t device)
 }
 
 const char*
-AudioAttribute::Value()
-{
+AudioAttribute::Value() {
 	PRINT(("AudioAttribute::Value()\n"));
 
 	return this->value;
 }
 
 void
-AudioAttribute::SetValue(const char* val)
-{
+AudioAttribute::SetValue(const char* val) {
 	PRINT(("AudioAttribute::SetValue(const char*)\n"));
 
 	delete [] this->value;
 	this->value = 0;
 
-	if(val && (strcmp(val,"") != 0))
-	{
+	if (val && (strcmp(val, "") != 0)) {
 		BString tmp = val;
 		tmp.Trim();
 		this->value = new char[tmp.Length()+1];
-		strcpy(this->value,tmp.String());
+		strcpy(this->value, tmp.String());
 	}
 }
 
 status_t
-AudioAttribute::Read()
-{
+AudioAttribute::Read() {
 	PRINT(("AudioAttribute::Read()\n"));
 
-	if(!file->IsReadable())
-	{
+	if (!file->IsReadable()) {
 		PRINT(("File isn't readable.\n"));
 		return B_ERROR;
 	}
 
 	attr_info info;
-	if(file->GetAttrInfo(attribute,&info) != B_OK)
-	{
+	if (file->GetAttrInfo(attribute, &info) != B_OK) {
 		PRINT(("Can't get attribute info.\n"));
 		return B_ERROR;
 	}
 
-	switch(info.type)
-	{
-		case B_STRING_TYPE:
-			{
+	switch (info.type) {
+		case B_STRING_TYPE: {
 				delete [] value;
 				value = 0;
 				value = new char[info.size+1];
-				memset(value,0,info.size+1);
+				memset(value, 0, info.size + 1);
 
-				if(file->ReadAttr(attribute,B_STRING_TYPE,0,value,info.size) <= 0)
-				{
-					PRINT(("Error reading B_STRING_TYPE attribute %s.\n",attribute));
+				if (file->ReadAttr(attribute, B_STRING_TYPE, 0, value, info.size) <= 0) {
+					PRINT(("Error reading B_STRING_TYPE attribute %s.\n", attribute));
 					return B_ERROR;
 				}
 			}
 			break;
-		case B_INT32_TYPE:
-			{
+		case B_INT32_TYPE: {
 				int32 buf;
 
 				delete [] value;
 				value = 0;
 				value = new char[12]; //2^(32-1) is 10 chars + sign + null
-				memset(value,0,12);
+				memset(value, 0, 12);
 
-				if(file->ReadAttr(attribute,B_INT32_TYPE,0,&buf,info.size) <= 0)
-				{
-					PRINT(("Error reading B_INT32_TYPE attribute %s.\n",attribute));
+				if (file->ReadAttr(attribute, B_INT32_TYPE, 0, &buf, info.size) <= 0) {
+					PRINT(("Error reading B_INT32_TYPE attribute %s.\n", attribute));
 					return B_ERROR;
 				}
-				sprintf(value,"%d",buf);
+				sprintf(value, "%d", buf);
 			}
 			break;
 		default:
@@ -269,47 +233,38 @@ AudioAttribute::Read()
 }
 
 status_t
-AudioAttribute::Write()
-{
+AudioAttribute::Write() {
 	PRINT(("AudioAttribute::Write()\n"));
 
-	if(!file->IsWritable())
-	{
+	if (!file->IsWritable()) {
 		PRINT(("File isn't writable.\n"));
 		return B_ERROR;
 	}
 
-	switch(this->type)
-	{
-		case B_STRING_TYPE:
-			{
+	switch (this->type) {
+		case B_STRING_TYPE: {
 				int len = 0;
-				if(value)
-				{
-					len = strlen(value)+1;
-					PRINT(("STR BUF = %s\n",value));
+				if (value) {
+					len = strlen(value) + 1;
+					PRINT(("STR BUF = %s\n", value));
 				}
-				if(file->WriteAttr(attribute,B_STRING_TYPE,0,value,len) < len)
-				{
-					PRINT(("Error writing B_STRING_TYPE attribute %s\n",attribute));
+				if (file->WriteAttr(attribute, B_STRING_TYPE, 0, value, len) < len) {
+					PRINT(("Error writing B_STRING_TYPE attribute %s\n", attribute));
 					return B_ERROR;
 				}
 			}
 			break;
-		case B_INT32_TYPE:
-			{
+		case B_INT32_TYPE: {
 				int len = 0;
 				int buf = 0;
-				if(value)
-				{
+				if (value) {
 					len = sizeof(int32);
 					buf = atol(value);
-					PRINT(("STR = %s\n",value));
-					PRINT(("INT BUF = %d\n",buf));
+					PRINT(("STR = %s\n", value));
+					PRINT(("INT BUF = %d\n", buf));
 				}
-				if(file->WriteAttr(attribute,B_INT32_TYPE,0,&buf,len) < len)
-				{
-					PRINT(("Error writing B_INT32_TYPE attribute %s\n",attribute));
+				if (file->WriteAttr(attribute, B_INT32_TYPE, 0, &buf, len) < len) {
+					PRINT(("Error writing B_INT32_TYPE attribute %s\n", attribute));
 					return B_ERROR;
 				}
 			}

@@ -6,11 +6,10 @@
 class BHandler;
 class BMessage;
 
-class StatusBarFilter : public BMessageFilter
-{
-	public:
-		StatusBarFilter();
-		virtual filter_result Filter(BMessage* message, BHandler** target);
+class StatusBarFilter : public BMessageFilter {
+public:
+	StatusBarFilter();
+	virtual filter_result Filter(BMessage* message, BHandler** target);
 };
 
 #endif

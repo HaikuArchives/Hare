@@ -17,15 +17,12 @@
 #include "BeEncoder.h"
 #include "MediaMenuItem.h"
 
-BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME)
-{
+BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME) {
 	PRINT(("BeEncoder::BeEncoder()\n"));
 
-	if(menu)
-	{
+	if (menu) {
 		BMenuItem* marked = menu->FindMarked();
-		if(!marked)
-		{
+		if (!marked) {
 			error = B_ERROR;
 			return;
 		}
@@ -33,8 +30,7 @@ BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME)
 
 		BMenuItem* item;
 		int32 numItems = menu->CountItems();
-		for(int i=0;i<numItems;i++)
-		{
+		for (int i = 0; i < numItems; i++) {
 			item = menu->RemoveItem((int32)0);
 			delete item;
 			item = 0;
@@ -43,11 +39,9 @@ BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME)
 		AddEncoderEntries(menu);
 
 		numItems = menu->CountItems();
-		for(int i=0;i<numItems;i++)
-		{
+		for (int i = 0; i < numItems; i++) {
 			item = menu->ItemAt(i);
-			if(item && markedItem == item->Label())
-			{
+			if (item && markedItem == item->Label()) {
 				item->SetMarked(true);
 				break;
 			}
@@ -55,14 +49,12 @@ BeEncoder::BeEncoder() : AEEncoder(ADDON_NAME)
 	}
 }
 
-BeEncoder::~BeEncoder()
-{
+BeEncoder::~BeEncoder() {
 	PRINT(("BeEncoder::~BeEncoder()\n"));
 }
 
 int32
-BeEncoder::Encode(BMessage* message)
-{
+BeEncoder::Encode(BMessage* message) {
 	PRINT(("BeEncoder::Encode(BMessage*)\n"));
 
 	status_t status;
@@ -81,100 +73,85 @@ BeEncoder::Encode(BMessage* message)
 	media_format format;
 	media_codec_info codec;
 
-	if(message->FindMessenger("statusBarMessenger",&messenger) != B_OK)
-	{
-		message->AddString("error","Error getting status bar messenger.\n");
+	if (message->FindMessenger("statusBarMessenger", &messenger) != B_OK) {
+		message->AddString("error", "Error getting status bar messenger.\n");
 		return B_ERROR;
 	}
 
-	if(message->FindString("input file",&inputPath) != B_OK)
-	{
-		message->AddString("error","Error getting input path.\n");
+	if (message->FindString("input file", &inputPath) != B_OK) {
+		message->AddString("error", "Error getting input path.\n");
 		return B_ERROR;
 	}
 
-	if(message->FindString("output file",&outputPath) != B_OK)
-	{
-		message->AddString("error","Error getting output path.\n");
+	if (message->FindString("output file", &outputPath) != B_OK) {
+		message->AddString("error", "Error getting output path.\n");
 		return B_ERROR;
 	}
 
-	if(get_ref_for_path(inputPath,&inputRef) != B_OK)
-	{
-		message->AddString("error","Error getting input ref.\n");
+	if (get_ref_for_path(inputPath, &inputRef) != B_OK) {
+		message->AddString("error", "Error getting input ref.\n");
 		return B_ERROR;
 	}
 
-	if(get_ref_for_path(outputPath,&outputRef) != B_OK)
-	{
-		message->AddString("error","Error getting output ref.\n");
+	if (get_ref_for_path(outputPath, &outputRef) != B_OK) {
+		message->AddString("error", "Error getting output ref.\n");
 		return B_ERROR;
 	}
 
 	markedItem = (MediaMenuItem*)menu->FindMarked();
-	if(!markedItem)
-	{
-		message->AddString("error","Error getting encoder preference.\n");
+	if (!markedItem) {
+		message->AddString("error", "Error getting encoder preference.\n");
 		return B_ERROR;
 	}
 
 	BMediaFile inputFile(&inputRef);
-	if(inputFile.InitCheck() != B_OK)
-	{
-		message->AddString("error","Error initializing input file.\n");
+	if (inputFile.InitCheck() != B_OK) {
+		message->AddString("error", "Error initializing input file.\n");
 		return B_ERROR;
 	}
 
-	BMediaFile outputFile(&outputRef,markedItem->MediaFileFormat());
-	if(outputFile.InitCheck() != B_OK)
-	{
-		if(inputFile.InitCheck() == B_MEDIA_NO_HANDLER)
-		{
+	BMediaFile outputFile(&outputRef, markedItem->MediaFileFormat());
+	if (outputFile.InitCheck() != B_OK) {
+		if (inputFile.InitCheck() == B_MEDIA_NO_HANDLER) {
 			return FSS_INPUT_NOT_SUPPORTED;
 		}
-		message->AddString("error","Error initializing output file.\n");
+		message->AddString("error", "Error initializing output file.\n");
 		return B_ERROR;
 	}
-	
+
 	BMediaTrack* inputTrack;
 	int32 numTracks = inputFile.CountTracks();
-	for(int i=0;i<numTracks;i++)
-	{
+	for (int i = 0; i < numTracks; i++) {
 		inputTrack = inputFile.TrackAt(i);
-		if(!inputTrack)
-		{
+		if (!inputTrack) {
 			message->AddString("error",
-					"Error getting inputTrack from input file.\n");
-			return B_ERROR;
-		}
-		
-		if(inputTrack->EncodedFormat(&infmt) != B_OK)
-		{
-			message->AddString("error",
-					"Error getting encoded fromat from inputTrack.\n");
+							   "Error getting inputTrack from input file.\n");
 			return B_ERROR;
 		}
 
-		if(!infmt.IsAudio())
-		{
+		if (inputTrack->EncodedFormat(&infmt) != B_OK) {
+			message->AddString("error",
+							   "Error getting encoded fromat from inputTrack.\n");
+			return B_ERROR;
+		}
+
+		if (!infmt.IsAudio()) {
 			inputFile.ReleaseTrack(inputTrack);
 			inputTrack = 0;
 		}
 
-		if(inputTrack)
-		{
+		if (inputTrack) {
 			break;
 		}
 	}
 
-	if(!inputTrack)
-	{
-		message->AddString("error","Error file has no audio tracks.\n");
+	if (!inputTrack) {
+		message->AddString("error", "Error file has no audio tracks.\n");
 		return B_ERROR;
 	}
 
-	memset(&infmt,0,sizeof(media_format));
-	memset(&outfmt,0,sizeof(media_format));
+	memset(&infmt, 0, sizeof(media_format));
+	memset(&outfmt, 0, sizeof(media_format));
 
 	inputTrack->EncodedFormat(&infmt);
 	outfmt.type = B_MEDIA_RAW_AUDIO;
@@ -185,34 +162,29 @@ BeEncoder::Encode(BMessage* message)
 	char* sound_buffer = new char[outfmt.u.raw_audio.buffer_size];
 
 	cookie = 0;
-	while((status = get_next_encoder(&cookie,markedItem->MediaFileFormat(),
-				&outfmt,&format,&codec)) == B_OK)
-	{
-		if(strcmp(markedItem->MediaCodecInfo()->short_name,codec.short_name) == 0)
-		{
+	while ((status = get_next_encoder(&cookie, markedItem->MediaFileFormat(),
+									  &outfmt, &format, &codec)) == B_OK) {
+		if (strcmp(markedItem->MediaCodecInfo()->short_name, codec.short_name) == 0) {
 			break;
 		}
 	}
 
-	if(status != B_OK)
-	{
-		message->AddString("error","Error finding output media format.\n");
-		PRINT(("%s\n",strerror(status)));
+	if (status != B_OK) {
+		message->AddString("error", "Error finding output media format.\n");
+		PRINT(("%s\n", strerror(status)));
 		delete [] sound_buffer;
 		return B_ERROR;
 	}
 
-	BMediaTrack* outputTrack = outputFile.CreateTrack(&outfmt,&codec);
-	if(!outputTrack)
-	{
-		message->AddString("error","Error creating output audio track.\n");
+	BMediaTrack* outputTrack = outputFile.CreateTrack(&outfmt, &codec);
+	if (!outputTrack) {
+		message->AddString("error", "Error creating output audio track.\n");
 		delete [] sound_buffer;
 		return B_ERROR;
 	}
 
-	if(outputFile.CommitHeader() != B_OK)
-	{
-		message->AddString("error","Error commiting header.\n");
+	if (outputFile.CommitHeader() != B_OK) {
+		message->AddString("error", "Error commiting header.\n");
 		delete [] sound_buffer;
 		return B_ERROR;
 	}
@@ -222,30 +194,26 @@ BeEncoder::Encode(BMessage* message)
 	media_header mh;
 
 	BMessage setMaxMessage(FSS_SETMAX_STATUS_BAR);
-	setMaxMessage.AddFloat("max",numFrames);
+	setMaxMessage.AddFloat("max", numFrames);
 	messenger.SendMessage(&setMaxMessage);
 	int result = B_OK;
 	int prev = 0;
 	int curr = 0;
-	for(int i=0;i<numFrames;i+=framecount)
-	{
-		if(CheckForCancel())
-		{
+	for (int i = 0; i < numFrames; i += framecount) {
+		if (CheckForCancel()) {
 			result = FSS_CANCEL_ENCODING;
 			break;
 		}
 
-		if(inputTrack->ReadFrames(sound_buffer,&framecount,&mh) != B_OK)
-		{
-			message->AddString("error","Error reading frames from input track.\n");
+		if (inputTrack->ReadFrames(sound_buffer, &framecount, &mh) != B_OK) {
+			message->AddString("error", "Error reading frames from input track.\n");
 			result = B_ERROR;
 			break;
 		}
 
-		if(status = outputTrack->WriteFrames(sound_buffer,framecount) != B_OK)
-		{
-			message->AddString("error","Error writing frames to output track.\n");
-			PRINT(("%s\n",strerror(status)));
+		if (status = outputTrack->WriteFrames(sound_buffer, framecount) != B_OK) {
+			message->AddString("error", "Error writing frames to output track.\n");
+			PRINT(("%s\n", strerror(status)));
 			result = B_ERROR;
 			break;
 		}
@@ -253,27 +221,23 @@ BeEncoder::Encode(BMessage* message)
 		prev = curr;
 		curr = i;
 		BMessage updateMessage(B_UPDATE_STATUS_BAR);
-		updateMessage.AddFloat("delta",(curr-prev));
+		updateMessage.AddFloat("delta", (curr - prev));
 		messenger.SendMessage(&updateMessage);
 	}
-	
+
 	delete [] sound_buffer;
 	outputFile.CloseFile();
 
-	if(strcmp((markedItem->MediaFileFormat())->short_name,"mp3") == 0)
-	{
-		WriteDetails(message,(markedItem->MediaFileFormat())->mime_type,true);
-	}
-	else
-	{
-		WriteDetails(message,(markedItem->MediaFileFormat())->mime_type);
+	if (strcmp((markedItem->MediaFileFormat())->short_name, "mp3") == 0) {
+		WriteDetails(message, (markedItem->MediaFileFormat())->mime_type, true);
+	} else {
+		WriteDetails(message, (markedItem->MediaFileFormat())->mime_type);
 	}
 	return result;
 }
 
 int32
-BeEncoder::LoadDefaultPattern()
-{
+BeEncoder::LoadDefaultPattern() {
 	PRINT(("BeEncoder::LoadDefaultPattern()\n"));
 
 	pattern = "/boot/MP3/%a/%n/%a - %n - %k - %t.mp3";
@@ -282,8 +246,7 @@ BeEncoder::LoadDefaultPattern()
 }
 
 int32
-BeEncoder::LoadDefaultMenu()
-{
+BeEncoder::LoadDefaultMenu() {
 	PRINT(("BeEncoder::LoadDefaultMenu()\n"));
 
 	menu = new BMenu(GetName());
@@ -294,8 +257,7 @@ BeEncoder::LoadDefaultMenu()
 }
 
 int32
-BeEncoder::AddEncoderEntries(BMenu* encoderMenu)
-{
+BeEncoder::AddEncoderEntries(BMenu* encoderMenu) {
 	PRINT(("BeEncoder::AddEncoderEntries(BMenu*)\n"));
 
 	BMenuItem* item;
@@ -309,28 +271,24 @@ BeEncoder::AddEncoderEntries(BMenu* encoderMenu)
 	infmt.u.raw_audio.channel_count = 1;
 
 	int32 format_cookie = 0;
-	while(get_next_file_format(&format_cookie,&mff) == B_OK)
-	{
-		if(!(mff.capabilities & media_file_format::B_KNOWS_RAW_VIDEO) &&
-			!(mff.capabilities & media_file_format::B_KNOWS_ENCODED_VIDEO))
-		{
+	while (get_next_file_format(&format_cookie, &mff) == B_OK) {
+		if (!(mff.capabilities & media_file_format::B_KNOWS_RAW_VIDEO) &&
+				!(mff.capabilities & media_file_format::B_KNOWS_ENCODED_VIDEO)) {
 			int32 encoder_cookie = 0;
-			while(get_next_encoder(&encoder_cookie,&mff,&infmt,&outfmt,&mci)
-					== B_OK)
-			{
+			while (get_next_encoder(&encoder_cookie, &mff, &infmt, &outfmt, &mci)
+					== B_OK) {
 				//create the item
 				BString name = mff.short_name;
 				name += "/";
 				name += mci.pretty_name;
-				item = new MediaMenuItem(name.String(),&mff,&mci);
+				item = new MediaMenuItem(name.String(), &mff, &mci);
 				encoderMenu->AddItem(item);
 			}
 		}
 	}
 
 	item = encoderMenu->ItemAt(0);
-	if(item)
-	{
+	if (item) {
 		item->SetMarked(true);
 	}
 
@@ -338,8 +296,7 @@ BeEncoder::AddEncoderEntries(BMenu* encoderMenu)
 }
 
 int32
-BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags=false)
-{
+BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags = false) {
 	PRINT(("BeEncoder::WriteDetails(BMessage*,bool)\n"));
 
 	BFile file;
@@ -352,58 +309,50 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags=false)
 	const char* track;
 	const char* genre;
 
-	if(msg->FindString("output file",&outputFile) != B_OK)
-	{
+	if (msg->FindString("output file", &outputFile) != B_OK) {
 		PRINT(("Error getting output file from message.\n"));
 		return B_ERROR;
 	}
 
-	if(file.SetTo(outputFile,B_READ_WRITE) != B_OK)
-	{
+	if (file.SetTo(outputFile, B_READ_WRITE) != B_OK) {
 		PRINT(("Error opening output file.\n"));
 		return B_ERROR;
 	}
 
-	msg->FindString("artist",&artist);
-	msg->FindString("album",&album);
-	msg->FindString("title",&title);
-	msg->FindString("year",&year);
-	msg->FindString("comment",&comment);
-	msg->FindString("track",&track);
-	msg->FindString("genre",&genre);
+	msg->FindString("artist", &artist);
+	msg->FindString("album", &album);
+	msg->FindString("title", &title);
+	msg->FindString("year", &year);
+	msg->FindString("comment", &comment);
+	msg->FindString("track", &track);
+	msg->FindString("genre", &genre);
 
 	dev_t dev = dev_for_path(outputFile);
-	if(dev <= B_ERROR)
-	{
+	if (dev <= B_ERROR) {
 		PRINT(("Error Can't determine volume for output file.\n"));
 		return B_ERROR;
 	}
 
 	BVolume vol(dev);
-	if(vol.InitCheck() != B_OK)
-	{
+	if (vol.InitCheck() != B_OK) {
 		PRINT(("Error init'ing volume.\n"));
 		return B_ERROR;
 	}
 
-	if(vol.KnowsMime())
-	{
+	if (vol.KnowsMime()) {
 		BNodeInfo info(&file);
-		if(info.InitCheck() != B_OK)
-		{
+		if (info.InitCheck() != B_OK) {
 			PRINT(("Error init'ing BNodeInfo.\n"));
 			return B_ERROR;
 		}
 
-		if(info.SetType(mime) != B_OK)
-		{
+		if (info.SetType(mime) != B_OK) {
 			PRINT(("Error setting mime type.\n"));
 			return B_ERROR;
 		}
 	}
 
-	if(vol.KnowsAttr())
-	{
+	if (vol.KnowsAttr()) {
 		AudioAttributes attributes(&file);
 		attributes.SetArtist(artist);
 		attributes.SetAlbum(album);
@@ -413,15 +362,13 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags=false)
 		attributes.SetTrack(track);
 		attributes.SetGenre(genre);
 
-		if(attributes.Write() != B_OK)
-		{
+		if (attributes.Write() != B_OK) {
 			PRINT(("Error writing file attributes.\n"));
 			return B_ERROR;
 		}
 	}
 
-	if(tags)
-	{
+	if (tags) {
 		ID3Tags id3Tags(outputFile);
 		id3Tags.SetArtist(artist);
 		id3Tags.SetAlbum(album);
@@ -431,8 +378,7 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags=false)
 		id3Tags.SetTrack(track);
 		id3Tags.SetGenre(genre);
 
-		if(id3Tags.Write() != B_OK)
-		{
+		if (id3Tags.Write() != B_OK) {
 			PRINT(("Error writing id3 tags.\n"));
 			return B_ERROR;
 		}
@@ -441,7 +387,6 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags=false)
 
 //function called by Flipside A.E. to get new AEEncoder subclass
 AEEncoder*
-load_encoder()
-{
+load_encoder() {
 	return new BeEncoder();
 }

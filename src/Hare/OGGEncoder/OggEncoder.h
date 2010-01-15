@@ -31,10 +31,9 @@
 #define TRACK_PREFIX "-N"
 #define GENRE_PREFIX "-c GENRE="
 
-extern char **environ;
+extern char** environ;
 
-struct argument
-{
+struct argument {
 	//required
 	const char* inputFile;
 	const char* outputFile;
@@ -52,27 +51,26 @@ struct argument
 
 class BMessage;
 
-class OggEncoder : public AEEncoder
-{
-	public:
-		OggEncoder();
-		~OggEncoder();
+class OggEncoder : public AEEncoder {
+public:
+	OggEncoder();
+	~OggEncoder();
 
-		virtual int32 Encode(BMessage* encodeMessage);
+	virtual int32 Encode(BMessage* encodeMessage);
 
-	protected:
-		virtual int32 LoadDefaultPattern();
-		virtual int32 LoadDefaultMenu();
+protected:
+	virtual int32 LoadDefaultPattern();
+	virtual int32 LoadDefaultMenu();
 
-	private:
-		char oggencPath[B_PATH_NAME_LENGTH+1];
-		BMessenger messenger;
+private:
+	char oggencPath[B_PATH_NAME_LENGTH+1];
+	BMessenger messenger;
 
-		int32 GetBitrate(char* bitrate);
-		int32 GetArgs(argument* args, BMessage* encodeMessage);
-		int32 UpdateStatus(FILE* out, BMessenger* messenger);
-		int32 WriteDetails(argument* args);
-		thread_id CommandIO(int* filedes, int argc, const char** argv);
+	int32 GetBitrate(char* bitrate);
+	int32 GetArgs(argument* args, BMessage* encodeMessage);
+	int32 UpdateStatus(FILE* out, BMessenger* messenger);
+	int32 WriteDetails(argument* args);
+	thread_id CommandIO(int* filedes, int argc, const char** argv);
 };
 
 #endif

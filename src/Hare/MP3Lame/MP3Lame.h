@@ -62,29 +62,28 @@
 class BMessage;
 class BMessenger;
 
-class MP3Lame : public AEEncoder
-{
-	public:
-		MP3Lame();
-		~MP3Lame();
+class MP3Lame : public AEEncoder {
+public:
+	MP3Lame();
+	~MP3Lame();
 
-		virtual int32 Encode(BMessage* encodeMessage);
+	virtual int32 Encode(BMessage* encodeMessage);
 
-	protected:
-		virtual int32 LoadDefaultPattern();
-		virtual int32 LoadDefaultMenu();
+protected:
+	virtual int32 LoadDefaultPattern();
+	virtual int32 LoadDefaultMenu();
 
-	private:
-		char lamePath[B_PATH_NAME_LENGTH+1];
+private:
+	char lamePath[B_PATH_NAME_LENGTH+1];
 
-		int32 GetBitrate(char* bitrate, bool* vbr);
-		int32 GetFormat(char* format);
-		int32 GetPsycho(char* psycho);
-		int32 UpdateStatus(FILE* out, BMessenger* messenger);
-		int32 WriteDetails(BMessage* encodeMessage);
-		thread_id CommandIO(int* filedes, int argc, const char** argv);
+	int32 GetBitrate(char* bitrate, bool* vbr);
+	int32 GetFormat(char* format);
+	int32 GetPsycho(char* psycho);
+	int32 UpdateStatus(FILE* out, BMessenger* messenger);
+	int32 WriteDetails(BMessage* encodeMessage);
+	thread_id CommandIO(int* filedes, int argc, const char** argv);
 };
 
-extern char **environ;
+extern char** environ;
 
 #endif

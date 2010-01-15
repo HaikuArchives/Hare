@@ -7,15 +7,14 @@ class BMessage;
 class BVolume;
 struct fs_info;
 
-class VolumeMenuItem : public BMenuItem 
-{
-	public:
-		VolumeMenuItem(BVolume* volume);
-		VolumeMenuItem(fs_info* info);
-		~VolumeMenuItem();
-		dev_t GetDevice();
-	private:
-		dev_t device;
+class VolumeMenuItem : public BMenuItem {
+public:
+	VolumeMenuItem(BVolume* volume);
+	VolumeMenuItem(fs_info* info);
+	~VolumeMenuItem();
+	dev_t GetDevice();
+private:
+	dev_t device;
 };
 
 #endif

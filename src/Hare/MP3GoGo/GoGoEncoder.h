@@ -50,29 +50,28 @@
 class BMessage;
 class BMessenger;
 
-class GoGoEncoder : public AEEncoder
-{
-	public:
-		GoGoEncoder();
-		~GoGoEncoder();
+class GoGoEncoder : public AEEncoder {
+public:
+	GoGoEncoder();
+	~GoGoEncoder();
 
-		virtual int32 Encode(BMessage* encodeMessage);
+	virtual int32 Encode(BMessage* encodeMessage);
 
-	protected:
-		virtual int32 LoadDefaultPattern();
-		virtual int32 LoadDefaultMenu();
+protected:
+	virtual int32 LoadDefaultPattern();
+	virtual int32 LoadDefaultMenu();
 
-	private:
-		char gogoPath[B_PATH_NAME_LENGTH+1];
+private:
+	char gogoPath[B_PATH_NAME_LENGTH+1];
 
-		int32 GetBitrate(char* bitrate,bool* vbr);
-		int32 GetFormat(char* format);
-		int32 GetPsycho(bool* psycho);
-		int32 UpdateStatus(FILE* out, BMessenger* messenger);
-		int32 WriteDetails(BMessage* encodeMessage);
-		thread_id CommandIO(int* filedes, int argc, const char** argv);
+	int32 GetBitrate(char* bitrate, bool* vbr);
+	int32 GetFormat(char* format);
+	int32 GetPsycho(bool* psycho);
+	int32 UpdateStatus(FILE* out, BMessenger* messenger);
+	int32 WriteDetails(BMessage* encodeMessage);
+	thread_id CommandIO(int* filedes, int argc, const char** argv);
 };
 
-extern char **environ;
+extern char** environ;
 
 #endif

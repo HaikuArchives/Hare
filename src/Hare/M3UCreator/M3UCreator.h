@@ -11,20 +11,19 @@ class BFile;
 class BList;
 class BMessage;
 
-class M3UCreator : public AEEncoder
-{
-	public:
-		M3UCreator();
-		~M3UCreator();
+class M3UCreator : public AEEncoder {
+public:
+	M3UCreator();
+	~M3UCreator();
 
-		virtual int32 Encode(BMessage* encodeMessage);
-		virtual int32 UninitEncoder();
+	virtual int32 Encode(BMessage* encodeMessage);
+	virtual int32 UninitEncoder();
 
-	protected:
-		virtual int32 LoadDefaultPattern();
+protected:
+	virtual int32 LoadDefaultPattern();
 
-	private:
-		BList fileList;
+private:
+	BList fileList;
 };
 
 #endif

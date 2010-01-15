@@ -6,8 +6,7 @@
 #include <fileref.h>
 #include <tag.h>
 
-enum
-{
+enum {
 	TITLE_TAG	=	200,
 	ARTIST_TAG	=	201,
 	ALBUM_TAG	=	202,
@@ -18,25 +17,24 @@ enum
 	GENRE_TAG	=	207
 };
 
-class ID3Tag
-{
-	public:
-		ID3Tag(TagLib::FileRef * file, TagLib::Tag * tag, int tag_item);
-		virtual ~ID3Tag();
+class ID3Tag {
+public:
+	ID3Tag(TagLib::FileRef* file, TagLib::Tag* tag, int tag_item);
+	virtual ~ID3Tag();
 
-		virtual const char * Value();
-		virtual void SetValue(const char * string);
+	virtual const char* Value();
+	virtual void SetValue(const char* string);
 
-		virtual status_t Read();
-		virtual status_t Write();
+	virtual status_t Read();
+	virtual status_t Write();
 
-	protected:
-		TagLib::FileRef	*	file;
-		TagLib::Tag		*	tag;
+protected:
+	TagLib::FileRef*		file;
+	TagLib::Tag*			tag;
 
-		int	tag_item;
-		BString value;
-		
+	int	tag_item;
+	BString value;
+
 };
 
 #endif
