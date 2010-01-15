@@ -9,6 +9,11 @@ add_executable(Hare Application.cpp
 					Settings.cpp
 					StatusBarFilter.cpp)
 
+find_library(TAGLIB tag)
+if (NOT TAGLIB)
+	message(FATAL_ERROR "libtag wasn't found. Please install it.")
+endif(NOT TAGLIB)
+
 target_link_libraries(Hare "santa" "aeencoder" "audioinfo" "tag" "be" "game" "media" "tracker")
 
 set_property(TARGET Hare PROPERTY RUNTIME_OUTPUT_DIRECTORY ${HARE_BUILD_DIR})
