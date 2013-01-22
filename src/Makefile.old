@@ -1,0 +1,22 @@
+all:
+	$(MAKE) --directory=./Santa/ -f Makefile.old install
+
+install:
+	$(MAKE) --directory=./AudioInfo/ -f Makefile.old install
+	$(MAKE) --directory=./Santa/ -f Makefile.old install
+	$(MAKE) --directory=./Hare/ -f Makefile.old install
+
+clean:
+	$(MAKE) --directory=./AudioInfo/ -f Makefile.old clean
+	$(MAKE) --directory=./Santa/ -f Makefile.old clean
+	$(MAKE) --directory=./Hare/ -f Makefile.old clean
+
+release:
+	$(MAKE) --directory=./AudioInfo/ -f Makefile.old release
+	$(MAKE) --directory=./Santa/ -f Makefile.old release
+	$(MAKE) --directory=./Hare/ -f Makefile.old release
+
+cleaninstall:
+	$(MAKE) --directory=./AudioInfo/ -f Makefile.old cleaninstall
+	$(MAKE) --directory=./Santa/ -f Makefile.old cleaninstall
+	$(MAKE) --directory=./Hare/ -f Makefile.old cleaninstall
