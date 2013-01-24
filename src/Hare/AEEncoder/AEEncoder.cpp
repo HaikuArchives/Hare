@@ -290,7 +290,7 @@ AEEncoder::QueryForExecutable(const char* executable, BVolume* volume,
 	query.PushString(executable);
 	query.PushOp(B_EQ);
 	query.PushAttr("BEOS:TYPE");
-	query.PushString("application/x-vnd.Be-elfexecutable");
+	query.PushString("application/x-vnd.be-elfexecutable");
 	query.PushOp(B_EQ);
 	query.PushOp(B_AND);
 
