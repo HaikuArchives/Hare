@@ -15,7 +15,7 @@ resource app_signature "application/x-vnd.haikuarchives.hare";
 resource app_version {
 	major  = 1,
 	middle = 1,
-	minor  = 0,
+	minor  = 1,
 
 	variety = B_APPV_FINAL,
 	internal = 0,
