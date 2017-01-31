@@ -296,7 +296,7 @@ BeEncoder::AddEncoderEntries(BMenu* encoderMenu) {
 }
 
 int32
-BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags = false) {
+BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 	PRINT(("BeEncoder::WriteDetails(BMessage*,bool)\n"));
 
 	BFile file;

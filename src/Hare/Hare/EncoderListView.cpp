@@ -1,3 +1,4 @@
+#include <string.h>
 #include <be/app/Message.h>
 #include <be/interface/ListView.h>
 #include <be/interface/Rect.h>

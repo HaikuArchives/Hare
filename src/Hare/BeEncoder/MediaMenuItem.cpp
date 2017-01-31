@@ -44,7 +44,7 @@ MediaMenuItem::Instantiate(BMessage* archive) {
 }
 
 status_t
-MediaMenuItem::Archive(BMessage* archive, bool deep = true) const {
+MediaMenuItem::Archive(BMessage* archive, bool deep) const {
 	PRINT(("MediaMenuItem::Archive(BMessage*,bool)\n"));
 
 	status_t status = BMenuItem::Archive(archive, deep);

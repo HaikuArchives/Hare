@@ -143,7 +143,7 @@ BArchivable* CLVColumn::Instantiate(BMessage* archive)
 	return result;
 }
 
-status_t CLVColumn::Archive(BMessage* archive, bool deep = true) const
+status_t CLVColumn::Archive(BMessage* archive, bool deep) const
 {
 	status_t status = B_OK;
 

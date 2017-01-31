@@ -136,7 +136,7 @@ FileNamePatternView::InitView() {
 }
 
 void
-FileNamePatternView::MakeFocus(bool focused = true) {
+FileNamePatternView::MakeFocus(bool focused) {
 	PRINT(("FileNamePatternView::MakeFocused(bool)\n"));
 
 	fileNamePatternTextControl->MakeFocus(focused);

@@ -181,7 +181,7 @@ Settings::Instantiate(BMessage* archive) {
 }
 
 status_t
-Settings::Archive(BMessage* archive, bool deep = true) const {
+Settings::Archive(BMessage* archive, bool deep) const {
 	PRINT(("Settings::Archive(BMessage*,bool)\n"));
 
 	status_t status = B_OK;
