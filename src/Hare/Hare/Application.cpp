@@ -45,11 +45,12 @@ Application::RefsReceived(BMessage* message) {
 	window->PostMessage(message);
 }
 
-void
+int
 main() {
 	PRINT(("main()\n"));
 
 	new Application();
 	be_app->Run();
 	delete be_app;
+	return 0;
 }

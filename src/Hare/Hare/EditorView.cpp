@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <be/app/Message.h>
 #include <be/app/Messenger.h>
 #include <be/interface/Button.h>
@@ -452,7 +453,7 @@ EditorView::SetControlValues(CLVRefListItem* item) {
 }
 
 void
-EditorView::MakeFocus(bool focused = true) {
+EditorView::MakeFocus(bool focused) {
 	PRINT(("EditorView::MakeFocus(bool)\n"));
 
 	artistCheckBox->MakeFocus(focused);

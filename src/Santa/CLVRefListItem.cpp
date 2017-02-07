@@ -2,8 +2,8 @@
 #include "CLVRefListItem.h"
 
 CLVRefListItem::CLVRefListItem(entry_ref* entryRef, node_ref* nodeRef,
-		uint32 level = 0, bool superitem = false, bool expanded = false,
-		float minheight = 0.0) : CLVEasyItem(level,superitem,expanded,minheight)
+		uint32 level, bool superitem, bool expanded,
+		float minheight) : CLVEasyItem(level,superitem,expanded,minheight)
 {
 	PRINT(("CLVRefListItem::CLVRefListItem(entry_ref*,node_ref*)\n"));
 

@@ -20,6 +20,7 @@
 #include <Window.h>
 #include <ClassInfo.h>
 #include <assert.h>
+#include <string.h>
 
 
 //******************************************************************************************************
