@@ -1,10 +1,14 @@
+#include "AudioAttributes.h"
+
 #include <stdlib.h>
 #include <string.h>
-#include <be/storage/File.h>
-#include <be/support/Debug.h>
-#include <be/support/TypeConstants.h>
+
+#include <Debug.h>
+#include <File.h>
+#include <TypeConstants.h>
+
 #include <String/String.h>
-#include "AudioAttributes.h"
+
 #include "AudioAttribute.h"
 
 #define ARTIST_NAME    "Artist"
@@ -35,7 +39,10 @@
 #define COMPOSER_ATTR  "Audio:Composer"
 #endif
 
-AudioAttributes::AudioAttributes(BFile* file) : AudioInfo() {
+AudioAttributes::AudioAttributes(BFile* file)
+	:
+	AudioInfo()
+{
 	PRINT(("AudioAttributes::AudioAttributes(BFile*)\n"));
 
 	this->file = file;
@@ -69,7 +76,8 @@ AudioAttributes::AudioAttributes(BFile* file) : AudioInfo() {
 	Read();
 }
 
-AudioAttributes::~AudioAttributes() {
+AudioAttributes::~AudioAttributes()
+{
 	PRINT(("AudioAttributes::~AudioAttributes()\n"));
 
 	delete artist;
@@ -88,7 +96,8 @@ AudioAttributes::~AudioAttributes() {
 
 
 status_t
-AudioAttributes::InitAttribute(AudioAttribute* attrib) {
+AudioAttributes::InitAttribute(AudioAttribute* attrib)
+{
 	PRINT(("AudioAttributes::InitAttribute(AudioAttribute*)\n"));
 
 	if (!attrib) {
@@ -103,42 +112,48 @@ AudioAttributes::InitAttribute(AudioAttribute* attrib) {
 }
 
 const char*
-AudioAttributes::Artist() {
+AudioAttributes::Artist()
+{
 	PRINT(("AudioAttributes::Artist()\n"));
 
 	return artist->Value();
 }
 
 const char*
-AudioAttributes::Album() {
+AudioAttributes::Album()
+{
 	PRINT(("AudioAttributes::Album()\n"));
 
 	return album->Value();
 }
 
 const char*
-AudioAttributes::Title() {
+AudioAttributes::Title()
+{
 	PRINT(("AudioAttributes::Title()\n"));
 
 	return title->Value();
 }
 
 const char*
-AudioAttributes::Year() {
+AudioAttributes::Year()
+{
 	PRINT(("AudioAttributes::Year()\n"));
 
 	return year->Value();
 }
 
 const char*
-AudioAttributes::Comment() {
+AudioAttributes::Comment() 
+{
 	PRINT(("AudioAttributes::Comment()\n"));
 
 	return comment->Value();
 }
 
 const char*
-AudioAttributes::Track() {
+AudioAttributes::Track() 
+{
 	PRINT(("AudioAttributes::Track()\n"));
 
 	return track->Value();
@@ -146,21 +161,24 @@ AudioAttributes::Track() {
 
 #ifdef _TTE_
 const char*
-AudioAttributes::Rating() {
+AudioAttributes::Rating()
+{
 	PRINT(("AudioAttributes::Rating()\n"));
 
 	return rating->Value();
 }
 
 const char*
-AudioAttributes::Tempo() {
+AudioAttributes::Tempo()
+{
 	PRINT(("AudioAttributes::Tempo()\n"));
 
 	return tempo->Value();
 }
 
 const char*
-AudioAttributes::Composer() {
+AudioAttributes::Composer()
+{
 	PRINT(("AudioAttributes::Composer()\n"));
 
 	return composer->Value();
@@ -168,49 +186,56 @@ AudioAttributes::Composer() {
 #endif
 
 const char*
-AudioAttributes::Genre() {
+AudioAttributes::Genre()
+{
 	PRINT(("AudioAttributes::Genre()\n"));
 
 	return genre->Value();
 }
 
 void
-AudioAttributes::SetArtist(const char* value) {
+AudioAttributes::SetArtist(const char* value)
+{
 	PRINT(("AudioAttributes::SetArtist(const char*)\n"));
 
 	artist->SetValue(value);
 }
 
 void
-AudioAttributes::SetAlbum(const char* value) {
+AudioAttributes::SetAlbum(const char* value)
+{
 	PRINT(("AudioAttributes::SetAlbum(const char*)\n"));
 
 	album->SetValue(value);
 }
 
 void
-AudioAttributes::SetTitle(const char* value) {
+AudioAttributes::SetTitle(const char* value)
+{
 	PRINT(("AudioAttributes::SetTitle(const char*)\n"));
 
 	title->SetValue(value);
 }
 
 void
-AudioAttributes::SetYear(const char* value) {
+AudioAttributes::SetYear(const char* value)
+{
 	PRINT(("AudioAttributes::SetYear(const char*)\n"));
 
 	year->SetValue(value);
 }
 
 void
-AudioAttributes::SetComment(const char* value) {
+AudioAttributes::SetComment(const char* value)
+{
 	PRINT(("AudioAttributes::SetComment(const char*)\n"));
 
 	comment->SetValue(value);
 }
 
 void
-AudioAttributes::SetTrack(const char* value) {
+AudioAttributes::SetTrack(const char* value)
+{
 	PRINT(("AudioAttributes::SetTrack(const char*)\n"));
 
 	track->SetValue(value);
@@ -218,21 +243,24 @@ AudioAttributes::SetTrack(const char* value) {
 
 #ifdef _TTE_
 void
-AudioAttributes::SetRating(const char* value) {
+AudioAttributes::SetRating(const char* value)
+{
 	PRINT(("AudioAttributes::SetRating(const char*)\n"));
 
 	rating->SetValue(value);
 }
 
 void
-AudioAttributes::SetTempo(const char* value) {
+AudioAttributes::SetTempo(const char* value)
+{
 	PRINT(("AudioAttributes::SetTempo(const char*)\n"));
 
 	tempo->SetValue(value);
 }
 
 void
-AudioAttributes::SetComposer(const char* value) {
+AudioAttributes::SetComposer(const char* value)
+{
 	PRINT(("AudioAttributes::SetComposer(const char*)\n"));
 
 	composer->SetValue(value);
@@ -240,14 +268,16 @@ AudioAttributes::SetComposer(const char* value) {
 #endif
 
 void
-AudioAttributes::SetGenre(const char* value) {
+AudioAttributes::SetGenre(const char* value)
+{
 	PRINT(("AudioAttributes::SetGenre(const char*)\n"));
 
 	genre->SetValue(value);
 }
 
 status_t
-AudioAttributes::Read() {
+AudioAttributes::Read()
+{
 	PRINT(("AudioAttributes::Read()\n"));
 
 	int status = B_OK;
@@ -274,42 +304,48 @@ AudioAttributes::Read() {
 }
 
 status_t
-AudioAttributes::ReadArtist() {
+AudioAttributes::ReadArtist()
+{
 	PRINT(("AudioAttributes::ReadArtist()\n"));
 
 	return artist->Read();
 }
 
 status_t
-AudioAttributes::ReadAlbum() {
+AudioAttributes::ReadAlbum()
+{
 	PRINT(("AudioAttributes::ReadAlbum()\n"));
 
 	return album->Read();
 }
 
 status_t
-AudioAttributes::ReadTitle() {
+AudioAttributes::ReadTitle()
+{
 	PRINT(("AudioAttributes::ReadTitle()\n"));
 
 	return title->Read();
 }
 
 status_t
-AudioAttributes::ReadYear() {
+AudioAttributes::ReadYear()
+{
 	PRINT(("AudioAttributes::ReadYear()\n"));
 
 	return year->Read();
 }
 
 status_t
-AudioAttributes::ReadComment() {
+AudioAttributes::ReadComment()
+{
 	PRINT(("AudioAttributes::ReadComment()\n"));
 
 	return comment->Read();
 }
 
 status_t
-AudioAttributes::ReadTrack() {
+AudioAttributes::ReadTrack()
+{
 	PRINT(("AudioAttributes::ReadTrack()\n"));
 
 	int retval = track->Read();
@@ -323,21 +359,24 @@ AudioAttributes::ReadTrack() {
 
 #ifdef _TTE_
 status_t
-AudioAttributes::ReadRating() {
+AudioAttributes::ReadRating()
+{
 	PRINT(("AudioAttributes::ReadRating()\n"));
 
 	return rating->Read();
 }
 
 status_t
-AudioAttributes::ReadTempo() {
+AudioAttributes::ReadTempo()
+{
 	PRINT(("AudioAttributes::ReadTempo()\n"));
 
 	return tempo->Read();
 }
 
 status_t
-AudioAttributes::ReadComposer() {
+AudioAttributes::ReadComposer()
+{
 	PRINT(("AudioAttributes::ReadComposer()\n"));
 
 	return composer->Read();
@@ -345,14 +384,16 @@ AudioAttributes::ReadComposer() {
 #endif
 
 status_t
-AudioAttributes::ReadGenre() {
+AudioAttributes::ReadGenre()
+{
 	PRINT(("AudioAttributes::ReadGenre()\n"));
 
 	return genre->Read();
 }
 
 status_t
-AudioAttributes::Write() {
+AudioAttributes::Write()
+{
 	PRINT(("AudioAttributes::Write()\n"));
 
 	int status = B_OK;
@@ -379,42 +420,48 @@ AudioAttributes::Write() {
 }
 
 status_t
-AudioAttributes::WriteArtist() {
+AudioAttributes::WriteArtist()
+{
 	PRINT(("AudioAttributes::WriteArtist()\n"));
 
 	return artist->Write();
 }
 
 status_t
-AudioAttributes::WriteAlbum() {
+AudioAttributes::WriteAlbum()
+{
 	PRINT(("AudioAttributes::WriteAlbum()\n"));
 
 	return album->Write();
 }
 
 status_t
-AudioAttributes::WriteTitle() {
+AudioAttributes::WriteTitle()
+{
 	PRINT(("AudioAttributes::WriteTitle()\n"));
 
 	return title->Write();
 }
 
 status_t
-AudioAttributes::WriteYear() {
+AudioAttributes::WriteYear()
+{
 	PRINT(("AudioAttributes::WriteYear()\n"));
 
 	return year->Write();
 }
 
 status_t
-AudioAttributes::WriteComment() {
+AudioAttributes::WriteComment()
+{
 	PRINT(("AudioAttributes::WriteComment()\n"));
 
 	return comment->Write();
 }
 
 status_t
-AudioAttributes::WriteTrack() {
+AudioAttributes::WriteTrack()
+{
 	PRINT(("AudioAttributes::WriteTrack()\n"));
 
 	return track->Write();
@@ -422,21 +469,24 @@ AudioAttributes::WriteTrack() {
 
 #ifdef _TTE_
 status_t
-AudioAttributes::WriteRating() {
+AudioAttributes::WriteRating()
+{
 	PRINT(("AudioAttributes::WriteRating()\n"));
 
 	return rating->Write();
 }
 
 status_t
-AudioAttributes::WriteTempo() {
+AudioAttributes::WriteTempo()
+{
 	PRINT(("AudioAttributes::WriteTempo()\n"));
 
 	return tempo->Write();
 }
 
 status_t
-AudioAttributes::WriteComposer() {
+AudioAttributes::WriteComposer()
+{
 	PRINT(("AudioAttributes::WriteComposer()\n"));
 
 	return composer->Write();
@@ -444,7 +494,8 @@ AudioAttributes::WriteComposer() {
 #endif
 
 status_t
-AudioAttributes::WriteGenre() {
+AudioAttributes::WriteGenre()
+{
 	PRINT(("AudioAttributes::WriteGenre()\n"));
 
 	return genre->Write();

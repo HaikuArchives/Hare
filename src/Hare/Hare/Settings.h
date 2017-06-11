@@ -1,8 +1,10 @@
 #ifndef __PREFERENCES_H__
 #define __PREFERENCES_H__
 
-#include <be/support/Archivable.h>
+#include <Archivable.h>
+
 #include <Santa/ColumnListView.h>
+
 #include "CommandConstants.h"
 
 class AEEncoder;

@@ -2,7 +2,9 @@
 #define __ID3_TAG_H__
 
 #include <stdio.h>
+
 #include <String.h>
+
 #include <fileref.h>
 #include <tag.h>
 

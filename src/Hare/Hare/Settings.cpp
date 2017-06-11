@@ -1,25 +1,32 @@
+#include "Settings.h"
+
 #include <string.h>
-#include <be/app/Application.h>
-#include <be/app/Message.h>
-#include <be/app/Roster.h>
-#include <be/storage/Directory.h>
-#include <be/storage/File.h>
-#include <be/storage/FindDirectory.h>
-#include <be/storage/Path.h>
-#include <be/support/Debug.h>
-#include <be/support/String.h>
+
+#include <Application.h>
+#include <Debug.h>
+#include <Directory.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <Message.h>
+#include <Path.h>
+#include <Roster.h>
+#include <String.h>
+
 #include <AEEncoder/AEEncoder.h>
 #include <Santa/ColumnListView.h>
+
 #include "AppDefs.h"
 #include "CommandConstants.h"
-#include "Settings.h"
 
 Settings* settings = 0;
 
 #define DEFAULT_ENCODER "MP3 GoGo"
 #define DEFAULT_NUMBER_OF_SORT_KEYS 0
 
-Settings::Settings() : BArchivable() {
+Settings::Settings()
+	:
+	BArchivable()
+{
 	PRINT(("Settings::Settings()\n"));
 
 	encoding = false;
@@ -60,7 +67,10 @@ Settings::Settings() : BArchivable() {
 	settings = this;
 }
 
-Settings::Settings(BMessage* archive) : BArchivable(archive) {
+Settings::Settings(BMessage* archive)
+	:
+	BArchivable(archive)
+{
 	PRINT(("Settings::Settings(BMessage*)\n"));
 
 	status_t status;
@@ -161,14 +171,16 @@ Settings::Settings(BMessage* archive) : BArchivable(archive) {
 	settings = this;
 }
 
-Settings::~Settings() {
+Settings::~Settings()
+{
 	PRINT(("Settings::~Settings()\n"));
 
 	SaveSettings();
 }
 
 BArchivable*
-Settings::Instantiate(BMessage* archive) {
+Settings::Instantiate(BMessage* archive)
+{
 	PRINT(("Settings::Instantiate(BMessage*)\n"));
 
 	BArchivable* result = NULL;
@@ -181,7 +193,8 @@ Settings::Instantiate(BMessage* archive) {
 }
 
 status_t
-Settings::Archive(BMessage* archive, bool deep) const {
+Settings::Archive(BMessage* archive, bool deep) const
+{
 	PRINT(("Settings::Archive(BMessage*,bool)\n"));
 
 	status_t status = B_OK;
@@ -245,7 +258,8 @@ Settings::Archive(BMessage* archive, bool deep) const {
 }
 
 void
-Settings::OpenSettings() {
+Settings::OpenSettings()
+{
 	PRINT(("Settings::GetInstance()\n"));
 
 	BPath path;
@@ -267,7 +281,8 @@ Settings::OpenSettings() {
 }
 
 void
-Settings::SaveSettings() {
+Settings::SaveSettings()
+{
 	PRINT(("Settings::SaveWindow()\n"));
 
 	BPath path;
@@ -286,24 +301,28 @@ Settings::SaveSettings() {
 }
 
 bool
-Settings::IsEncoding() {
+Settings::IsEncoding()
+{
 	return encoding;
 }
 
 void
-Settings::SetEncoding(bool value) {
+Settings::SetEncoding(bool value)
+{
 	encoding = value;
 }
 
 AEEncoder*
-Settings::Encoder() {
+Settings::Encoder()
+{
 	PRINT(("Settings::Encoder()\n"));
 
 	return encoder;
 }
 
 void
-Settings::SetEncoder(AEEncoder* value) {
+Settings::SetEncoder(AEEncoder* value)
+{
 	PRINT(("Settings::SetEncoder()\n"));
 
 	if (!encoding) {
@@ -317,14 +336,16 @@ Settings::SetEncoder(AEEncoder* value) {
 }
 
 const char*
-Settings::EncoderName() {
+Settings::EncoderName()
+{
 	PRINT(("Settings::EncoderName()\n"));
 
 	return encoderName;
 }
 
 void
-Settings::SetEncoderName(const char* value) {
+Settings::SetEncoderName(const char* value)
+{
 	PRINT(("Settings::SetEncoderName(const char*)\n"));
 
 	if (value && !encoding) {
@@ -333,14 +354,16 @@ Settings::SetEncoderName(const char* value) {
 }
 
 int32*
-Settings::ColumnDisplayOrder() {
+Settings::ColumnDisplayOrder()
+{
 	PRINT(("Settings::ColumnDisplayOrder()\n"));
 
 	return columnDisplayOrder;
 }
 
 void
-Settings::SetColumnDisplayOrder(const int32* value) {
+Settings::SetColumnDisplayOrder(const int32* value)
+{
 	PRINT(("Settings::SetColumnDisplayOrder(const int32*)\n"));
 
 	if (!encoding) {
@@ -351,14 +374,16 @@ Settings::SetColumnDisplayOrder(const int32* value) {
 }
 
 int32
-Settings::NumberOfSortKeys() {
+Settings::NumberOfSortKeys()
+{
 	PRINT(("Settings::NumberOfSortKeys()\n"));
 
 	return numberOfSortKeys;
 }
 
 void
-Settings::SetNumberOfSortKeys(int32 value) {
+Settings::SetNumberOfSortKeys(int32 value)
+{
 	PRINT(("Settings::SetNumberOfSortKeys(int32)\n"));
 
 	if (!encoding) {
@@ -367,14 +392,16 @@ Settings::SetNumberOfSortKeys(int32 value) {
 }
 
 int32*
-Settings::SortKeys() {
+Settings::SortKeys()
+{
 	PRINT(("Settings::SortKeys()\n"));
 
 	return sortKeys;
 }
 
 void
-Settings::SetSortKeys(const int32* value) {
+Settings::SetSortKeys(const int32* value)
+{
 	PRINT(("Settings::SetSortKeys(const int32*)\n"));
 
 	if (!encoding) {
@@ -385,14 +412,16 @@ Settings::SetSortKeys(const int32* value) {
 }
 
 CLVSortMode*
-Settings::SortModes() {
+Settings::SortModes()
+{
 	PRINT(("Settings::SortModes()\n"));
 
 	return sortModes;
 }
 
 void
-Settings::SetSortModes(const CLVSortMode* value) {
+Settings::SetSortModes(const CLVSortMode* value)
+{
 	PRINT(("Settings::SetSortModes(const CLVSortMode*)\n"));
 
 	if (!encoding) {
@@ -403,14 +432,16 @@ Settings::SetSortModes(const CLVSortMode* value) {
 }
 
 bool*
-Settings::ColumnsShown() {
+Settings::ColumnsShown()
+{
 	PRINT(("Settings::ColumnsShown()\n"));
 
 	return columnsShown;
 }
 
 void
-Settings::SetColumnsShown(const bool* value) {
+Settings::SetColumnsShown(const bool* value)
+{
 	PRINT(("Settings::SetColumnsShown(const bool*)\n"));
 
 	if (!encoding) {
@@ -421,14 +452,16 @@ Settings::SetColumnsShown(const bool* value) {
 }
 
 float*
-Settings::ColumnWidths() {
+Settings::ColumnWidths()
+{
 	PRINT(("Settings::ColumnWidths()\n"));
 
 	return columnWidths;
 }
 
 void
-Settings::SetColumnWidths(const float* value) {
+Settings::SetColumnWidths(const float* value)
+{
 	PRINT(("Settings::SetColumnWidths(const float*)\n"));
 
 	if (!encoding) {
@@ -439,14 +472,16 @@ Settings::SetColumnWidths(const float* value) {
 }
 
 const char*
-Settings::AddOnsDirectory() {
+Settings::AddOnsDirectory()
+{
 	PRINT(("Settings::AddOnsDirectory()\n"));
 
 	return addonDirectory;
 }
 
 void
-Settings::PrintToStream() {
+Settings::PrintToStream()
+{
 	PRINT(("\n"));
 	PRINT(("\tENCODER NAME = %s\n", encoderName));
 	PRINT(("\tADD_ON_DIR = %s\n", addonDirectory));

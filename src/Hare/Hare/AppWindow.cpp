@@ -1,26 +1,30 @@
+#include "AppWindow.h"
+
 #include <stdlib.h>
-#include <be/app/Application.h>
-#include <be/app/Message.h>
-#include <be/interface/Alert.h>
-#include <be/interface/Menu.h>
-#include <be/interface/MenuBar.h>
-#include <be/interface/MenuItem.h>
-#include <be/kernel/fs_info.h>
-#include <be/kernel/image.h>
-#include <be/storage/Directory.h>
-#include <be/storage/Entry.h>
-#include <be/storage/File.h>
-#include <be/storage/FindDirectory.h>
-#include <be/storage/NodeMonitor.h>
-#include <be/storage/Path.h>
-#include <be/storage/Volume.h>
-#include <be/storage/VolumeRoster.h>
-#include <be/support/Debug.h>
-#include <be/support/String.h>
+
+#include <Application.h>
+#include <Alert.h>
+#include <Debug.h>
+#include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <fs_info.h>
+#include <image.h>
+#include <Message.h>
+#include <Menu.h>
+#include <MenuBar.h>
+#include <MenuItem.h>
+#include <NodeMonitor.h>
+#include <Path.h>
+#include <String.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
+
 #include <AEEncoder/AEEncoder.h>
+
 #include "AppDefs.h"
 #include "AppView.h"
-#include "AppWindow.h"
 #include "CommandConstants.h"
 #include "GUIStrings.h"
 #include "Settings.h"
@@ -34,20 +38,27 @@
 #define WIN_MIN_HEIGHT  500 // was 400
 #define WIN_MAX_HEIGHT  500 // was 1000
 
-AppWindow::AppWindow() : BWindow(BRect(WIN_LEFT, WIN_TOP, WIN_RIGHT, WIN_BOTTOM),
-									 APPLICATION, B_TITLED_WINDOW, B_NOT_RESIZABLE /*B_ASYNCHRONOUS_CONTROLS*/) {
+AppWindow::AppWindow()
+	: 
+	BWindow(BRect(WIN_LEFT, WIN_TOP, WIN_RIGHT, WIN_BOTTOM),
+		APPLICATION, B_TITLED_WINDOW, B_NOT_RESIZABLE /*B_ASYNCHRONOUS_CONTROLS*/)
+{
 	PRINT(("AppWindow::AppWindow()\n"));
 
 	InitWindow();
 }
 
-AppWindow::AppWindow(BMessage* archive) : BWindow(archive) {
+AppWindow::AppWindow(BMessage* archive)
+	:
+	BWindow(archive)
+{
 	PRINT(("AppWindow::AppWindow(BMessage*)\n"));
 
 	InitWindow();
 }
 
-AppWindow::~AppWindow() {
+AppWindow::~AppWindow()
+{
 	PRINT(("AppWindow::~AppWindow()\n"));
 
 	stop_watching(this);
@@ -58,7 +69,8 @@ AppWindow::~AppWindow() {
 }
 
 void
-AppWindow::InitWindow() {
+AppWindow::InitWindow()
+{
 	PRINT(("AppWindow::InitWindow()\n"));
 
 	Settings::OpenSettings();
@@ -124,14 +136,16 @@ AppWindow::InitWindow() {
 }
 
 BMenuBar*
-AppWindow::MenuBar() {
+AppWindow::MenuBar()
+{
 	PRINT(("AppWindow::MenuBar()\n"));
 
 	return menuBar;
 }
 
 void
-AppWindow::InitMenus() {
+AppWindow::InitMenus()
+{
 	PRINT(("AppWindow::InitMenus()\n"));
 
 	menuBar = new BMenuBar(BRect(), "menuBar");
@@ -196,7 +210,8 @@ AppWindow::InitMenus() {
 }
 
 void
-AppWindow::LoadCDMenu() {
+AppWindow::LoadCDMenu()
+{
 	PRINT(("AppWindow::LoadCDMenu()\n"));
 
 	int32 numItems = loadCdMenu->CountItems();
@@ -227,7 +242,8 @@ AppWindow::LoadCDMenu() {
 }
 
 void
-AppWindow::LoadEncoderMenu() {
+AppWindow::LoadEncoderMenu()
+{
 	PRINT(("AppWindow::LoadEncoderMenu()\n"));
 
 	if (!settings->IsEncoding()) {
@@ -321,7 +337,8 @@ AppWindow::LoadEncoderMenu() {
 }
 
 void
-AppWindow::MenuItemSelected(BMessage* message) {
+AppWindow::MenuItemSelected(BMessage* message)
+{
 	PRINT(("AppWindow::MenuItemSelected(BMessage*)\n"));
 
 	BMenuItem* item;
@@ -399,7 +416,8 @@ AppWindow::MenuItemSelected(BMessage* message) {
 }
 
 void
-AppWindow::AddVolumeToList(const char* name) {
+AppWindow::AddVolumeToList(const char* name)
+{
 	PRINT(("AppWindow::AddVolumeToList(const char*)\n"));
 
 	volumes->Rewind();
@@ -415,7 +433,8 @@ AppWindow::AddVolumeToList(const char* name) {
 }
 
 void
-AppWindow::AddVolumeToList(dev_t device) {
+AppWindow::AddVolumeToList(dev_t device)
+{
 	PRINT(("AppWindow::AddVolumeToList(dev_t)\n"));
 
 	BVolume volume(device);
@@ -435,7 +454,8 @@ AppWindow::AddVolumeToList(dev_t device) {
 }
 
 void
-AppWindow::AboutRequested() {
+AppWindow::AboutRequested()
+{
 	PRINT(("AppWindow::AboutRequested()\n"));
 
 	BString msg;
@@ -453,7 +473,8 @@ AppWindow::AboutRequested() {
 }
 
 void
-AppWindow::FrameResized(float width, float height) {
+AppWindow::FrameResized(float width, float height)
+{
 #ifdef DEBUG
 	BString title = APPLICATION;
 	title << " WIDTH=";
@@ -465,7 +486,8 @@ AppWindow::FrameResized(float width, float height) {
 }
 
 void
-AppWindow::MessageReceived(BMessage* message) {
+AppWindow::MessageReceived(BMessage* message) 
+{
 	//PRINT(("AppWindow::MessageReceived(BMessage*)\n"));
 
 	switch (message->what) {
@@ -541,14 +563,16 @@ AppWindow::MessageReceived(BMessage* message) {
 }
 
 void
-AppWindow::RefsReceived(BMessage* message) {
+AppWindow::RefsReceived(BMessage* message)
+{
 	PRINT(("AppWindow::RefsReceived(BMessage*)\n"));
 
 	viewMessenger->SendMessage(message);
 }
 
 bool
-AppWindow::QuitRequested() {
+AppWindow::QuitRequested()
+{
 	PRINT(("AppWindow::QuitRequested()\n"));
 
 	if (settings->IsEncoding()) {
@@ -573,7 +597,8 @@ AppWindow::QuitRequested() {
 }
 
 AppWindow*
-AppWindow::GetInstance() {
+AppWindow::GetInstance()
+{
 	PRINT(("AppWindow::GetInstance()\n"));
 
 	BPath path;
@@ -596,7 +621,8 @@ AppWindow::GetInstance() {
 }
 
 void
-AppWindow::SaveWindow() {
+AppWindow::SaveWindow()
+{
 	PRINT(("AppWindow::SaveWindow()\n"));
 
 	BPath path;

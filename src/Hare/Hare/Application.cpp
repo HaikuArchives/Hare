@@ -1,14 +1,19 @@
-#include <be/app/Application.h>
-#include <be/app/Message.h>
-#include <be/support/Beep.h>
-#include <be/support/Debug.h>
-#include "AppDefs.h"
 #include "Application.h"
+
+#include <Application.h>
+#include <Beep.h>
+#include <Debug.h>
+#include <Message.h>
+
+#include "AppDefs.h"
 #include "AppWindow.h"
 #include "GUIStrings.h"
 #include "Settings.h"
 
-Application::Application() : BApplication(SIGNATURE) {
+Application::Application()
+	:
+	BApplication(SIGNATURE)
+{
 	PRINT(("Application::Application()\n"));
 
 	add_system_beep_event(SYSTEM_BEEP_ENCODING_DONE);
@@ -17,19 +22,22 @@ Application::Application() : BApplication(SIGNATURE) {
 	window->Show();
 }
 
-Application::~Application() {
+Application::~Application()
+{
 	PRINT(("Application::~Application()\n"));
 
 	delete settings;
 }
 
 void
-Application::ArgvReceived(int32 argc, char** argv) {
+Application::ArgvReceived(int32 argc, char** argv)
+{
 	PRINT(("Application::ArgvReceived(int32,char**)\n"));
 }
 
 void
-Application::MessageReceived(BMessage* message) {
+Application::MessageReceived(BMessage* message)
+{
 	//PRINT(("Application::MessageReceived(BMessage*)\n"));
 
 	switch (message->what) {
@@ -39,14 +47,16 @@ Application::MessageReceived(BMessage* message) {
 }
 
 void
-Application::RefsReceived(BMessage* message) {
+Application::RefsReceived(BMessage* message)
+{
 	PRINT(("Application::RefsReceived(BMessage*)\n"));
 
 	window->PostMessage(message);
 }
 
 int
-main() {
+main()
+{
 	PRINT(("main()\n"));
 
 	new Application();

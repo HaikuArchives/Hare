@@ -1,27 +1,34 @@
+#include "EncoderListView.h"
+
 #include <string.h>
-#include <be/app/Message.h>
-#include <be/interface/ListView.h>
-#include <be/interface/Rect.h>
-#include <be/support/Debug.h>
+
+#include <Debug.h>
+#include <ListView.h>
+#include <Message.h>
+#include <Rect.h>
+
 #include <Santa/BetterScrollView.h>
 #include <Santa/CLVRefListItem.h>
+
 #include "AppDefs.h"
 #include "CheckMark.h"
 #include "CommandConstants.h"
-#include "EncoderListView.h"
 #include "GUIStrings.h"
 #include "Settings.h"
 
-EncoderListView::EncoderListView(BRect frame, BetterScrollView** container) :
+EncoderListView::EncoderListView(BRect frame, BetterScrollView** container)
+	:
 	ColumnListView(frame, (CLVContainerView**)container, "listView", B_FOLLOW_ALL,
-				   B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE | B_NAVIGABLE_JUMP,
-				   B_MULTIPLE_SELECTION_LIST, false, true, true, true, B_FANCY_BORDER) {
+		B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE | B_NAVIGABLE_JUMP,
+		B_MULTIPLE_SELECTION_LIST, false, true, true, true, B_FANCY_BORDER)
+{
 	PRINT(("EncoderListView::EncoderListView(BRect)\n"));
 
 	InitView();
 }
 
-EncoderListView::~EncoderListView() {
+EncoderListView::~EncoderListView()
+{
 	PRINT(("EncoderListView::~EncoderListView()\n"));
 
 	delete checkMark;
@@ -51,7 +58,8 @@ EncoderListView::~EncoderListView() {
 }
 
 void
-EncoderListView::InitView() {
+EncoderListView::InitView()
+{
 	PRINT(("EncoderListView::InitView()\n"));
 
 	checkMark = new CheckMark();
@@ -108,12 +116,14 @@ EncoderListView::InitView() {
 }
 
 void
-EncoderListView::AttachedToWindow() {
+EncoderListView::AttachedToWindow()
+{
 	PRINT(("EncoderListView::AttachedToWindow()\n"));
 }
 
 void
-EncoderListView::MessageReceived(BMessage* message) {
+EncoderListView::MessageReceived(BMessage* message)
+{
 	//PRINT(("EncoderListView::MessageReceived(BMessage*)\n"));
 
 	switch (message->what) {
@@ -123,13 +133,15 @@ EncoderListView::MessageReceived(BMessage* message) {
 }
 
 const BBitmap*
-EncoderListView::GetCheckMark() {
+EncoderListView::GetCheckMark()
+{
 	return checkMark;
 }
 
 int
 sort_function(const CLVListItem* item1, const CLVListItem* item2,
-			  int32 sort_key) {
+	int32 sort_key)
+{
 	int result = -1;
 
 	const char* item1Text =
