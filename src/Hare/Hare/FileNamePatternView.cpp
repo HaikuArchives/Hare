@@ -1,28 +1,36 @@
-#include <be/app/Message.h>
-#include <be/app/Messenger.h>
-#include <be/interface/Button.h>
-#include <be/interface/Rect.h>
-#include <be/interface/StringView.h>
-#include <be/interface/TextControl.h>
-#include <be/support/Debug.h>
-#include <be/support/String.h>
+#include "FileNamePatternView.h"
+
+#include <Button.h>
+#include <Debug.h>
+#include <Message.h>
+#include <Messenger.h>
+#include <Rect.h>
+#include <String.h>
+#include <StringView.h>
+#include <TextControl.h>
+
 #include <AEEncoder/AEEncoder.h>
+
 #include "AppDefs.h"
 #include "CommandConstants.h"
-#include "FileNamePatternView.h"
 #include "GUIStrings.h"
 #include "Settings.h"
 
-FileNamePatternView::FileNamePatternView(BRect frame) : BBox(frame) {
+FileNamePatternView::FileNamePatternView(BRect frame)
+	:
+	BBox(frame)
+{
 	PRINT(("FileNamePatternView::FileNamePatternView(BRect)\n"));
 }
 
-FileNamePatternView::~FileNamePatternView() {
+FileNamePatternView::~FileNamePatternView()
+{
 	PRINT(("FileNamePatternView::~FileNamePatternView()\n"));
 }
 
 void
-FileNamePatternView::InitView() {
+FileNamePatternView::InitView()
+{
 	PRINT(("FileNamePatternView::InitView()\n"));
 
 	SetLabel(FILE_NAME_PATTERN_BOX_LABEL);
@@ -136,14 +144,16 @@ FileNamePatternView::InitView() {
 }
 
 void
-FileNamePatternView::MakeFocus(bool focused) {
+FileNamePatternView::MakeFocus(bool focused)
+{
 	PRINT(("FileNamePatternView::MakeFocused(bool)\n"));
 
 	fileNamePatternTextControl->MakeFocus(focused);
 }
 
 void
-FileNamePatternView::SetEnabled(bool value) {
+FileNamePatternView::SetEnabled(bool value)
+{
 	PRINT(("FileNamePatternView::SetEnabled(bool)\n"));
 
 	fileNamePatternTextControl->SetEnabled(value);
@@ -151,7 +161,8 @@ FileNamePatternView::SetEnabled(bool value) {
 }
 
 void
-FileNamePatternView::AttachedToWindow() {
+FileNamePatternView::AttachedToWindow()
+{
 	PRINT(("FileNamePatternView::AttachedToWindow()\n"));
 
 	InitView();
@@ -161,7 +172,8 @@ FileNamePatternView::AttachedToWindow() {
 }
 
 void
-FileNamePatternView::GetPreferredSize(float* width, float* height) {
+FileNamePatternView::GetPreferredSize(float* width, float* height)
+{
 	PRINT(("FileNamePatternView::GetPreferredSize(float*,float*)\n"));
 
 	int space = 6;
@@ -172,7 +184,8 @@ FileNamePatternView::GetPreferredSize(float* width, float* height) {
 }
 
 void
-FileNamePatternView::MessageReceived(BMessage* message) {
+FileNamePatternView::MessageReceived(BMessage* message)
+{
 	//PRINT(("FileNamePatternView::MessageReceived(BMessage*)\n"));
 
 	BMessenger parentMessenger(Parent());

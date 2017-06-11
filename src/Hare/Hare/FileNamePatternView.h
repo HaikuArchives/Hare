@@ -1,7 +1,7 @@
 #ifndef __FILE_NAME_PATTERN_VIEW_H__
 #define __FILE_NAME_PATTERN_VIEW_H__
 
-#include <be/interface/Box.h>
+#include <Box.h>
 
 class BButton;
 class BMessage;

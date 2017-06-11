@@ -1,6 +1,8 @@
-#include <be/support/Debug.h>
-#include <string.h>
 #include "GenreList.h"
+
+#include <string.h>
+
+#include <Debug.h>
 
 #define NUM_GENRES 115
 #define OTHER_INDEX 12
@@ -123,16 +125,19 @@ char* genre_list[] = {
 	"Folklore"
 };
 
-GenreList::GenreList() {
+GenreList::GenreList()
+{
 	PRINT(("GenreList::GenreList()\n"));
 }
 
-GenreList::~GenreList() {
+GenreList::~GenreList()
+{
 	PRINT(("GenreList::~GenreList()\n"));
 }
 
 char*
-GenreList::Genre(int value) {
+GenreList::Genre(int value)
+{
 	PRINT(("GenreList::Genre(int)\n"));
 
 	if ((value >= 0) && (value < NUM_GENRES)) {
@@ -142,7 +147,8 @@ GenreList::Genre(int value) {
 }
 
 int
-GenreList::Genre(const char* value) {
+GenreList::Genre(const char* value)
+{
 	PRINT(("GenreList::Genre(const char*)\n"));
 
 	if (!value) {
@@ -158,14 +164,16 @@ GenreList::Genre(const char* value) {
 }
 
 int
-GenreList::NumGenres() {
+GenreList::NumGenres()
+{
 	PRINT(("GenreList::NumGenres()\n"));
 
 	return NUM_GENRES;
 }
 
 int
-GenreList::GenreSort(const void* g1, const void* g2) {
+GenreList::GenreSort(const void* g1, const void* g2)
+{
 	//PRINT(("GenreList::GenreSort()\n"));
 
 	char* genre1 = *((char**) g1);

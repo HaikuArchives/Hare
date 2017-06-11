@@ -1,7 +1,7 @@
 #ifndef __AUDIO_ATTRIBUTE_H__
 #define __AUDIO_ATTRIBUTE_H__
 
-#include <be/support/SupportDefs.h>
+#include <SupportDefs.h>
 
 class BFile;
 

@@ -1,101 +1,120 @@
-#include <stdio.h>
-#include <be/support/Debug.h>
 #include "AudioInfo.h"
 
-AudioInfo::AudioInfo() {
+#include <stdio.h>
+
+#include <Debug.h>
+
+AudioInfo::AudioInfo()
+{
 	PRINT(("AudioInfo::AudioInfo()\n"));
 }
 
-AudioInfo::~AudioInfo() {
+AudioInfo::~AudioInfo()
+{
 	PRINT(("AudioInfo::~AudioInfo()\n"));
 }
 
 const char*
-AudioInfo::Artist() {
+AudioInfo::Artist()
+{
 	PRINT(("AudioInfo::Artist()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Album() {
+AudioInfo::Album()
+{
 	PRINT(("AudioInfo::Album()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Title() {
+AudioInfo::Title()
+{
 	PRINT(("AudioInfo::Title()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Year() {
+AudioInfo::Year()
+{
 	PRINT(("AudioInfo::Year()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Comment() {
+AudioInfo::Comment()
+{
 	PRINT(("AudioInfo::Comment()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Track() {
+AudioInfo::Track()
+{
 	PRINT(("AudioInfo::Track()\n"));
 
 	return 0;
 }
 
 const char*
-AudioInfo::Genre() {
+AudioInfo::Genre()
+{
 	PRINT(("AudioInfo::Genre()\n"));
 
 	return 0;
 }
 
 void
-AudioInfo::SetArtist(const char* value) {
+AudioInfo::SetArtist(const char* value)
+{
 	PRINT(("AudioInfo::SetArtist(const char*)\n"));
 }
 
 void
-AudioInfo::SetAlbum(const char* value) {
+AudioInfo::SetAlbum(const char* value)
+{
 	PRINT(("AudioInfo::SetAlbum(const char*)\n"));
 }
 
 void
-AudioInfo::SetTitle(const char* value) {
+AudioInfo::SetTitle(const char* value)
+{
 	PRINT(("AudioInfo::SetTitle(const char*)\n"));
 }
 
 void
-AudioInfo::SetYear(const char* value) {
+AudioInfo::SetYear(const char* value)
+{
 	PRINT(("AudioInfo::SetYear(const char*)\n"));
 }
 
 void
-AudioInfo::SetComment(const char* value) {
+AudioInfo::SetComment(const char* value)
+{
 	PRINT(("AudioInfo::SetComment(const char*)\n"));
 }
 
 void
-AudioInfo::SetTrack(const char* value) {
+AudioInfo::SetTrack(const char* value)
+{
 	PRINT(("AudioInfo::SetTrack(const char*)\n"));
 }
 
 void
-AudioInfo::SetGenre(const char* value) {
+AudioInfo::SetGenre(const char* value)
+{
 	PRINT(("AudioInfo::SetGenre(const char*)\n"));
 }
 
 status_t
-AudioInfo::Read() {
+AudioInfo::Read()
+{
 	PRINT(("AudioInfo::Read()\n"));
 
 	int status;
@@ -134,56 +153,64 @@ AudioInfo::Read() {
 }
 
 status_t
-AudioInfo::ReadArtist() {
+AudioInfo::ReadArtist()
+{
 	PRINT(("AudioInfo::ReadArtist()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadAlbum() {
+AudioInfo::ReadAlbum()
+{
 	PRINT(("AudioInfo::ReadAlbum()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadTitle() {
+AudioInfo::ReadTitle()
+{
 	PRINT(("AudioInfo::ReadTitle()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadYear() {
+AudioInfo::ReadYear()
+{
 	PRINT(("AudioInfo::ReadYear()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadComment() {
+AudioInfo::ReadComment()
+{
 	PRINT(("AudioInfo::ReadComment()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadTrack() {
+AudioInfo::ReadTrack()
+{
 	PRINT(("AudioInfo::ReadTrack()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::ReadGenre() {
+AudioInfo::ReadGenre()
+{
 	PRINT(("AudioInfo::ReadGenre()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::Write() {
+AudioInfo::Write()
+{
 	PRINT(("AudioInfo::Write()\n"));
 
 	int status;
@@ -221,7 +248,8 @@ AudioInfo::Write() {
 }
 
 status_t
-AudioInfo::WriteArtist() {
+AudioInfo::WriteArtist()
+{
 	PRINT(("AudioInfo::WriteArtist()\n"));
 
 	return B_OK;
@@ -235,42 +263,48 @@ AudioInfo::WriteAlbum() {
 }
 
 status_t
-AudioInfo::WriteTitle() {
+AudioInfo::WriteTitle()
+{
 	PRINT(("AudioInfo::WriteTitle()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::WriteYear() {
+AudioInfo::WriteYear()
+{
 	PRINT(("AudioInfo::WriteYear()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::WriteComment() {
+AudioInfo::WriteComment()
+{
 	PRINT(("AudioInfo::WriteComment()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::WriteTrack() {
+AudioInfo::WriteTrack()
+{
 	PRINT(("AudioInfo::WriteTrack()\n"));
 
 	return B_OK;
 }
 
 status_t
-AudioInfo::WriteGenre() {
+AudioInfo::WriteGenre()
+{
 	PRINT(("AudioInfo::WriteGenre()\n"));
 
 	return B_OK;
 }
 
 void
-AudioInfo::PrintToStream() {
+AudioInfo::PrintToStream()
+{
 	printf("\n");
 	printf("Artist  = %s\n", Artist());
 	printf("Album   = %s\n", Album());

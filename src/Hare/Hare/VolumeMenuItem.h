@@ -1,7 +1,7 @@
 #ifndef __VOLUME_MENU_ITEM_H__
 #define __VOLUME_MENU_ITEM_H__
 
-#include <be/interface/MenuItem.h>
+#include <MenuItem.h>
 
 class BMessage;
 class BVolume;

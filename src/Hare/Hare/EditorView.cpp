@@ -1,37 +1,46 @@
+#include "EditorView.h"
+
 #include <stdlib.h>
 #include <string.h>
-#include <be/app/Message.h>
-#include <be/app/Messenger.h>
-#include <be/interface/Button.h>
-#include <be/interface/CheckBox.h>
-#include <be/interface/ListView.h>
-#include <be/interface/Menu.h>
-#include <be/interface/MenuField.h>
-#include <be/interface/MenuItem.h>
-#include <be/interface/OptionPopUp.h>
-#include <be/interface/RadioButton.h>
-#include <be/interface/Rect.h>
-#include <be/interface/TextControl.h>
-#include <be/storage/Entry.h>
-#include <be/support/Debug.h>
-#include <be/support/List.h>
-#include "../AudioInfo/GenreList.h"
+
+#include <Button.h>
+#include <CheckBox.h>
+#include <Debug.h>
+#include <Entry.h>
+#include <List.h>
+#include <ListView.h>
+#include <Menu.h>
+#include <MenuField.h>
+#include <MenuItem.h>
+#include <Message.h>
+#include <Messenger.h>
+#include <OptionPopUp.h>
+#include <RadioButton.h>
+#include <Rect.h>
+#include <TextControl.h>
+
 #include <Santa/CLVRefListItem.h>
+#include "../AudioInfo/GenreList.h"
+
 #include "AppDefs.h"
 #include "CommandConstants.h"
-#include "EditorView.h"
 #include "GUIStrings.h"
 
-EditorView::EditorView(BRect frame) : BBox(frame, "editorView") {
+EditorView::EditorView(BRect frame)
+	:
+	BBox(frame, "editorView")
+{
 	PRINT(("EditorView::EditorView(BRect)\n"));
 }
 
-EditorView::~EditorView() {
+EditorView::~EditorView()
+{
 	PRINT(("EditorView::~EditorView()\n"));
 }
 
 void
-EditorView::InitView() {
+EditorView::InitView()
+{
 	PRINT(("EditorView::InitView()\n"));
 
 	SetLabel(EDITOR_LABEL);
@@ -222,7 +231,8 @@ EditorView::InitView() {
 }
 
 void
-EditorView::AttachedToWindow() {
+EditorView::AttachedToWindow()
+{
 	PRINT(("EditorView::AttachedToWindow()\n"));
 
 	InitView();
@@ -260,7 +270,8 @@ EditorView::AttachedToWindow() {
 }
 
 void
-EditorView::GetPreferredSize(float* width, float* height) {
+EditorView::GetPreferredSize(float* width, float* height)
+{
 	PRINT(("EditorView::GetPreferredSize(float* float*)\n"));
 
 	int space = 6;
@@ -275,7 +286,8 @@ EditorView::GetPreferredSize(float* width, float* height) {
 }
 
 void
-EditorView::Apply() {
+EditorView::Apply()
+{
 	PRINT(("EditorView::Apply()\n"));
 
 	BMessage message(APPLY_ATTRIBUTE_CHANGES);
@@ -323,7 +335,8 @@ EditorView::Apply() {
 }
 
 void
-EditorView::ListSelectionChanged(BMessage* message) {
+EditorView::ListSelectionChanged(BMessage* message)
+{
 	PRINT(("EditorView::ListSelectionChanged(BMessage*)\n"));
 
 	free(selectedIndexes);
@@ -396,7 +409,8 @@ EditorView::ListSelectionChanged(BMessage* message) {
 }
 
 void
-EditorView::EnableCheckBoxes(bool value) {
+EditorView::EnableCheckBoxes(bool value)
+{
 	artistCheckBox->SetEnabled(value);
 	albumCheckBox->SetEnabled(value);
 	titleCheckBox->SetEnabled(value);
@@ -407,7 +421,8 @@ EditorView::EnableCheckBoxes(bool value) {
 }
 
 void
-EditorView::SetControlValues(CLVRefListItem* item) {
+EditorView::SetControlValues(CLVRefListItem* item)
+{
 	artistTextControl->SetText("");
 	albumTextControl->SetText("");
 	titleTextControl->SetText("");
@@ -453,14 +468,16 @@ EditorView::SetControlValues(CLVRefListItem* item) {
 }
 
 void
-EditorView::MakeFocus(bool focused) {
+EditorView::MakeFocus(bool focused)
+{
 	PRINT(("EditorView::MakeFocus(bool)\n"));
 
 	artistCheckBox->MakeFocus(focused);
 }
 
 void
-EditorView::SetEnabled(bool value) {
+EditorView::SetEnabled(bool value)
+{
 	PRINT(("EditorView::SetEnabled(bool)\n"));
 
 	EnableCheckBoxes(value);
@@ -487,7 +504,8 @@ EditorView::SetEnabled(bool value) {
 }
 
 void
-EditorView::SetEnabled(BCheckBox* checkbox, BControl* control) {
+EditorView::SetEnabled(BCheckBox* checkbox, BControl* control)
+{
 	PRINT(("EditorView::SetEnabled(BCheckBox*,BControl*)\n"));
 
 	if (checkbox->Value() == B_CONTROL_ON) {
@@ -498,7 +516,8 @@ EditorView::SetEnabled(BCheckBox* checkbox, BControl* control) {
 }
 
 void
-EditorView::SetEnabled(BCheckBox* checkbox, BMenuField* menufield) {
+EditorView::SetEnabled(BCheckBox* checkbox, BMenuField* menufield)
+{
 	PRINT(("EditorView::SetEnabled(BCheckBox*,BMenuField*)\n"));
 
 	if (checkbox->Value() == B_CONTROL_ON) {
@@ -509,7 +528,8 @@ EditorView::SetEnabled(BCheckBox* checkbox, BMenuField* menufield) {
 }
 
 void
-EditorView::MessageReceived(BMessage* message) {
+EditorView::MessageReceived(BMessage* message)
+{
 	//PRINT(("EditorView::MessageReceived(BMessage*)\n"));
 
 	switch (message->what) {

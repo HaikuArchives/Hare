@@ -1,21 +1,24 @@
+#include "AudioAttribute.h"
+
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <be/interface/InterfaceDefs.h>
-#include <be/kernel/fs_attr.h>
-#include <be/kernel/fs_index.h>
-#include <be/storage/File.h>
-#include <be/storage/Mime.h>
-#include <be/storage/NodeInfo.h>
-#include <be/support/Debug.h>
-#include <be/support/TypeConstants.h>
+
+#include <Debug.h>
+#include <File.h>
+#include <fs_attr.h>
+#include <fs_index.h>
+#include <InterfaceDefs.h>
+#include <Mime.h>
+#include <NodeInfo.h>
+#include <TypeConstants.h>
 
 #include "String/String.h"
-#include "AudioAttribute.h"
 
 
 AudioAttribute::AudioAttribute(BFile* file, const char* name,
-							   const char* attribute, type_code type) {
+	const char* attribute, type_code type) 
+{
 	PRINT(("AudioAttribute::AudioAttribute(BFile*,const char*)\n"));
 
 	strcpy(this->name, name);
@@ -25,7 +28,8 @@ AudioAttribute::AudioAttribute(BFile* file, const char* name,
 	this->value = 0;
 }
 
-AudioAttribute::~AudioAttribute() {
+AudioAttribute::~AudioAttribute()
+{
 	PRINT(("AudioAttribute::~AudioAttribute()\n"));
 
 	delete [] value;
@@ -33,7 +37,8 @@ AudioAttribute::~AudioAttribute() {
 }
 
 bool
-AudioAttribute::Exists() {
+AudioAttribute::Exists()
+{
 	PRINT(("AudioAttribute::Exists()\n"));
 
 	BNodeInfo nodeInfo(file);
@@ -69,7 +74,8 @@ AudioAttribute::Exists() {
 }
 
 int32
-AudioAttribute::Create() {
+AudioAttribute::Create()
+{
 	PRINT(("AudioAttribute::Create()\n"));
 
 	BNodeInfo nodeInfo(file);
@@ -110,7 +116,8 @@ AudioAttribute::Create() {
 }
 
 bool
-AudioAttribute::IsIndexed(dev_t device) {
+AudioAttribute::IsIndexed(dev_t device)
+{
 	PRINT(("AudioAttribute::IsIndexed(dev_t)\n"));
 
 	bool found = false;
@@ -130,7 +137,8 @@ AudioAttribute::IsIndexed(dev_t device) {
 }
 
 int32
-AudioAttribute::Index(dev_t device) {
+AudioAttribute::Index(dev_t device)
+{
 	PRINT(("AudioAttribute::Index(dev_t)\n"));
 
 	if (IsIndexed(device)) {
@@ -145,7 +153,8 @@ AudioAttribute::Index(dev_t device) {
 }
 
 int32
-AudioAttribute::RemoveIndex(dev_t device) {
+AudioAttribute::RemoveIndex(dev_t device)
+{
 	PRINT(("AudioAttribute::RemoveIndex(dev_t)\n"));
 
 	if (!IsIndexed(device)) {
@@ -160,14 +169,16 @@ AudioAttribute::RemoveIndex(dev_t device) {
 }
 
 const char*
-AudioAttribute::Value() {
+AudioAttribute::Value()
+{
 	PRINT(("AudioAttribute::Value()\n"));
 
 	return this->value;
 }
 
 void
-AudioAttribute::SetValue(const char* val) {
+AudioAttribute::SetValue(const char* val)
+{
 	PRINT(("AudioAttribute::SetValue(const char*)\n"));
 
 	delete [] this->value;
@@ -182,7 +193,8 @@ AudioAttribute::SetValue(const char* val) {
 }
 
 status_t
-AudioAttribute::Read() {
+AudioAttribute::Read()
+{
 	PRINT(("AudioAttribute::Read()\n"));
 
 	if (!file->IsReadable()) {
@@ -233,7 +245,8 @@ AudioAttribute::Read() {
 }
 
 status_t
-AudioAttribute::Write() {
+AudioAttribute::Write()
+{
 	PRINT(("AudioAttribute::Write()\n"));
 
 	if (!file->IsWritable()) {

@@ -1,61 +1,70 @@
+#include "AppView.h"
+
 #include <string.h>
-#include <be/app/Message.h>
-#include <be/interface/Alert.h>
-#include <be/interface/Bitmap.h>
-#include <be/interface/Button.h>
-#include <be/interface/Font.h>
-#include <be/interface/InterfaceDefs.h>
-#include <be/interface/MenuBar.h>
-#include <be/interface/Rect.h>
-#include <be/interface/StatusBar.h>
-#include <be/interface/StringView.h>
-#include <be/interface/TextControl.h>
-#include <be/kernel/fs_attr.h>
-#include <be/kernel/fs_info.h>
-#include <be/kernel/image.h>
-#include <be/kernel/OS.h>
-#include <be/storage/Directory.h>
-#include <be/storage/Entry.h>
-#include <be/storage/File.h>
-#include <be/storage/Node.h>
-#include <be/storage/NodeInfo.h>
-#include <be/storage/NodeMonitor.h>
-#include <be/storage/Path.h>
-#include <be/storage/Volume.h>
-#include <be/storage/VolumeRoster.h>
-#include <be/support/Beep.h>
-#include <be/support/Debug.h>
-#include <be/support/String.h>
+
+#include <Alert.h>
+#include <Beep.h>
+#include <Bitmap.h>
+#include <Button.h>
+#include <Debug.h>
+#include <Font.h>
+#include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <fs_attr.h>
+#include <fs_info.h>
+#include <image.h>
+#include <InterfaceDefs.h>
+#include <MenuBar.h>
+#include <Message.h>
+#include <Node.h>
+#include <NodeInfo.h>
+#include <NodeMonitor.h>
+#include <OS.h>
+#include <Path.h>
+#include <Rect.h>
+#include <StatusBar.h>
+#include <StringView.h>
+#include <TextControl.h>
+#include <String.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
+
 #include <AEEncoder/AEEncoder.h>
+#include <Santa/CLVRefListItem.h>
 #include "../AudioInfo/AudioAttributes.h"
 #include "../AudioInfo/GenreList.h"
-#include <Santa/CLVRefListItem.h>
+
 #include "AppDefs.h"
-#include "AppView.h"
 #include "AppWindow.h"
 #include "CommandConstants.h"
 #include "CheckMark.h"
-#include "GUIStrings.h"
 #include "EditorView.h"
 #include "EncoderListView.h"
 #include "FileNamePatternView.h"
+#include "GUIStrings.h"
 #include "Settings.h"
 #include "StatusBarFilter.h"
 
-AppView::AppView(BRect frame) : BView(frame, "AppView", B_FOLLOW_ALL,
-										  B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP) {
+AppView::AppView(BRect frame)
+	:
+	BView(frame, "AppView", B_FOLLOW_ALL,
+		B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP)
+{
 	PRINT(("AppView::AppView(BRect)\n"));
 
 }
 
-AppView::~AppView() {
+AppView::~AppView()
+{
 	PRINT(("AppView::~AppView()\n"));
 
 	stop_watching(this);
 }
 
 void
-AppView::InitView() {
+AppView::InitView()
+{
 	PRINT(("AppView::InitView()\n"));
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
@@ -131,7 +140,8 @@ AppView::InitView() {
 }
 
 void
-AppView::AttachedToWindow() {
+AppView::AttachedToWindow()
+{
 	PRINT(("AppView::AttachedToWindow()\n"));
 
 	BView::AttachedToWindow();
@@ -144,7 +154,8 @@ AppView::AttachedToWindow() {
 }
 
 void
-AppView::MessageReceived(BMessage* message) {
+AppView::MessageReceived(BMessage* message)
+{
 	//PRINT(("AppView::MessageReceived(BMessage*)\n"));
 	switch (message->what) {
 		case VIEW_SHORTCUT: {
@@ -257,7 +268,8 @@ AppView::MessageReceived(BMessage* message) {
 }
 
 int32
-AppView::RefsRecievedWrapper(void* args) {
+AppView::RefsRecievedWrapper(void* args)
+{
 	PRINT(("AppView::RefsReceivedWrapper(void*)\n"));
 
 	BList* params = (BList*)args;
@@ -270,7 +282,8 @@ AppView::RefsRecievedWrapper(void* args) {
 }
 
 void
-AppView::RefsReceived(BMessage* message) {
+AppView::RefsReceived(BMessage* message)
+{
 	PRINT(("AppView::RefsReceived(BMessage*)\n"));
 
 	CLVRefListItem* item;
@@ -334,7 +347,8 @@ AppView::RefsReceived(BMessage* message) {
 }
 
 void
-AppView::InitializeColumn(CLVRefListItem* item) {
+AppView::InitializeColumn(CLVRefListItem* item)
+{
 	PRINT(("AppView::InitializeColumn(CLVRefListItem*)\n"));
 
 	entry_ref* ref = item->EntryRef();
@@ -413,7 +427,8 @@ AppView::InitializeColumn(CLVRefListItem* item) {
 }
 
 void
-AppView::SetSaveAsColumn(CLVRefListItem* item) {
+AppView::SetSaveAsColumn(CLVRefListItem* item)
+{
 	PRINT(("AppView::SetSaveAsColumn(CLVRefListItem*)\n"));
 
 	const char* artist = item->GetColumnContentText(ARTIST_COLUMN_INDEX);
@@ -446,7 +461,8 @@ AppView::SetSaveAsColumn(CLVRefListItem* item) {
 }
 
 void
-AppView::ApplyAttributeChanges(BMessage* message) {
+AppView::ApplyAttributeChanges(BMessage* message)
+{
 	PRINT(("AppView::ApplyAttributeChanges(BMessage*)\n"));
 
 	type_code index_type;
@@ -504,7 +520,8 @@ AppView::ApplyAttributeChanges(BMessage* message) {
 }
 
 void
-AppView::RemoveNodeFromList(node_ref* ref) {
+AppView::RemoveNodeFromList(node_ref* ref)
+{
 	CLVRefListItem* item;
 	node_ref* itemRef;
 	int32 numItems = listView->CountItems();
@@ -529,7 +546,8 @@ AppView::RemoveNodeFromList(node_ref* ref) {
 }
 
 void
-AppView::RemoveDeviceItemsFromList(int32 device) {
+AppView::RemoveDeviceItemsFromList(int32 device)
+{
 	PRINT(("AppView::RemoveDeviceItemsFromList(int32)\n"));
 
 	bool deleted = false;
@@ -558,7 +576,8 @@ AppView::RemoveDeviceItemsFromList(int32 device) {
 }
 
 int32
-AppView::RemoveItemsFromList(void* args) {
+AppView::RemoveItemsFromList(void* args)
+{
 	PRINT(("AppView::RemoveItemsFromList(void*)\n"));
 
 	AppView* view = (AppView*)args;
@@ -582,7 +601,8 @@ AppView::RemoveItemsFromList(void* args) {
 }
 
 int32
-AppView::UpdateItem(BMessage* message) {
+AppView::UpdateItem(BMessage* message)
+{
 	PRINT(("AppView::UpdateItem(BMessage*)\n"));
 
 	ino_t node;
@@ -667,7 +687,8 @@ AppView::UpdateItem(BMessage* message) {
 }
 
 void
-AppView::Encode() {
+AppView::Encode()
+{
 	PRINT(("AppView::Encode()\n"));
 
 	thread_id thread = spawn_thread(AppView::EncodeThread, "_Encoder_",
@@ -676,7 +697,8 @@ AppView::Encode() {
 }
 
 int32
-AppView::EncodeThread(void* args) {
+AppView::EncodeThread(void* args)
+{
 	PRINT(("AppView::EncodeThread(void*)\n"));
 
 	settings->SetEncoding(true);
@@ -1032,7 +1054,8 @@ AppView::EncodeThread(void* args) {
 }
 
 void
-AppView::Cancel() {
+AppView::Cancel()
+{
 	PRINT(("AppView::Cancel()\n"));
 
 	if (settings->IsEncoding()) {
@@ -1045,7 +1068,8 @@ AppView::Cancel() {
 }
 
 void
-AppView::AlertUser(const char* message) {
+AppView::AlertUser(const char* message)
+{
 	PRINT(("AppView::AlertUser(const char*)\n"));
 	BAlert* alert = new BAlert("alert", message, OK, NULL, NULL, B_WIDTH_AS_USUAL,
 							   B_WARNING_ALERT);

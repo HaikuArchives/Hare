@@ -1,16 +1,22 @@
-#include <be/app/Handler.h>
-#include <be/app/Message.h>
-#include <be/interface/StatusBar.h>
-#include <AEEncoder/AEEncoder.h>
-#include "Settings.h"
 #include "StatusBarFilter.h"
 
-StatusBarFilter::StatusBarFilter() :
-	BMessageFilter(B_PROGRAMMED_DELIVERY, B_LOCAL_SOURCE) {
+#include <Handler.h>
+#include <Message.h>
+#include <StatusBar.h>
+
+#include <AEEncoder/AEEncoder.h>
+
+#include "Settings.h"
+
+StatusBarFilter::StatusBarFilter()
+	:
+	BMessageFilter(B_PROGRAMMED_DELIVERY, B_LOCAL_SOURCE)
+{
 }
 
 filter_result
-StatusBarFilter::Filter(BMessage* message, BHandler** target) {
+StatusBarFilter::Filter(BMessage* message, BHandler** target)
+{
 
 	filter_result result = B_DISPATCH_MESSAGE;
 	switch (message->what) {

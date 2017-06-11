@@ -1,7 +1,7 @@
 #ifndef __STATUS_BAR_FILTER_H__
 #define __STATUS_BAR_FILTER_H__
 
-#include <be/app/MessageFilter.h>
+#include <MessageFilter.h>
 
 class BHandler;
 class BMessage;
