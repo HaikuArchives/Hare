@@ -2,6 +2,7 @@
 #define __EDITOR_VIEW_H__
 
 #include <Box.h>
+#include <Control.h>
 
 class BButton;
 class BCheckBox;

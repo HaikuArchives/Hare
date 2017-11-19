@@ -1,6 +1,7 @@
 #ifndef __APP_VIEW_H__
 #define __APP_VIEW_H__
 
+#include <Node.h>
 #include <View.h>
 
 class BetterScrollView;
