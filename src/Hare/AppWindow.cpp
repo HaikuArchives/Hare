@@ -21,7 +21,7 @@
 #include <Volume.h>
 #include <VolumeRoster.h>
 
-#include <AEEncoder/AEEncoder.h>
+#include "AEEncoder.h"
 
 #include "AppDefs.h"
 #include "AppView.h"

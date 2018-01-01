@@ -12,8 +12,7 @@
 #include <Roster.h>
 #include <String.h>
 
-#include <AEEncoder/AEEncoder.h>
-#include <Santa/ColumnListView.h>
+#include "AEEncoder.h"
 
 #include "AppDefs.h"
 #include "CommandConstants.h"
@@ -35,16 +34,6 @@ Settings::Settings()
 
 	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
 		columnDisplayOrder[i] = i;
-	}
-
-	numberOfSortKeys = DEFAULT_NUMBER_OF_SORT_KEYS;
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		sortKeys[i] = i;
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		sortModes[i] = NoSort;
 	}
 
 	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
@@ -97,38 +86,6 @@ Settings::Settings(BMessage* archive)
 	if (status != B_OK) {
 		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
 			columnDisplayOrder[i] = i;
-		}
-	}
-
-	status = archive->FindInt32("numberOfSortKeys", &numberOfSortKeys);
-	if (status != B_OK) {
-		PRINT(("Error loading NUMBER_OF_SORT_KEYS\n"));
-		numberOfSortKeys = DEFAULT_NUMBER_OF_SORT_KEYS;
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		status = archive->FindInt32("sortKeys", i, &sortKeys[i]);
-		if (status != B_OK) {
-			PRINT(("Error loading SORT_KEYS\n"));
-			break;
-		}
-	}
-	if (status != B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			sortKeys[i] = i;
-		}
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		status = archive->FindInt32("sortModes", i, (int32*)&sortModes[i]);
-		if (status != B_OK) {
-			PRINT(("Error loading SORT_MODES\n"));
-			break;
-		}
-	}
-	if (status != B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			sortModes[i] = NoSort;
 		}
 	}
 
@@ -208,28 +165,6 @@ Settings::Archive(BMessage* archive, bool deep) const
 	if (status == B_OK) {
 		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
 			status = archive->AddInt32("columnDisplayOrder", columnDisplayOrder[i]);
-			if (status != B_OK) {
-				break;
-			}
-		}
-	}
-
-	if (status == B_OK) {
-		status = archive->AddInt32("numberOfSortKeys", numberOfSortKeys);
-	}
-
-	if (status == B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			status = archive->AddInt32("sortKeys", sortKeys[i]);
-			if (status != B_OK) {
-				break;
-			}
-		}
-	}
-
-	if (status == B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			status = archive->AddInt32("sortModes", sortModes[i]);
 			if (status != B_OK) {
 				break;
 			}
@@ -373,64 +308,6 @@ Settings::SetColumnDisplayOrder(const int32* value)
 	}
 }
 
-int32
-Settings::NumberOfSortKeys()
-{
-	PRINT(("Settings::NumberOfSortKeys()\n"));
-
-	return numberOfSortKeys;
-}
-
-void
-Settings::SetNumberOfSortKeys(int32 value)
-{
-	PRINT(("Settings::SetNumberOfSortKeys(int32)\n"));
-
-	if (!encoding) {
-		numberOfSortKeys = value;
-	}
-}
-
-int32*
-Settings::SortKeys()
-{
-	PRINT(("Settings::SortKeys()\n"));
-
-	return sortKeys;
-}
-
-void
-Settings::SetSortKeys(const int32* value)
-{
-	PRINT(("Settings::SetSortKeys(const int32*)\n"));
-
-	if (!encoding) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			sortKeys[i] = value[i];
-		}
-	}
-}
-
-CLVSortMode*
-Settings::SortModes()
-{
-	PRINT(("Settings::SortModes()\n"));
-
-	return sortModes;
-}
-
-void
-Settings::SetSortModes(const CLVSortMode* value)
-{
-	PRINT(("Settings::SetSortModes(const CLVSortMode*)\n"));
-
-	if (!encoding) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			sortModes[i] = value[i];
-		}
-	}
-}
-
 bool*
 Settings::ColumnsShown()
 {
@@ -487,12 +364,5 @@ Settings::PrintToStream()
 	PRINT(("\tADD_ON_DIR = %s\n", addonDirectory));
 	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
 		PRINT(("\tCOLUMN_DISPLAY_ORDER[%d] = %d\n", i, columnDisplayOrder[i]));
-	}
-	PRINT(("\tNUMBER_OF_SORT_KEYS = %d\n", numberOfSortKeys));
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		PRINT(("\tSORT_KEYS[%d] = %d\n", i, sortKeys[i]));
-	}
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		PRINT(("\tSORT_MODES[%d] = %d\n", i, sortModes[i]));
 	}
 }

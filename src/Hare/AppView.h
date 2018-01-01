@@ -4,14 +4,14 @@
 #include <Node.h>
 #include <View.h>
 
-class BetterScrollView;
+#include "RefRow.h"
+
 class BButton;
 class BMessage;
 class BRect;
 class BStatusBar;
 class BStringView;
 class BTextControl;
-class CLVRefListItem;
 class EditorView;
 class EncoderListView;
 class FileNamePatternView;
@@ -25,8 +25,8 @@ public:
 	virtual void RefsReceived(BMessage* message);
 private:
 	void InitView();
-	void InitializeColumn(CLVRefListItem* item);
-	void SetSaveAsColumn(CLVRefListItem* item);
+	void InitializeColumn(BRefRow* row);
+	void SetSaveAsColumn(BRefRow* row);
 	void ApplyAttributeChanges(BMessage* message);
 	void RemoveNodeFromList(node_ref* ref);
 	void RemoveDeviceItemsFromList(int32 device);
@@ -37,7 +37,6 @@ private:
 	void Cancel();
 	void AlertUser(const char* message);
 	static int32 EncodeThread(void* args);
-	BetterScrollView* scrollView;
 	EncoderListView* listView;
 	FileNamePatternView* fileNamePatternView;
 	EditorView* editorView;

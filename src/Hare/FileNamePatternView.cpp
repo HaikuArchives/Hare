@@ -9,7 +9,7 @@
 #include <StringView.h>
 #include <TextControl.h>
 
-#include <AEEncoder/AEEncoder.h>
+#include "AEEncoder.h"
 
 #include "AppDefs.h"
 #include "CommandConstants.h"

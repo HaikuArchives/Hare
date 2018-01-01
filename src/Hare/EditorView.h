@@ -4,6 +4,8 @@
 #include <Box.h>
 #include <Control.h>
 
+#include "RefRow.h"
+
 class BButton;
 class BCheckBox;
 class BList;
@@ -12,7 +14,6 @@ class BMessage;
 class BRadioButton;
 class BRect;
 class BTextControl;
-class CLVRefListItem;
 
 class EditorView : public BBox {
 public:
@@ -31,7 +32,7 @@ private:
 	void SetEnabled(BCheckBox* checkbox, BMenuField* menufield);
 	void ListSelectionChanged(BMessage* message);
 	void EnableCheckBoxes(bool value);
-	void SetControlValues(CLVRefListItem* item);
+	void SetControlValues(BRefRow* item);
 	BCheckBox* artistCheckBox;
 	BCheckBox* albumCheckBox;
 	BCheckBox* titleCheckBox;

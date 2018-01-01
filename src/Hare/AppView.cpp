@@ -20,9 +20,11 @@
 #include <Node.h>
 #include <NodeInfo.h>
 #include <NodeMonitor.h>
+#include <ObjectList.h>
 #include <OS.h>
 #include <Path.h>
 #include <Rect.h>
+#include <ScrollBar.h>
 #include <StatusBar.h>
 #include <StringView.h>
 #include <TextControl.h>
@@ -30,10 +32,12 @@
 #include <Volume.h>
 #include <VolumeRoster.h>
 
-#include <AEEncoder/AEEncoder.h>
-#include <Santa/CLVRefListItem.h>
-#include "../AudioInfo/AudioAttributes.h"
-#include "../AudioInfo/GenreList.h"
+#include <ColumnListView.h>
+#include <ColumnTypes.h>
+
+#include "AEEncoder.h"
+#include "AudioAttributes.h"
+#include "GenreList.h"
 
 #include "AppDefs.h"
 #include "AppWindow.h"
@@ -43,6 +47,7 @@
 #include "EncoderListView.h"
 #include "FileNamePatternView.h"
 #include "GUIStrings.h"
+#include "RefRow.h"
 #include "Settings.h"
 #include "StatusBarFilter.h"
 
@@ -112,7 +117,7 @@ AppView::InitView()
 	listViewFrame.top = fileNameFrame.bottom + (space);
 	listViewFrame.right -= (space + B_V_SCROLL_BAR_WIDTH);
 	listViewFrame.bottom = buttonFrame.top - (space + B_H_SCROLL_BAR_HEIGHT);
-	listView = new EncoderListView(listViewFrame, &scrollView);
+	listView = new EncoderListView(listViewFrame);
 	listView->SetSelectionMessage(new BMessage(LIST_SELECTION_MSG));
 
 	BRect statusBarFrame = buttonFrame;
@@ -133,7 +138,7 @@ AppView::InitView()
 		ResizeBy(diff, 0);
 	}
 
-	AddChild(scrollView);
+	AddChild(listView);
 	AddChild(encodeButton);
 	AddChild(cancelButton);
 	AddChild(statusBar);
@@ -182,8 +187,10 @@ AppView::MessageReceived(BMessage* message)
 			Cancel();
 			break;
 		case SELECT_ALL_MSG:
-			if (listView->CountItems() > 0) {
-				listView->Select(0, listView->CountItems() - 1);
+			if (listView->CountRows() > 0) {
+				for (int index = 0; index < listView->CountRows(); index++){
+					listView->AddToSelection(listView->RowAt(index));
+				}
 			}
 			break;
 		case DESELECT_ALL_MSG:
@@ -204,12 +211,12 @@ AppView::MessageReceived(BMessage* message)
 			ApplyAttributeChanges(message);
 			break;
 		case FILE_NAME_PATTERN_CHANGED: {
-				int32 numItems = listView->CountItems();
-				for (int i = 0; i < numItems; i++) {
-					CLVRefListItem* item =
-						(CLVRefListItem*)listView->ItemAt(i);
-					SetSaveAsColumn(item);
-					listView->InvalidateItem(i);
+				int32 numRows = listView->CountRows();
+				for (int i = 0; i < numRows; i++) {
+					BRefRow* row = 
+						(BRefRow*) listView->RowAt(i);
+					SetSaveAsColumn(row);
+					listView->InvalidateRow(row);
 				}
 			}
 			break;
@@ -234,7 +241,7 @@ AppView::MessageReceived(BMessage* message)
 				bool show;
 				message->FindInt32("column", &column);
 				message->FindBool("show", &show);
-				listView->ColumnAt(column)->SetShown(show);
+				listView->ColumnAt(column)->SetVisible(show);
 			}
 			break;
 		case B_NODE_MONITOR: {
@@ -286,7 +293,7 @@ AppView::RefsReceived(BMessage* message)
 {
 	PRINT(("AppView::RefsReceived(BMessage*)\n"));
 
-	CLVRefListItem* item;
+	BRefRow* row;
 
 	entry_ref tmp_ref;
 	int numRefs = 0;
@@ -299,10 +306,9 @@ AppView::RefsReceived(BMessage* message)
 			if ((strncmp(type, "audio/", 6) == 0)
 					&& (strcmp(type, CDDA_MIME_TYPE) != 0)) {
 				bool found = false;
-				for (int i = 0; i < listView->CountItems(); i++) {
-					CLVRefListItem* item =
-						(CLVRefListItem*)listView->ItemAt(i);
-					entry_ref* ref = item->EntryRef();
+				for (int i = 0; i < listView->CountRows(); i++) {
+					BRefRow* row = (BRefRow*)listView->RowAt(i);
+					entry_ref* ref = row->EntryRef();
 					if (*ref == tmp_ref) {
 						found = true;
 						break;
@@ -312,14 +318,13 @@ AppView::RefsReceived(BMessage* message)
 					if (LockLooper()) {
 						node_ref nref;
 						if (node.GetNodeRef(&nref) == B_OK) {
-							item = new CLVRefListItem(&tmp_ref, &nref);
+							row = new BRefRow(&tmp_ref, &nref);
 							watch_node(&nref, B_WATCH_NAME, this);
 						} else {
-							item = new CLVRefListItem(&tmp_ref);
+							row = new BRefRow(&tmp_ref);
 						}
-						InitializeColumn(item);
-						listView->AddItem(item);
-						listView->SortItems();
+						InitializeColumn(row);
+						listView->AddRow(row);
 						UnlockLooper();
 					}
 				}
@@ -347,13 +352,13 @@ AppView::RefsReceived(BMessage* message)
 }
 
 void
-AppView::InitializeColumn(CLVRefListItem* item)
+AppView::InitializeColumn(BRefRow* row)
 {
-	PRINT(("AppView::InitializeColumn(CLVRefListItem*)\n"));
+	PRINT(("AppView::InitializeColumn(BRefRow*)\n"));
 
-	entry_ref* ref = item->EntryRef();
+	entry_ref* ref = row->EntryRef();
 
-	item->SetColumnContent(FILE_COLUMN_INDEX, ref->name);
+	row->SetField(new BStringField(ref->name), FILE_COLUMN_INDEX);
 
 	BVolume volume(ref->device);
 	fs_info fsinfo;
@@ -370,14 +375,17 @@ AppView::InitializeColumn(CLVRefListItem* item)
 			album.Remove(index, album.Length() - index);
 			artist.Trim();
 			album.Trim();
-			item->SetColumnContent(ARTIST_COLUMN_INDEX, artist.String());
-			item->SetColumnContent(ALBUM_COLUMN_INDEX, album.String());
-			item->SetColumnContent(TITLE_COLUMN_INDEX, ref->name);
+			row->SetField(new BStringField(artist.String()), ARTIST_COLUMN_INDEX);
+			row->SetField(new BStringField(album.String()), ALBUM_COLUMN_INDEX);
+			row->SetField(new BStringField(ref->name), TITLE_COLUMN_INDEX);
 		} else {
-			item->SetColumnContent(ARTIST_COLUMN_INDEX, (const char*)0);
-			item->SetColumnContent(ALBUM_COLUMN_INDEX, (const char*)0);
-			item->SetColumnContent(TITLE_COLUMN_INDEX, (const char*)0);
+			row->SetField(new BStringField((const char*)0), ARTIST_COLUMN_INDEX);
+			row->SetField(new BStringField((const char*)0), ALBUM_COLUMN_INDEX);
+			row->SetField(new BStringField((const char*)0), TITLE_COLUMN_INDEX);
 		}
+	} else {
+		AlertUser("Hare only accepts audio CDs!");
+		return;
 	}
 
 	if (volume.KnowsAttr()) {
@@ -389,62 +397,78 @@ AppView::InitializeColumn(CLVRefListItem* item)
 
 		const char* artist = attributes.Artist();
 		if (artist) {
-			item->SetColumnContent(ARTIST_COLUMN_INDEX, artist);
+			row->SetField(new BStringField(artist), ARTIST_COLUMN_INDEX);
 		}
 
 		const char* album = attributes.Album();
 		if (album) {
-			item->SetColumnContent(ALBUM_COLUMN_INDEX, album);
+			row->SetField(new BStringField(album), ALBUM_COLUMN_INDEX);
 		}
 
 		const char* title = attributes.Title();
 		if (title) {
-			item->SetColumnContent(TITLE_COLUMN_INDEX, title);
+			row->SetField(new BStringField(title), TITLE_COLUMN_INDEX);
 		}
 
 		const char* year = attributes.Year();
 		if (year) {
-			item->SetColumnContent(YEAR_COLUMN_INDEX, year);
+			row->SetField(new BStringField(year), YEAR_COLUMN_INDEX);
 		}
 
 		const char* comment = attributes.Comment();
 		if (comment) {
-			item->SetColumnContent(COMMENT_COLUMN_INDEX, comment);
+			row->SetField(new BStringField(comment), COMMENT_COLUMN_INDEX);
 		}
 
 		const char* track = attributes.Track();
 		if (track) {
-			item->SetColumnContent(TRACK_COLUMN_INDEX, track);
+			row->SetField(new BStringField(track), TRACK_COLUMN_INDEX);
 		}
 
 		const char* genre = attributes.Genre();
 		if (genre) {
-			item->SetColumnContent(GENRE_COLUMN_INDEX, genre);
+			row->SetField(new BStringField(genre), GENRE_COLUMN_INDEX);
 		}
 	}
 
-	SetSaveAsColumn(item);
+	SetSaveAsColumn(row);
 }
 
 void
-AppView::SetSaveAsColumn(CLVRefListItem* item)
+AppView::SetSaveAsColumn(BRefRow* row)
 {
-	PRINT(("AppView::SetSaveAsColumn(CLVRefListItem*)\n"));
+	PRINT(("AppView::SetSaveAsColumn(BRefRow*)\n"));
 
-	const char* artist = item->GetColumnContentText(ARTIST_COLUMN_INDEX);
-	if (!artist) artist = "";
-	const char* album = item->GetColumnContentText(ALBUM_COLUMN_INDEX);
-	if (!album) album = "";
-	const char* title = item->GetColumnContentText(TITLE_COLUMN_INDEX);
-	if (!title) title = "";
-	const char* year = item->GetColumnContentText(YEAR_COLUMN_INDEX);
-	if (!year) year = "";
-	const char* comment = item->GetColumnContentText(COMMENT_COLUMN_INDEX);
-	if (!comment) comment = "";
-	const char* track = item->GetColumnContentText(TRACK_COLUMN_INDEX);
-	if (!track) track = "";
-	const char* genre = item->GetColumnContentText(GENRE_COLUMN_INDEX);
-	if (!genre) genre = "";
+	BStringField* tmpField;
+	const char* artist;
+	const char* album;
+	const char* title;
+	const char* year;
+	const char* comment;
+	const char* track;
+	const char* genre;
+
+	tmpField = (BStringField*)row->GetField(ARTIST_COLUMN_INDEX);
+	if (tmpField != NULL) artist = tmpField->String();
+	if (artist == NULL) artist = "";
+	tmpField = (BStringField*)row->GetField(ALBUM_COLUMN_INDEX);
+	if (tmpField != NULL) album = tmpField->String();
+	if (album == NULL) album = "";
+	tmpField = (BStringField*)row->GetField(TITLE_COLUMN_INDEX);
+	if (tmpField != NULL) title = tmpField->String();
+	if (title == NULL) title = "";
+	tmpField = (BStringField*)row->GetField(YEAR_COLUMN_INDEX);
+	if (tmpField != NULL) year = tmpField->String();
+	if (year == NULL) year = "";
+	tmpField = (BStringField*)row->GetField(COMMENT_COLUMN_INDEX);
+	if (tmpField != NULL) comment = tmpField->String();
+	if (comment == NULL) comment = "";
+	tmpField = (BStringField*)row->GetField(TRACK_COLUMN_INDEX);
+	if (tmpField != NULL) track = tmpField->String();
+	if (track == NULL) track = "";
+	tmpField = (BStringField*)row->GetField(GENRE_COLUMN_INDEX);
+	if (tmpField != NULL) genre = tmpField->String();
+	if (genre == NULL) genre = "";
 
 	AEEncoder* encoder = settings->Encoder();
 	if (encoder) {
@@ -456,7 +480,7 @@ AppView::SetSaveAsColumn(CLVRefListItem* item)
 		fileNamePattern.ReplaceAll("%c", comment);
 		fileNamePattern.ReplaceAll("%k", track);
 		fileNamePattern.ReplaceAll("%g", genre);
-		item->SetColumnContent(SAVE_AS_COLUMN_INDEX, fileNamePattern.String());
+		row->SetField(new BStringField(fileNamePattern.String()), SAVE_AS_COLUMN_INDEX);
 	}
 }
 
@@ -470,79 +494,78 @@ AppView::ApplyAttributeChanges(BMessage* message)
 	message->GetInfo("index", &index_type, &numSelected);
 
 	int32 index;
-	CLVRefListItem* item;
+	BRefRow* row;
 	for (int i = 0; i < numSelected; i++) {
 		if (message->FindInt32("index", i, &index) != B_OK) {
 			return;
 		}
 
-		item = (CLVRefListItem*)listView->ItemAt(index);
-		if (!item) {
+		row = (BRefRow*)listView->RowAt(index);
+		if (!row) {
 			return;
 		}
 
-		BString tmp;
+		BString tmpString;
 
-		if (message->FindString("artist", &tmp) == B_OK) {
-			item->SetColumnContent(ARTIST_COLUMN_INDEX, tmp.String());
+		if (message->FindString("artist", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), ARTIST_COLUMN_INDEX);
 		}
 
-		if (message->FindString("album", &tmp) == B_OK) {
-			item->SetColumnContent(ALBUM_COLUMN_INDEX, tmp.String());
+		if (message->FindString("album", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), ALBUM_COLUMN_INDEX);
 		}
 
-		if (message->FindString("title", &tmp) == B_OK) {
-			item->SetColumnContent(TITLE_COLUMN_INDEX, tmp.String());
+		if (message->FindString("title", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), TITLE_COLUMN_INDEX);
 		}
 
-		if (message->FindString("year", &tmp) == B_OK) {
-			item->SetColumnContent(YEAR_COLUMN_INDEX, tmp.String());
+		if (message->FindString("year", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), YEAR_COLUMN_INDEX);
 		}
 
-		if (message->FindString("comment", &tmp) == B_OK) {
-			item->SetColumnContent(COMMENT_COLUMN_INDEX, tmp.String());
+		if (message->FindString("comment", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), COMMENT_COLUMN_INDEX);
 		}
 
-		if (message->FindString("track", &tmp) == B_OK) {
-			if (tmp.CountChars() == 1) {
-				tmp.Prepend("0");
+		if (message->FindString("track", &tmpString) == B_OK) {
+			if (tmpString.CountChars() == 1) {
+				tmpString.Prepend("0");
 			}
-			item->SetColumnContent(TRACK_COLUMN_INDEX, tmp.String());
+			row->SetField(new BStringField(tmpString.String()), TRACK_COLUMN_INDEX);
 		}
 
-		if (message->FindString("genre", &tmp) == B_OK) {
-			item->SetColumnContent(GENRE_COLUMN_INDEX, tmp.String());
+		if (message->FindString("genre", &tmpString) == B_OK) {
+			row->SetField(new BStringField(tmpString.String()), GENRE_COLUMN_INDEX);
 		}
 
-		SetSaveAsColumn(item);
-		listView->InvalidateItem(index);
+		SetSaveAsColumn(row);
+		listView->InvalidateRow(row);
 	}
 }
 
 void
 AppView::RemoveNodeFromList(node_ref* ref)
 {
-	CLVRefListItem* item;
-	node_ref* itemRef;
-	int32 numItems = listView->CountItems();
-	for (int i = numItems - 1; i >= 0; i--) {
-		item = (CLVRefListItem*)listView->ItemAt(i);
-		if (item) {
-			itemRef = item->NodeRef();
-			if (*ref == *itemRef) {
+	BRefRow* row;
+	node_ref* rowRef;
+	int32 numRows = listView->CountRows();
+	for (int i = numRows - 1; i >= 0; i--) {
+		row = (BRefRow*)listView->RowAt(i);
+		if (row) {
+			rowRef = row->NodeRef();
+			if (*ref == *rowRef) {
 				if (settings->IsEncoding()) {
 					(new BAlert(0, REMOVED_TXT, OK))->Go(0);
 					Cancel();
 				}
-				watch_node(itemRef, B_STOP_WATCHING, this);
-				listView->Deselect(i);
-				listView->RemoveItem(i);
+				watch_node(rowRef, B_STOP_WATCHING, this);
+				listView->Deselect(listView->RowAt(i));
+				listView->RemoveRow(listView->RowAt(i));
 				listView->Invalidate();
-				delete item;
+				delete row;
 			}
 		}
 	}
-
 }
 
 void
@@ -551,20 +574,20 @@ AppView::RemoveDeviceItemsFromList(int32 device)
 	PRINT(("AppView::RemoveDeviceItemsFromList(int32)\n"));
 
 	bool deleted = false;
-	CLVRefListItem* item;
+	BRefRow* row;
 	entry_ref* ref;
-	int32 numItems = listView->CountItems();
-	for (int i = numItems - 1; i >= 0; i--) {
-		item = (CLVRefListItem*)listView->ItemAt(i);
-		if (item) {
-			ref = item->EntryRef();
+	int32 numRows = listView->CountRows();
+	for (int i = numRows - 1; i >= 0; i--) {
+		row = (BRefRow*)listView->RowAt(i);
+		if (row) {
+			ref = row->EntryRef();
 			if (device == ref->device) {
 				deleted = true;
-				watch_node(item->NodeRef(), B_STOP_WATCHING, this);
-				listView->Deselect(i);
-				listView->RemoveItem(i);
+				watch_node(row->NodeRef(), B_STOP_WATCHING, this);
+				listView->Deselect(listView->RowAt(i));
+				listView->RemoveRow(listView->RowAt(i));
 				listView->Invalidate();
-				delete item;
+				delete row;
 			}
 		}
 	}
@@ -581,16 +604,17 @@ AppView::RemoveItemsFromList(void* args)
 	PRINT(("AppView::RemoveItemsFromList(void*)\n"));
 
 	AppView* view = (AppView*)args;
-	CLVRefListItem* item;
-	int32 max = view->listView->CountItems();
+	BRefRow* row;
+	int32 max = view->listView->CountRows();
 	for (int i = max - 1; i >= 0; i--) {
-		if (view->listView->IsItemSelected(i)) {
+		if (view->listView->RowAt(i)->IsSelected()) {
 			PRINT(("%03d\n", i));
 			if (view->LockLooper()) {
-				view->listView->Deselect(i);
-				item = (CLVRefListItem*)view->listView->RemoveItem(i);
-				watch_node(item->NodeRef(), B_STOP_WATCHING, view);
-				delete item;
+				row = (BRefRow*)view->listView->RowAt(i);
+				view->listView->Deselect(row);
+				view->listView->RemoveRow(row);
+				watch_node(row->NodeRef(), B_STOP_WATCHING, view);
+				delete row;
 				view->listView->Invalidate();
 				view->UnlockLooper();
 			}
@@ -657,31 +681,30 @@ AppView::UpdateItem(BMessage* message)
 		}
 	}
 
-	CLVRefListItem* item;
-	int32 max = listView->CountItems();
+	BRefRow* row;
+	int32 max = listView->CountRows();
 	for (int i = 0; i < max; i++) {
-		item = (CLVRefListItem*)listView->ItemAt(i);
-		if (item) {
-			PRINT(("item's device = %d\n", item->NodeRef()->device));
-			if (item->NodeRef()->node == node) {
-				item->SetNodeRef(&nref);
-				item->SetEntryRef(&eref);
+		row = (BRefRow*)listView->RowAt(i);
+		if (row) {
+			PRINT(("item's device = %d\n", row->NodeRef()->device));
+			if (row->NodeRef()->node == node) {
+				row->SetNodeRef(&nref);
+				row->SetEntryRef(&eref);
 				if (LockLooper()) {
-					InitializeColumn(item);
-					listView->SortItems();
+					InitializeColumn(row);
 					listView->Invalidate();
 					UnlockLooper();
 				}
-			} else if (doVolume && (item->NodeRef()->device == dev)) {
+			} else if (doVolume && (row->NodeRef()->device == dev)) {
 				if (LockLooper()) {
-					InitializeColumn(item);
-					listView->SortItems();
+					InitializeColumn(row);
 					listView->Invalidate();
 					UnlockLooper();
 				}
 			}
 		}
 	}
+
 
 	return B_OK;
 }
@@ -729,35 +752,46 @@ AppView::EncodeThread(void* args)
 		view->UnlockLooper();
 	}
 
-	BList list;
-	CLVRefListItem* item;
-	int32 numItems = view->listView->CountItems();
+	BObjectList<BRefRow> objList;
+	BRefRow* row;
+	BBitmapField* tmpBitmapField;
+	BStringField* tmpStringField;
+	
+	int32 numRows = view->listView->CountRows();
 	if (view->LockLooper()) {
-		for (int i = 0; i < numItems; i++) {
-			item = (CLVRefListItem*)view->listView->ItemAt(i);
-			item->SetColumnContent(COMPLETE_COLUMN_INDEX, (const BBitmap*)NULL);
-			list.AddItem(item);
-			view->listView->InvalidateItem(i);
+		for (int i = 0; i < numRows; i++) {
+			row = (BRefRow*)view->listView->RowAt(i);
+			row->SetField(new BBitmapField((BBitmap*)NULL), COMPLETE_COLUMN_INDEX);
+			objList.AddItem(row);
+			view->listView->InvalidateRow(row);
 		}
 		view->UnlockLooper();
 	}
 
-	for (int i = 0; i < numItems; i++) {
-		item = (CLVRefListItem*)list.ItemAt(i);
-
-		const char* artist = item->GetColumnContentText(ARTIST_COLUMN_INDEX);
-		const char* album = item->GetColumnContentText(ALBUM_COLUMN_INDEX);
-		const char* title = item->GetColumnContentText(TITLE_COLUMN_INDEX);
-		const char* year = item->GetColumnContentText(YEAR_COLUMN_INDEX);
-		const char* comment = item->GetColumnContentText(COMMENT_COLUMN_INDEX);
-		const char* track = item->GetColumnContentText(TRACK_COLUMN_INDEX);
-		const char* genre = item->GetColumnContentText(GENRE_COLUMN_INDEX);
+	for (int i = 0; i < numRows; i++) {
+		row = objList.ItemAt(i);
+		
+		tmpStringField = (BStringField*)row->GetField(ARTIST_COLUMN_INDEX);
+		const char* artist = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(ALBUM_COLUMN_INDEX);
+		const char* album = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(TITLE_COLUMN_INDEX);
+		const char* title = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(YEAR_COLUMN_INDEX);
+		const char* year = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(COMMENT_COLUMN_INDEX);
+		const char* comment = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(TRACK_COLUMN_INDEX);
+		const char* track = tmpStringField->String();
+		tmpStringField = (BStringField*)row->GetField(GENRE_COLUMN_INDEX);
+		const char* genre = tmpStringField->String();
 		int32 genreNum;
 		if (genre) {
 			genreNum = GenreList::Genre(genre);
 		}
-		const char* outputFile = item->GetColumnContentText(SAVE_AS_COLUMN_INDEX);
-		entry_ref* ref = item->EntryRef();
+		tmpStringField = (BStringField*)row->GetField(SAVE_AS_COLUMN_INDEX);
+		const char* outputFile = tmpStringField->String();
+		entry_ref* ref = row->EntryRef();
 		BEntry entry(ref);
 		if (entry.InitCheck() != B_OK) {
 			PRINT(("ERROR: entry failed InitCheck()\n"));
@@ -879,7 +913,7 @@ AppView::EncodeThread(void* args)
 			BString encoding(STATUS_LABEL);
 			encoding << path.Leaf();
 			BString remaining(STATUS_TRAILING_LABEL);
-			remaining << (numItems - i);
+			remaining << (numRows - i);
 			view->statusBar->Reset(encoding.String(), remaining.String());
 			view->UnlockLooper();
 		}
@@ -1026,10 +1060,10 @@ AppView::EncodeThread(void* args)
 		}
 
 		if (view->LockLooper()) {
-			const BBitmap* checkMark = view->listView->GetCheckMark();
-			item->SetColumnContent(COMPLETE_COLUMN_INDEX, checkMark);
-			int index = view->listView->IndexOf(item);
-			view->listView->InvalidateItem(index);
+			BBitmap* checkMark = view->listView->GetCheckMark();
+			tmpBitmapField = (BBitmapField*)row->GetField(COMPLETE_COLUMN_INDEX);
+			tmpBitmapField->SetBitmap(checkMark);
+			view->listView->InvalidateRow(row);
 			view->UnlockLooper();
 		}
 	}

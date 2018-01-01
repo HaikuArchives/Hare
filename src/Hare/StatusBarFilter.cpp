@@ -4,7 +4,7 @@
 #include <Message.h>
 #include <StatusBar.h>
 
-#include <AEEncoder/AEEncoder.h>
+#include "AEEncoder.h"
 
 #include "Settings.h"
 
