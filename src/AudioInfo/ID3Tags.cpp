@@ -6,9 +6,9 @@
 #include <NodeInfo.h>
 #include <String.h>
 
-#include <mpegfile.h>
-#include <oggfile.h>
-#include <vorbisfile.h>
+#include <taglib/mpegfile.h>
+#include <taglib/oggfile.h>
+#include <taglib/vorbisfile.h>
 
 #include "GenreList.h"
 #include "ID3Tags.h"
