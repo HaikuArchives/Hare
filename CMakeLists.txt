@@ -15,7 +15,5 @@ set(HARE_BUILD_ADDONS_DIR ${HARE_BINARY_DIR}/build/add-ons)
 
 include(UseHaiku)
 
-include_directories("${HARE_SOURCE_DIR}/include/taglib")
-
 add_subdirectory(src)
 
