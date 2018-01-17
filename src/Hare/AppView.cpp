@@ -15,6 +15,7 @@
 #include <fs_info.h>
 #include <image.h>
 #include <InterfaceDefs.h>
+#include <LayoutBuilder.h>
 #include <MenuBar.h>
 #include <Message.h>
 #include <Node.h>
@@ -25,10 +26,11 @@
 #include <Path.h>
 #include <Rect.h>
 #include <ScrollBar.h>
+#include <ScrollView.h>
 #include <StatusBar.h>
 #include <StringView.h>
-#include <TextControl.h>
 #include <String.h>
+#include <TextControl.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
 
@@ -51,10 +53,9 @@
 #include "Settings.h"
 #include "StatusBarFilter.h"
 
-AppView::AppView(BRect frame)
+AppView::AppView()
 	:
-	BView(frame, "AppView", B_FOLLOW_ALL,
-		B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP)
+	BView("AppView", B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP)
 {
 	PRINT(("AppView::AppView(BRect)\n"));
 
@@ -75,73 +76,41 @@ AppView::InitView()
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	int32 space = 6;
 
-	BRect fileNameFrame = Bounds();
-	fileNameFrame.InsetBy(space, space);
-	fileNameFrame.bottom = 200;
-	fileNameFrame.right = 200;
-	fileNamePatternView = new FileNamePatternView(fileNameFrame);
-	AddChild(fileNamePatternView);
-	fileNameFrame = fileNamePatternView->Frame(); //it resizes itself
+	fileNamePatternView = new FileNamePatternView();
 
-	BRect editorFrame = fileNameFrame;
-	editorFrame.left = fileNameFrame.right + space;
-	editorFrame.right = editorFrame.left + 365;
-	editorView = new EditorView(editorFrame);
-	AddChild(editorView);
-	editorFrame = editorView->Frame(); //it resizes itself
+	editorView = new EditorView();
+	
+	encodeButton = new BButton("encodeButton", ENCODE_BTN,
+							   new BMessage(ENCODE_MSG));
 
-	if (editorFrame.bottom > fileNameFrame.bottom) {
-		float diff = editorFrame.bottom - fileNameFrame.bottom;
-		fileNamePatternView->ResizeBy(0, diff);
-		fileNameFrame = fileNamePatternView->Frame();
-	} else if (editorFrame.bottom < fileNameFrame.bottom) {
-		float diff = fileNameFrame.bottom - editorFrame.bottom;
-		editorView->ResizeBy(0, diff);
-		editorFrame = editorView->Frame();
-	}
+	cancelButton = new BButton("cancelButton", CANCEL_BTN,
+							   new BMessage(CANCEL_MSG));
 
-	BRect buttonFrame = Bounds();
-	buttonFrame.InsetBy(space, space);
-	// buttonFrame.bottom = buttonFrame.bottom - 2;
-	buttonFrame.top = buttonFrame.bottom - 30;
-	buttonFrame.left = buttonFrame.right - 70;
-	encodeButton = new BButton(buttonFrame, "encodeButton", ENCODE_BTN,
-							   new BMessage(ENCODE_MSG), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
-
-	buttonFrame.OffsetBy(-(buttonFrame.Width() + space), 0);
-	cancelButton = new BButton(buttonFrame, "cancelButton", CANCEL_BTN,
-							   new BMessage(CANCEL_MSG), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
-
-	BRect listViewFrame = Bounds();
-	listViewFrame.left += space;
-	listViewFrame.top = fileNameFrame.bottom + (space);
-	listViewFrame.right -= (space + B_V_SCROLL_BAR_WIDTH);
-	listViewFrame.bottom = buttonFrame.top - (space + B_H_SCROLL_BAR_HEIGHT);
-	listView = new EncoderListView(listViewFrame);
+	listView = new EncoderListView();
 	listView->SetSelectionMessage(new BMessage(LIST_SELECTION_MSG));
 
-	BRect statusBarFrame = buttonFrame;
-	statusBarFrame.left = Bounds().left + space;
-	statusBarFrame.right = buttonFrame.left - space;
-	statusBarFrame.top = statusBarFrame.top - 4;
-	// statusBarFrame.bottom = statusBarFrame.bottom-4;
 	BString remaining(STATUS_TRAILING_LABEL);
 	remaining << 0;
-	statusBar = new BStatusBar(statusBarFrame, "statusBar", STATUS_LABEL,
+	statusBar = new BStatusBar("statusBar", STATUS_LABEL,
 							   remaining.String());
-	statusBar->SetResizingMode(B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
 	statusBar->AddFilter(new StatusBarFilter());
-
-	BRect viewFrame = Bounds();
-	if (viewFrame.right < (editorFrame.right + space)) {
-		float diff = (editorFrame.right + space) - viewFrame.right;
-		ResizeBy(diff, 0);
-	}
-
-	AddChild(listView);
-	AddChild(encodeButton);
-	AddChild(cancelButton);
-	AddChild(statusBar);
+	
+	BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_DEFAULT_SPACING)
+		.SetInsets(B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS, 
+						B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS)
+		.AddSplit(B_VERTICAL, B_USE_HALF_ITEM_SPACING)
+			.AddSplit(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+				.Add(fileNamePatternView, 0.0f)
+				.Add(editorView, 0.0f)
+				.End()
+			.Add(listView, 1.0f)
+			.End()
+		.AddGroup(B_HORIZONTAL)
+			.Add(statusBar, 0.0f)
+			.Add(cancelButton, 1.0f)
+			.Add(encodeButton, 1.0f)
+			.End()
+	.End();
 }
 
 void
@@ -383,9 +352,6 @@ AppView::InitializeColumn(BRefRow* row)
 			row->SetField(new BStringField((const char*)0), ALBUM_COLUMN_INDEX);
 			row->SetField(new BStringField((const char*)0), TITLE_COLUMN_INDEX);
 		}
-	} else {
-		AlertUser("Hare only accepts audio CDs!");
-		return;
 	}
 
 	if (volume.KnowsAttr()) {

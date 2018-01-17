@@ -8,6 +8,7 @@
 #include <CheckBox.h>
 #include <Debug.h>
 #include <Entry.h>
+#include <LayoutBuilder.h>
 #include <List.h>
 #include <ListView.h>
 #include <Menu.h>
@@ -32,9 +33,9 @@
 #include "CommandConstants.h"
 #include "GUIStrings.h"
 
-EditorView::EditorView(BRect frame)
+EditorView::EditorView()
         :
-        BBox(frame, "editorView")
+        BBox("editorView")
 {
         PRINT(("EditorView::EditorView(BRect)\n"));
 }
@@ -49,7 +50,7 @@ EditorView::InitView()
 {
         PRINT(("EditorView::InitView()\n"));
 
-        SetLabel(EDITOR_LABEL);
+		SetLabel(EDITOR_LABEL);
 
         int space = 6;
 
@@ -102,9 +103,6 @@ EditorView::InitView()
         //use cb to determine spacing of box at different fonts
         BCheckBox cb(BRect(0, 0, 0, 0), 0, 0, 0);
         cb.ResizeToPreferred();
-       
-
-
 
         /*BRect leftCB = Bounds();
         leftCB.InsetBy(space, 2 * space);
@@ -131,60 +129,34 @@ EditorView::InitView()
         rightTC.left = rightCB.right + space / 2;
         rightTC.right = rightTC.left + 110;*/
 
-        artistCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "artistCB", ARTIST_COLUMN,
-                                                                    new BMessage(MSG_ARTIST_CB));
+        artistCheckBox = new BCheckBox("artistCB", ARTIST_COLUMN, new BMessage(MSG_ARTIST_CB));
 
-        artistTextControl = new BTextControl(BRect(0, 0, 16, 16), "artistTC", 0, "", 0);
+        artistTextControl = new BTextControl("artistTC", 0, "", 0);
 
-        albumCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "albumCB", ALBUM_COLUMN,
-                                                                    new BMessage(MSG_ALBUM_CB));
+        albumCheckBox = new BCheckBox("albumCB", ALBUM_COLUMN, new BMessage(MSG_ALBUM_CB));
 
-        albumTextControl = new BTextControl(BRect(0, 0, 16, 16), "albumTC", 0, "", 0);
+        albumTextControl = new BTextControl("albumTC", 0, "", 0);
        
-        titleCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "titleCB", TITLE_COLUMN,
-                                                                        new BMessage(MSG_TITLE_CB));
-        titleTextControl = new BTextControl(BRect(0, 0, 16, 16), "titleTC", 0, "", 0);
-
-        trackCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "trackCB", TRACK_COLUMN, new BMessage(MSG_TRACK_CB));
-
-        trackTextControl = new BTextControl(BRect(0, 0, 16, 16), "trackTC", 0, "", 0);
-
-        yearCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "yearCB", YEAR_COLUMN, new BMessage(MSG_YEAR_CB));
-
-        yearTextControl = new BTextControl(BRect(0, 0, 16, 16), "yearTC", 0, "", 0);
-
-        commentCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "commentCB", COMMENT_COLUMN, new BMessage(MSG_COMMENT_CB));
-
-        commentTextControl = new BTextControl(BRect(0, 0, 16, 16), "commentTC", 0, "", 0);
-       
-        genreCheckBox = new BCheckBox(BRect(0, 0, 1, 1), "genreCB", GENRE_COLUMN, new BMessage(MSG_GENRE_CB));
-
-
-        // Build the layout
-        SetLayout(new BGroupLayout(B_HORIZONTAL));
+        titleCheckBox = new BCheckBox("titleCB", TITLE_COLUMN, new BMessage(MSG_TITLE_CB));
         
-    AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
-          .Add(BGridLayoutBuilder(10,10)
-     
-                    .Add(artistCheckBox, 0, 0)
-                                .Add(artistTextControl,1, 0)
-                                .Add(albumCheckBox, 0, 1)
-                                .Add(albumTextControl,1, 1)
-                                .Add(titleCheckBox, 0, 2)
-                                .Add(titleTextControl,1, 2)
-                                .Add(trackCheckBox, 0, 3)
-                            .Add(trackTextControl,1, 3)
-                                .Add(yearCheckBox, 0, 4)
-                                .Add(yearTextControl, 1, 4)
-                        
-                                .Add(commentCheckBox, 3, 0)
-                                .Add(commentTextControl, 4, 0)
-                                .Add(genreCheckBox, 3, 1)
-                )
-        );
+        titleTextControl = new BTextControl("titleTC", 0, "", 0);
+
+        trackCheckBox = new BCheckBox("trackCB", TRACK_COLUMN, new BMessage(MSG_TRACK_CB));
+
+        trackTextControl = new BTextControl("trackTC", 0, "", 0);
+
+        yearCheckBox = new BCheckBox("yearCB", YEAR_COLUMN, new BMessage(MSG_YEAR_CB));
+
+        yearTextControl = new BTextControl("yearTC", 0, "", 0);
+
+        commentCheckBox = new BCheckBox("commentCB", COMMENT_COLUMN, new BMessage(MSG_COMMENT_CB));
+
+        commentTextControl = new BTextControl("commentTC", 0, "", 0);
+       
+        genreCheckBox = new BCheckBox("genreCB", GENRE_COLUMN, new BMessage(MSG_GENRE_CB));
 
 
-        genreBox = new BBox(BRect(0,0,100,100), "genreBox");
+        genreBox = new BBox(B_FANCY_BORDER);
 
         // INSIDE THE BOX
         {
@@ -206,23 +178,46 @@ EditorView::InitView()
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }
-                        menu->AddItem(new BMenuItem(genre,
-                                                                                new BMessage(GENRE_SEL_CHNGD)));
+                        menu->AddItem(new BMenuItem(genre, new BMessage(GENRE_SEL_CHNGD)));
                         last = current;
                 }
 
-                BRect ctrlFrame = genreBox->Bounds();
-                ctrlFrame.InsetBy(space, space);
-                ctrlFrame.bottom = ctrlFrame.top + height;
-                genreMenuField = new BMenuField(ctrlFrame, "genreMenuField", 0, menu);
+                genreMenuField = new BMenuField("genreMenuField", 0, menu);
 
-                ctrlFrame.OffsetBy(0, height + (2 * space));
-                genreTextControl = new BTextControl(ctrlFrame, "genreTextControl", 0, "", 0);
+                genreTextControl = new BTextControl("genreTextControl", 0, "", 0);
         }
         // DONE INSIDE THE BOX
 
-        applyButton = new BButton(BRect(0, 1, 80, 1), "applyButton", APPLY_BTN,
-                                                          new BMessage(APPLY_MSG), B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+        applyButton = new BButton("applyButton", APPLY_BTN, new BMessage(APPLY_MSG));
+        
+        //Build the simple layout in the genre box
+
+		BLayoutBuilder::Group<>(genreBox, B_VERTICAL)
+			.SetInsets(B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING) 
+			.Add(genreMenuField)
+			.Add(genreTextControl)
+			.End();
+
+		// Build the layout
+        
+    	BLayoutBuilder::Grid<>(this)
+    		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)   
+			.Add(artistCheckBox, 0, 0)
+			.Add(artistTextControl,1, 0)
+			.Add(albumCheckBox, 0, 1)
+			.Add(albumTextControl,1, 1)
+			.Add(titleCheckBox, 0, 2)
+			.Add(titleTextControl,1, 2)
+			.Add(trackCheckBox, 0, 3)
+			.Add(trackTextControl, 1, 3)
+			.Add(yearCheckBox, 0, 4)
+			.Add(yearTextControl, 1, 4)                    
+			.Add(commentCheckBox, 0, 5)
+			.Add(commentTextControl, 1, 5)
+			.Add(genreCheckBox, 0, 6)
+			.Add(genreBox, 1, 6)
+			.Add(applyButton, 10, 10)
+		.End();
 
         /*AddChild(artistCheckBox);
         AddChild(artistTextControl);

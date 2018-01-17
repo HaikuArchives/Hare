@@ -15,9 +15,9 @@
 #include "GUIStrings.h"
 #include "Settings.h"
 
-EncoderListView::EncoderListView(BRect frame)
+EncoderListView::EncoderListView()
 	:
-	BColumnListView(frame, "listView", B_FOLLOW_ALL,
+	BColumnListView("listView",
 		B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE | B_NAVIGABLE_JUMP,
 		B_FANCY_BORDER, true)
 {

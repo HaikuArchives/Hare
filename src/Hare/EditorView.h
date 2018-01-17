@@ -17,7 +17,7 @@ class BTextControl;
 
 class EditorView : public BBox {
 public:
-	EditorView(BRect frame);
+	EditorView();
 	~EditorView();
 	virtual void AttachedToWindow();
 	virtual void GetPreferredSize(float* width, float* height);

@@ -2,6 +2,7 @@
 
 #include <Button.h>
 #include <Debug.h>
+#include <LayoutBuilder.h>
 #include <Message.h>
 #include <Messenger.h>
 #include <Rect.h>
@@ -16,9 +17,9 @@
 #include "GUIStrings.h"
 #include "Settings.h"
 
-FileNamePatternView::FileNamePatternView(BRect frame)
+FileNamePatternView::FileNamePatternView()
 	:
-	BBox(frame)
+	BBox("fileNamePatternBox")
 {
 	PRINT(("FileNamePatternView::FileNamePatternView(BRect)\n"));
 }
@@ -78,69 +79,49 @@ FileNamePatternView::InitView()
 			i++;
 		}
 	*/
-	BRect leftFrame = Bounds();
-	leftFrame.InsetBy(space, 2 * space);
-	leftFrame.right = 200; //leftFrame.left + leftWidth;
-	leftFrame.bottom = 100; //leftFrame.top + height;
-	BRect centerFrame = leftFrame;
-	centerFrame.left = leftFrame.right + space;
-	centerFrame.right = centerFrame.left + centerWidth;
-	BRect rightFrame = leftFrame;
-	rightFrame.left = centerFrame.right + space;
-	rightFrame.right = rightFrame.left + rightWidth;
 
-	artistStringView = new BStringView(leftFrame, "artist", ARTIST_LABEL);
 
-	leftFrame.OffsetBy(0, height + space);
-	yearStringView = new BStringView(leftFrame, "year", YEAR_LABEL);
+	artistStringView = new BStringView("artist", ARTIST_LABEL);
 
-	leftFrame.OffsetBy(0, height + space);
-	leftFrame.right = leftFrame.left + StringWidth(COMMENT_LABEL);
-	commentStringView = new BStringView(leftFrame, "comment", COMMENT_LABEL);
+	yearStringView = new BStringView("year", YEAR_LABEL);
 
-	albumStringView = new BStringView(centerFrame, "album", ALBUM_LABEL);
+	commentStringView = new BStringView("comment", COMMENT_LABEL);
 
-	centerFrame.OffsetBy(0, height + space);
-	trackStringView = new BStringView(centerFrame, "track", TRACK_LABEL);
+	albumStringView = new BStringView("album", ALBUM_LABEL);
 
-	titleStringView = new BStringView(rightFrame, "title", TITLE_LABEL);
+	trackStringView = new BStringView("track", TRACK_LABEL);
 
-	rightFrame.OffsetBy(0, height + space);
-	genreStringView = new BStringView(rightFrame, "genre", GENRE_LABEL);
+	titleStringView = new BStringView("title", TITLE_LABEL);
 
-	BRect tcFrame = Bounds();
-	tcFrame.InsetBy(space, space);
-	tcFrame.top = leftFrame.bottom + space;
-	tcFrame.bottom = tcFrame.top + height;
-	tcFrame.right = tcFrame.left + 400;
+	genreStringView = new BStringView("genre", GENRE_LABEL);
+
 	AEEncoder* encoder = settings->Encoder();
 	BString str;
 	if (encoder) {
 		str = encoder->GetPattern();
 	}
-	fileNamePatternTextControl = new BTextControl(tcFrame,
-			"fileNamePatternTextControl", 0, str.String(), 0, B_FOLLOW_LEFT);
+	fileNamePatternTextControl = new BTextControl("fileNamePatternTextControl",
+													B_EMPTY_STRING, str.String(), NULL);
 
-	BRect buttonFrame = Bounds();
-	buttonFrame.InsetBy(space, space);
-	buttonFrame.left = buttonFrame.right - 60;
-	buttonFrame.top = buttonFrame.bottom - 25;
-
-	applyButton = new BButton(buttonFrame, "applyButton", APPLY_BTN,
-							  new BMessage(FILE_NAME_PATTERN_CHANGED),
-							  B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
-
-	AddChild(artistStringView);
-	AddChild(albumStringView);
-	AddChild(titleStringView);
-	AddChild(yearStringView);
-	AddChild(trackStringView);
-	AddChild(genreStringView);
-	AddChild(commentStringView);
-	AddChild(fileNamePatternTextControl);
-	AddChild(applyButton);
-
-	ResizeToPreferred();
+	applyButton = new BButton("applyButton", APPLY_BTN,
+							  new BMessage(FILE_NAME_PATTERN_CHANGED));
+	
+	BLayoutBuilder::Group<>(this, B_VERTICAL)
+		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)
+		.AddGrid(1.0f, 0.0f)
+			.Add(artistStringView, 0, 0)
+			.Add(albumStringView, 1, 0)
+			.Add(titleStringView, 2, 0)
+			.Add(yearStringView, 0, 1)
+			.Add(trackStringView, 1, 1)
+			.Add(genreStringView, 2, 1)
+			.Add(commentStringView, 0, 2)
+		.End()
+		.AddGroup(B_HORIZONTAL, 0.0f)
+			.Add(fileNamePatternTextControl)
+			.Add(applyButton)
+		.End()
+	.End();
 }
 
 void

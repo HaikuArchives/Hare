@@ -11,7 +11,7 @@ class BTextControl;
 
 class FileNamePatternView : public BBox {
 public:
-	FileNamePatternView(BRect frame);
+	FileNamePatternView();
 	~FileNamePatternView();
 	virtual void AttachedToWindow();
 	virtual void GetPreferredSize(float* width, float* height);

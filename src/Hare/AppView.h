@@ -18,7 +18,7 @@ class FileNamePatternView;
 
 class AppView : public BView {
 public:
-	AppView(BRect frame);
+	AppView();
 	~AppView();
 	virtual void AttachedToWindow();
 	virtual void MessageReceived(BMessage* message);

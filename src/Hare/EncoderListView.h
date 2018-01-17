@@ -10,7 +10,7 @@ class BetterScrollView;
 
 class EncoderListView : public BColumnListView {
 public:
-	EncoderListView(BRect frame);
+	EncoderListView();
 	~EncoderListView();
 	virtual void AttachedToWindow();
 	virtual void MessageReceived(BMessage* message);

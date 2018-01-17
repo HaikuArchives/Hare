@@ -11,6 +11,7 @@
 #include <FindDirectory.h>
 #include <fs_info.h>
 #include <image.h>
+#include <LayoutBuilder.h>
 #include <Message.h>
 #include <Menu.h>
 #include <MenuBar.h>
@@ -41,7 +42,7 @@
 AppWindow::AppWindow()
 	: 
 	BWindow(BRect(WIN_LEFT, WIN_TOP, WIN_RIGHT, WIN_BOTTOM),
-		APPLICATION, B_TITLED_WINDOW, B_NOT_RESIZABLE /*B_ASYNCHRONOUS_CONTROLS*/)
+		APPLICATION, B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	PRINT(("AppWindow::AppWindow()\n"));
 
@@ -80,9 +81,6 @@ AppWindow::InitWindow()
 	encoderAddon = 0;
 
 	SetTitle(APPLICATION);
-	SetType(B_TITLED_WINDOW);
-	SetFlags(B_ASYNCHRONOUS_CONTROLS);
-	SetSizeLimits(WIN_MIN_WIDTH, WIN_MAX_WIDTH, WIN_MIN_HEIGHT, WIN_MAX_HEIGHT);
 	SetWorkspaces(B_CURRENT_WORKSPACE);
 
 	node_ref addon_ref;
@@ -110,15 +108,13 @@ AppWindow::InitWindow()
 
 	InitMenus();
 
-	BRect frame = Bounds();
-	frame.top += (menuBar->Bounds()).Height() + 1;
+	appView = new AppView();
+	
+	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+		.Add(menuBar)
+		.Add(appView)
+	.End();
 
-	appView = new AppView(frame);
-	AddChild(appView);
-	frame = appView->Frame();
-	if (Bounds().right < frame.right) {
-		ResizeBy((frame.right - Bounds().right), 0);
-	}
 	viewMessenger = new BMessenger(appView);
 
 	BMessage* viewShortcut = 0;
@@ -205,7 +201,6 @@ AppWindow::InitMenus()
 	menuBar->AddItem(encoderMenu);
 	LoadEncoderMenu();
 
-	AddChild(menuBar);
 	SetKeyMenuBar(menuBar);
 }
 
