@@ -1,0 +1,10 @@
+SUBDIRS := src/Encoders/BeEncoder \
+		   src/Encoders/M3UCreator \
+		   src/Encoders/MP3GoGo \
+		   src/Encoders/MP3Lame \
+		   src/Encoders/OGGEncoder
+
+all clean:
+	@for d in $(SUBDIRS); do \
+		$(MAKE) -C "$$d" $(MAKECMDGOALS) || exit $?; \
+	done
