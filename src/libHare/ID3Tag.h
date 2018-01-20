@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 #include <String.h>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
+
+#include <fileref.h>
+#include <tag.h>
 
 enum {
 	TITLE_TAG	=	200,
