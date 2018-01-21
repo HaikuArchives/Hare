@@ -12,8 +12,7 @@ class BVolumeRoster;
 
 class AppWindow : public BWindow {
 public:
-	AppWindow();
-	AppWindow(BMessage* archive);
+	AppWindow(BRect windowFrame);
 	~AppWindow();
 	static AppWindow* GetInstance();
 	BMenuBar* MenuBar();
@@ -25,7 +24,6 @@ public:
 private:
 	void InitWindow();
 	void InitMenus();
-	void SaveWindow();
 	void LoadCDMenu();
 	void LoadEncoderMenu();
 	void MenuItemSelected(BMessage* message);

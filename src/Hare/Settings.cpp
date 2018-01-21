@@ -28,6 +28,7 @@ Settings::Settings()
 {
 	PRINT(("Settings::Settings()\n"));
 
+	windowFrame = BRect(0, 0, 0, 0);
 	encoding = false;
 	encoder = NULL;
 	strcpy(encoderName, DEFAULT_ENCODER);
@@ -65,6 +66,12 @@ Settings::Settings(BMessage* archive)
 	status_t status;
 	BString tmp;
 
+	status = archive->FindRect("windowFrame", &windowFrame);
+	if (status != B_OK) {
+		PRINT(("Error loading WINDOW_FRAME"));
+		windowFrame = BRect(0, 0, 0, 0);
+	}
+	
 	encoding = false;
 	encoder = NULL;
 	status = archive->FindString("encoderName", &tmp);
@@ -159,6 +166,10 @@ Settings::Archive(BMessage* archive, bool deep) const
 	status = BArchivable::Archive(archive, deep);
 
 	if (status == B_OK) {
+		status = archive->AddRect("windowFrame", windowFrame);
+	}
+
+	if (status == B_OK) {
 		status = archive->AddString("encoderName", encoderName);
 	}
 
@@ -233,6 +244,18 @@ Settings::SaveSettings()
 	if (settings.InitCheck() == B_OK) {
 		archive.Flatten(&settings);
 	}
+}
+
+BRect
+Settings::WindowFrame()
+{
+	return windowFrame;
+}
+
+void
+Settings::SetWindowFrame(BRect value)
+{
+	windowFrame = value;
 }
 
 bool
