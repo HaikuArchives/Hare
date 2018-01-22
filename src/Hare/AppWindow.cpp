@@ -30,30 +30,12 @@
 #include "GUIStrings.h"
 #include "Settings.h"
 
-#define WIN_LEFT        200
-#define WIN_TOP         200
-#define WIN_RIGHT       700 // was 810
-#define WIN_BOTTOM      200 // was 600
-#define WIN_MIN_WIDTH   1000 // was 610
-#define WIN_MAX_WIDTH	1000
-#define WIN_MIN_HEIGHT  500 // was 400
-#define WIN_MAX_HEIGHT  500 // was 1000
-
-AppWindow::AppWindow()
+AppWindow::AppWindow(BRect windowFrame)
 	: 
-	BWindow(BRect(WIN_LEFT, WIN_TOP, WIN_RIGHT, WIN_BOTTOM),
-		APPLICATION, B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(windowFrame, APPLICATION, B_DOCUMENT_WINDOW, 
+				B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	PRINT(("AppWindow::AppWindow()\n"));
-
-	InitWindow();
-}
-
-AppWindow::AppWindow(BMessage* archive)
-	:
-	BWindow(archive)
-{
-	PRINT(("AppWindow::AppWindow(BMessage*)\n"));
 
 	InitWindow();
 }
@@ -65,18 +47,13 @@ AppWindow::~AppWindow()
 	stop_watching(this);
 	delete volumes;
 
-
-	SaveWindow();
+	settings->SetWindowFrame(Frame());
 }
 
 void
 AppWindow::InitWindow()
 {
 	PRINT(("AppWindow::InitWindow()\n"));
-
-	Settings::OpenSettings();
-
-	PRINT_OBJECT(*settings);
 
 	encoderAddon = 0;
 
@@ -596,41 +573,14 @@ AppWindow::GetInstance()
 {
 	PRINT(("AppWindow::GetInstance()\n"));
 
-	BPath path;
-	BFile settings;
-	BMessage archive;
+	BRect windowFrame;
 	AppWindow* win = 0;
+	
+	Settings::OpenSettings();
+	PRINT_OBJECT(*settings);
 
-	find_directory(B_USER_SETTINGS_DIRECTORY, &path);
-	path.Append(COMPANY);
-	path.Append(APPLICATION);
-	path.Append(WINDOW_FILE);
+	windowFrame = settings->WindowFrame();
+	win = new AppWindow(windowFrame);
 
-	if ((settings.SetTo(path.Path(), B_READ_ONLY) == B_OK)
-			&& (archive.Unflatten(&settings) == B_OK)) {
-		win = new AppWindow(&archive);
-	} else {
-		win = new AppWindow();
-	}
 	return(win);
-}
-
-void
-AppWindow::SaveWindow()
-{
-	PRINT(("AppWindow::SaveWindow()\n"));
-
-	BPath path;
-	find_directory(B_USER_SETTINGS_DIRECTORY, &path);
-	path.Append(COMPANY);
-	path.Append(APPLICATION);
-	create_directory(path.Path(), 0755);
-	path.Append(WINDOW_FILE);
-
-	BMessage archive;
-	status_t status = Archive(&archive, false);
-	BFile settings(path.Path(), B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE);
-	if ((settings.InitCheck() == B_OK) && (status == B_OK)) {
-		archive.Flatten(&settings);
-	}
 }

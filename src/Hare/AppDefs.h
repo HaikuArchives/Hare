@@ -11,7 +11,7 @@
 #define SETTINGS "Hare Settings"
 #define ADD_ON_DIR "add-ons"
 
-#define SIGNATURE "application/x-vnd.osdrawer.hare"
+#define SIGNATURE "application/x-vnd.haikuarchives.hare"
 
 #define CDDA_MIME_TYPE "audio/x-cdda"
 
