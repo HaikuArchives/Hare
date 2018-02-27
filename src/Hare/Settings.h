@@ -19,10 +19,10 @@ public:
 
 	static void OpenSettings();
 	void SaveSettings();
-
+/*
 	BRect WindowFrame();
 	void SetWindowFrame(BRect value);
-
+*/
 	bool IsEncoding();
 	void SetEncoding(bool value);
 
@@ -45,7 +45,7 @@ public:
 
 	void PrintToStream();
 private:
-	BRect windowFrame;
+//	BRect windowFrame;
 	bool encoding;
 	AEEncoder* encoder;
 	char encoderName[B_FILE_NAME_LENGTH];

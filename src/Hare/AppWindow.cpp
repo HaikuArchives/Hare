@@ -30,14 +30,15 @@
 #include "GUIStrings.h"
 #include "Settings.h"
 
-AppWindow::AppWindow(BRect windowFrame)
+AppWindow::AppWindow()
 	: 
-	BWindow(windowFrame, APPLICATION, B_DOCUMENT_WINDOW, 
-				B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(BRect(0,0,0,0) , APPLICATION, B_DOCUMENT_WINDOW, 
+				B_ASYNCHRONOUS_CONTROLS| B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	PRINT(("AppWindow::AppWindow()\n"));
 
 	InitWindow();
+	CenterOnScreen();
 }
 
 AppWindow::~AppWindow()
@@ -47,7 +48,7 @@ AppWindow::~AppWindow()
 	stop_watching(this);
 	delete volumes;
 
-	settings->SetWindowFrame(Frame());
+//	settings->SetWindowFrame(Frame());
 }
 
 void
@@ -84,6 +85,7 @@ AppWindow::InitWindow()
 	volumes->StartWatching(*windowMessenger);
 
 	InitMenus();
+	SetKeyMenuBar(menuBar);
 
 	appView = new AppView();
 	
@@ -455,6 +457,11 @@ AppWindow::FrameResized(float width, float height)
 	title << height;
 	SetTitle(title.String());
 #endif
+	
+	for(int i = 0; i < CountChildren(); i++)
+	{
+		ChildAt(i)->Invalidate();
+	}
 }
 
 void
@@ -572,15 +579,13 @@ AppWindow*
 AppWindow::GetInstance()
 {
 	PRINT(("AppWindow::GetInstance()\n"));
-
-	BRect windowFrame;
+	
 	AppWindow* win = 0;
 	
 	Settings::OpenSettings();
 	PRINT_OBJECT(*settings);
 
-	windowFrame = settings->WindowFrame();
-	win = new AppWindow(windowFrame);
+	win = new AppWindow();
 
 	return(win);
 }

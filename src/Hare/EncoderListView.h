@@ -6,14 +6,15 @@
 class BBitmap;
 class BMessage;
 class BRect;
-class BetterScrollView;
 
 class EncoderListView : public BColumnListView {
 public:
 	EncoderListView();
 	~EncoderListView();
 	virtual void AttachedToWindow();
+	virtual void MessageDropped(BMessage* message, BPoint point);
 	virtual void MessageReceived(BMessage* message);
+	virtual void SelectionChanged();
 	BBitmap* GetCheckMark();
 private:
 	void InitView();

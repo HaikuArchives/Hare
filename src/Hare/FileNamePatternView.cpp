@@ -36,51 +36,6 @@ FileNamePatternView::InitView()
 
 	SetLabel(FILE_NAME_PATTERN_BOX_LABEL);
 
-	int space = 6;
-
-	font_height fh;
-	GetFontHeight(&fh);
-	float height = fh.ascent + fh.descent + fh.leading;
-	char* left[] = {ARTIST_LABEL, YEAR_LABEL, 0};
-	char* center[] = {ALBUM_LABEL, TRACK_LABEL, 0};
-	char* right[] = {TITLE_LABEL, GENRE_LABEL, 0};
-	float leftWidth = 0;
-	float centerWidth = 100;
-	float rightWidth = 200;
-
-	/*
-		int i=0;
-		while(left[i])
-		{
-			if(StringWidth(left[i]) > leftWidth)
-			{
-				leftWidth = StringWidth(left[i]);
-			}
-			i++;
-		}
-
-		i=0;
-		while(center[i])
-		{
-			if(StringWidth(center[i]) > centerWidth)
-			{
-				centerWidth = StringWidth(center[i]);
-			}
-			i++;
-		}
-
-		i=0;
-		while(right[i])
-		{
-			if(StringWidth(right[i]) > rightWidth)
-			{
-				rightWidth = StringWidth(right[i]);
-			}
-			i++;
-		}
-	*/
-
-
 	artistStringView = new BStringView("artist", ARTIST_LABEL);
 
 	yearStringView = new BStringView("year", YEAR_LABEL);
@@ -117,7 +72,7 @@ FileNamePatternView::InitView()
 			.Add(genreStringView, 2, 1)
 			.Add(commentStringView, 0, 2)
 		.End()
-		.AddGroup(B_HORIZONTAL, 0.0f)
+		.AddGroup(B_VERTICAL, 0.0f)
 			.Add(fileNamePatternTextControl)
 			.Add(applyButton)
 		.End()

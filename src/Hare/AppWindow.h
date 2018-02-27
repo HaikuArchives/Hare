@@ -12,7 +12,7 @@ class BVolumeRoster;
 
 class AppWindow : public BWindow {
 public:
-	AppWindow(BRect windowFrame);
+	AppWindow();
 	~AppWindow();
 	static AppWindow* GetInstance();
 	BMenuBar* MenuBar();

@@ -1,6 +1,9 @@
 #include "RefRow.h"
 
+#include <ColumnTypes.h>
 #include <Debug.h>
+
+#include "CommandConstants.h"
 
 BRefRow::BRefRow(entry_ref* entryRef, node_ref* nodeRef)
 	:
@@ -19,6 +22,12 @@ BRefRow::BRefRow(entry_ref* entryRef, node_ref* nodeRef)
 	if(nodeRef)
 	{
 		fnode = new node_ref(*nodeRef);
+	}
+	
+	SetField(new BBitmapField(NULL), SAVE_AS_COLUMN_INDEX);
+	for (int i = 1; i < NUM_OF_COLUMNS; i++)
+	{
+		SetField(new BStringField(B_EMPTY_STRING), i);
 	}
 }
 
