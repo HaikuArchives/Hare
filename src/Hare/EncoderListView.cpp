@@ -124,8 +124,18 @@ EncoderListView::MessageReceived(BMessage* message)
 void
 EncoderListView::SelectionChanged()
 {
+	BMessage* listSelectMsg = new BMessage(LIST_SELECTION_MSG);
+	listSelectMsg->AddPointer("source", this);
+	
+	for (int32 i = 0; i < CountRows(); i++) {
+		if (RowAt(i)->IsSelected()) {
+			listSelectMsg->AddInt32("index", i);
+		}
+	}
+	
 	BMessenger messenger(Parent());
-	messenger.SendMessage(LIST_SELECTION_MSG);	
+	messenger.SendMessage(listSelectMsg);
+	delete listSelectMsg;
 }
 
 BBitmap*

@@ -23,12 +23,18 @@ BRefRow::BRefRow(entry_ref* entryRef, node_ref* nodeRef)
 	{
 		fnode = new node_ref(*nodeRef);
 	}
-	
+
+/*	
 	SetField(new BBitmapField(NULL), SAVE_AS_COLUMN_INDEX);
-	for (int i = 1; i < NUM_OF_COLUMNS; i++)
+	for (int i = 1; i <= NUM_OF_COLUMNS; i++)
 	{
 		SetField(new BStringField(B_EMPTY_STRING), i);
 	}
+*/
+
+	SetField(new BBitmapField(NULL), 0);
+	for (int i=1; i <= 9; i++)
+	SetField(new BStringField(B_EMPTY_STRING), i);
 }
 
 BRefRow::~BRefRow()

@@ -457,11 +457,6 @@ AppWindow::FrameResized(float width, float height)
 	title << height;
 	SetTitle(title.String());
 #endif
-	
-	for(int i = 0; i < CountChildren(); i++)
-	{
-		ChildAt(i)->Invalidate();
-	}
 }
 
 void
