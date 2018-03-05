@@ -24,7 +24,6 @@ EncoderListView::EncoderListView()
 	PRINT(("EncoderListView::EncoderListView(BRect)\n"));
 
 	SetSelectionMode(B_MULTIPLE_SELECTION_LIST);
-	SetColumnFlags(B_ALLOW_COLUMN_RESIZE);
 
 	InitView();
 }
@@ -35,15 +34,9 @@ EncoderListView::~EncoderListView()
 
 	delete checkMark;
 
-	bool columnsShown[NUM_OF_COLUMNS];
-	float columnWidths[NUM_OF_COLUMNS];
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		BColumn* column = ColumnAt(i);
-		columnsShown[i] = column->IsVisible();
-		columnWidths[i] = column->Width();
-	}
-	settings->SetColumnsShown(columnsShown);
-	settings->SetColumnWidths(columnWidths);
+	BMessage columnState;
+	SaveState(&columnState);
+	settings->SetColumnsState(&columnState);
 }
 
 void
@@ -57,7 +50,7 @@ EncoderListView::InitView()
 	float maxWidth = 1000;
 	int32 truncate = 3;
 	
-	AddColumn(new BBitmapColumn("", 16, 16, 16, B_ALIGN_CENTER), COMPLETE_COLUMN_INDEX);
+	AddColumn(new BBitmapColumn("Icon", 16, 16, 16, B_ALIGN_CENTER), COMPLETE_COLUMN_INDEX);
 	
 	minWidth = StringWidth(FILE_COLUMN) + 20;
 	AddColumn(new BStringColumn(FILE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), FILE_COLUMN_INDEX);
@@ -86,15 +79,7 @@ EncoderListView::InitView()
 	minWidth = StringWidth(GENRE_COLUMN) + 20;
 	AddColumn(new BStringColumn(GENRE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), GENRE_COLUMN_INDEX);
 
-	bool* columnsShown = settings->ColumnsShown();
-	float* columnWidths = settings->ColumnWidths();
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		BColumn* column = ColumnAt(i);
-		column->SetVisible(columnsShown[i]);
-		if (columnWidths[i] > 0.0) {
-			column->SetWidth(columnWidths[i]);
-		}
-	}
+	LoadState(settings->ColumnsState());
 }
 
 void

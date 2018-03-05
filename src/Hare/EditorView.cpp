@@ -141,7 +141,10 @@ EditorView::InitView()
 			.Add(commentTextControl, 1, 5)
 			.Add(genreCheckBox, 0, 6)
 			.Add(genreBox, 1, 6)
-			.Add(applyButton, 10, 10)
+			.AddGroup(B_HORIZONTAL, 0, 1, 7)
+				.AddGlue()
+				.Add(applyButton)
+			.End()
 		.End();
 }
 

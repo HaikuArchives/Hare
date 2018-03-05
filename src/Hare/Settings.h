@@ -32,16 +32,10 @@ public:
 	const char* EncoderName();
 	void SetEncoderName(const char* value);
 
-	int32* ColumnDisplayOrder();
-	void SetColumnDisplayOrder(const int32* value);
-
-	bool* ColumnsShown();
-	void SetColumnsShown(const bool* value);
-
-	float* ColumnWidths();
-	void SetColumnWidths(const float* value);
-
 	const char* AddOnsDirectory();
+
+	void SetColumnsState(BMessage* message);
+	BMessage* ColumnsState();
 
 	void PrintToStream();
 private:
@@ -50,9 +44,7 @@ private:
 	AEEncoder* encoder;
 	char encoderName[B_FILE_NAME_LENGTH];
 	char addonDirectory[B_PATH_NAME_LENGTH];
-	int32 columnDisplayOrder[NUM_OF_COLUMNS];
-	bool columnsShown[NUM_OF_COLUMNS];
-	float columnWidths[NUM_OF_COLUMNS];
+	BMessage columnsState;
 
 };
 

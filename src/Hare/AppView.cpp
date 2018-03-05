@@ -90,7 +90,7 @@ AppView::InitView()
 							   new BMessage(CANCEL_MSG));
 
 	listView = new EncoderListView();
-	listView->SetExplicitMinSize(BSize(0, 50));
+	listView->SetExplicitMinSize(BSize(0, 150));
 	listView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	BString remaining(STATUS_TRAILING_LABEL);
@@ -111,8 +111,13 @@ AppView::InitView()
 			.End()
 		.AddGroup(B_HORIZONTAL)
 			.Add(statusBar, 0.0f)
-			.Add(cancelButton, 1.0f)
-			.Add(encodeButton, 1.0f)
+				.AddGroup(B_VERTICAL)
+					.AddStrut(B_USE_HALF_ITEM_SPACING)
+					.AddGroup(B_HORIZONTAL)
+						.Add(cancelButton, 1.0f)
+						.Add(encodeButton, 1.0f)
+					.End()
+				.End()
 			.End()
 	.End();
 }
