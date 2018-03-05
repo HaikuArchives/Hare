@@ -20,9 +20,9 @@ public:
 	EditorView();
 	~EditorView();
 	virtual void AttachedToWindow();
-	virtual void GetPreferredSize(float* width, float* height);
 	virtual void MessageReceived(BMessage* message);
 	virtual void MakeFocus(bool focused = true);
+	void ListSelectionChanged(BMessage* message);
 	void SetEnabled(bool value);
 private:
 	void InitView();
@@ -30,7 +30,6 @@ private:
 	void GenreSelectionAction();
 	void SetEnabled(BCheckBox* checkbox, BControl* control);
 	void SetEnabled(BCheckBox* checkbox, BMenuField* menufield);
-	void ListSelectionChanged(BMessage* message);
 	void EnableCheckBoxes(bool value);
 	void SetControlValues(BRefRow* item);
 	BCheckBox* artistCheckBox;

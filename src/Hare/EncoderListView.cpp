@@ -57,34 +57,34 @@ EncoderListView::InitView()
 	float maxWidth = 1000;
 	int32 truncate = 3;
 	
-	AddColumn(new BBitmapColumn("", 16, 16, 16, B_ALIGN_CENTER), 0);
+	AddColumn(new BBitmapColumn("", 16, 16, 16, B_ALIGN_CENTER), COMPLETE_COLUMN_INDEX);
 	
 	minWidth = StringWidth(FILE_COLUMN) + 20;
-	AddColumn(new BStringColumn(FILE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 1);
+	AddColumn(new BStringColumn(FILE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), FILE_COLUMN_INDEX);
 
 	minWidth = StringWidth(SAVE_AS_COLUMN) + 20;
-	AddColumn(new BStringColumn(SAVE_AS_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 2);
+	AddColumn(new BStringColumn(SAVE_AS_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), SAVE_AS_COLUMN_INDEX);
 
 	minWidth = StringWidth(ARTIST_COLUMN) + 20;
-	AddColumn(new BStringColumn(ARTIST_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 3);
+	AddColumn(new BStringColumn(ARTIST_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), ARTIST_COLUMN_INDEX);
 
 	minWidth = StringWidth(ALBUM_COLUMN) + 20;
-	AddColumn(new BStringColumn(ALBUM_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 4);
+	AddColumn(new BStringColumn(ALBUM_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), ALBUM_COLUMN_INDEX);
 
 	minWidth = StringWidth(TITLE_COLUMN) + 20;
-	AddColumn(new BStringColumn(TITLE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 5);
+	AddColumn(new BStringColumn(TITLE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TITLE_COLUMN_INDEX);
 
 	minWidth = StringWidth(YEAR_COLUMN) + 20;
-	AddColumn(new BStringColumn(YEAR_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 6);
+	AddColumn(new BStringColumn(YEAR_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), YEAR_COLUMN_INDEX);
 
 	minWidth = StringWidth(COMMENT_COLUMN) + 20;
-	AddColumn(new BStringColumn(COMMENT_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 7);
+	AddColumn(new BStringColumn(COMMENT_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), COMMENT_COLUMN_INDEX);
 
 	minWidth = StringWidth(TRACK_COLUMN) + 20;
-	AddColumn(new BStringColumn(TRACK_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 8);
+	AddColumn(new BStringColumn(TRACK_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TRACK_COLUMN_INDEX);
 
 	minWidth = StringWidth(GENRE_COLUMN) + 20;
-	AddColumn(new BStringColumn(GENRE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), 9);
+	AddColumn(new BStringColumn(GENRE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), GENRE_COLUMN_INDEX);
 
 	bool* columnsShown = settings->ColumnsShown();
 	float* columnWidths = settings->ColumnWidths();
@@ -104,6 +104,13 @@ EncoderListView::AttachedToWindow()
 }
 
 void
+EncoderListView::MessageDropped(BMessage* message, BPoint point)
+{
+	BMessenger messenger(Parent());
+	messenger.SendMessage(message);
+}
+
+void
 EncoderListView::MessageReceived(BMessage* message)
 {
 	PRINT(("EncoderListView::MessageReceived(BMessage*)\n"));
@@ -112,6 +119,23 @@ EncoderListView::MessageReceived(BMessage* message)
 		default:
 			BColumnListView::MessageReceived(message);
 	}
+}
+
+void
+EncoderListView::SelectionChanged()
+{
+	BMessage* listSelectMsg = new BMessage(LIST_SELECTION_MSG);
+	listSelectMsg->AddPointer("source", this);
+	
+	for (int32 i = 0; i < CountRows(); i++) {
+		if (RowAt(i)->IsSelected()) {
+			listSelectMsg->AddInt32("index", i);
+		}
+	}
+	
+	BMessenger messenger(Parent());
+	messenger.SendMessage(listSelectMsg);
+	delete listSelectMsg;
 }
 
 BBitmap*

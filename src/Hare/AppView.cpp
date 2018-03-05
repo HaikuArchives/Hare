@@ -74,11 +74,14 @@ AppView::InitView()
 	PRINT(("AppView::InitView()\n"));
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	int32 space = 6;
 
 	fileNamePatternView = new FileNamePatternView();
+	fileNamePatternView->SetExplicitMinSize(BSize(240, 400));
+	fileNamePatternView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	editorView = new EditorView();
+	editorView->SetExplicitMinSize(BSize(295, 400));
+	editorView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 	
 	encodeButton = new BButton("encodeButton", ENCODE_BTN,
 							   new BMessage(ENCODE_MSG));
@@ -87,7 +90,8 @@ AppView::InitView()
 							   new BMessage(CANCEL_MSG));
 
 	listView = new EncoderListView();
-	listView->SetSelectionMessage(new BMessage(LIST_SELECTION_MSG));
+	listView->SetExplicitMinSize(BSize(0, 50));
+	listView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	BString remaining(STATUS_TRAILING_LABEL);
 	remaining << 0;
@@ -122,7 +126,6 @@ AppView::AttachedToWindow()
 
 	InitView();
 
-	listView->SetTarget(editorView);
 	encodeButton->SetTarget(this);
 	cancelButton->SetTarget(this);
 }
@@ -176,6 +179,10 @@ AppView::MessageReceived(BMessage* message)
 				}
 			}
 			break;
+		case LIST_SELECTION_MSG: {
+			editorView->ListSelectionChanged(message);
+			break;
+			}
 		case APPLY_ATTRIBUTE_CHANGES:
 			ApplyAttributeChanges(message);
 			break;
@@ -324,7 +331,7 @@ void
 AppView::InitializeColumn(BRefRow* row)
 {
 	PRINT(("AppView::InitializeColumn(BRefRow*)\n"));
-
+	
 	entry_ref* ref = row->EntryRef();
 
 	row->SetField(new BStringField(ref->name), FILE_COLUMN_INDEX);

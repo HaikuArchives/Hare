@@ -52,82 +52,8 @@ EditorView::InitView()
 
 		SetLabel(EDITOR_LABEL);
 
-        int space = 6;
-
         numSelected = 0;
         selectedIndexes = 0;
-
-        font_height fh;
-        GetFontHeight(&fh);
-        float height = fh.ascent + fh.descent + fh.leading;
-
-        char* left[] = {
-                ARTIST_COLUMN,
-                ALBUM_COLUMN,
-                TITLE_COLUMN,
-                TRACK_COLUMN,
-                YEAR_COLUMN,
-                0
-        };
-        char* right[] = {
-                COMMENT_COLUMN,
-                GENRE_COLUMN,
-                0
-        };
-        //float leftWidth = 0;
-        //float rightWidth = 400;
-
-        int i = 0;
-
-        /*
-                while(left[i])
-                {
-                        if(StringWidth(left[i]) > leftWidth)
-                        {
-                                leftWidth = StringWidth(left[i]);
-                        }
-                        i++;
-                }
-
-                i=0;
-                while(right[i])
-                {
-                        if(StringWidth(right[i]) > rightWidth)
-                        {
-                                rightWidth = StringWidth(right[i]);
-                        }
-                        i++;
-                }
-        */
-
-        //use cb to determine spacing of box at different fonts
-        BCheckBox cb(BRect(0, 0, 0, 0), 0, 0, 0);
-        cb.ResizeToPreferred();
-
-        /*BRect leftCB = Bounds();
-        leftCB.InsetBy(space, 2 * space);
-        leftCB.right = 200; //leftCB.left + leftWidth + cb.Frame().Width();
-        leftCB.bottom = 100; //leftCB.top + height;
-
-        BRect leftTC = leftCB;
-        leftTC.left = leftCB.right + space / 2;
-        leftTC.right = leftTC.left + 110;
-
-        BRect rightCB = leftCB;
-                     .Add(reverbMenu->CreateLabelLayoutItem(), 0, 1)
-                     .Add(reverbMenu->CreateMenuBarLayoutItem(), 1, 1)
-        
-                     .Add(inputMenu->CreateLabelLayoutItem(), 0, 2)
-                     .Add(inputMenu->CreateMenuBarLayoutItem(), 1, 2)
-        
-                     .Add(volumeLabel, 0, 3)
-                     .Add(volumeSlider, 1, 3)
-        rightCB.left = leftTC.right + space;
-        rightCB.right = rightCB.left + rightWidth + cb.Frame().Width();
-
-        BRect rightTC = rightCB;
-        rightTC.left = rightCB.right + space / 2;
-        rightTC.right = rightTC.left + 110;*/
 
         artistCheckBox = new BCheckBox("artistCB", ARTIST_COLUMN, new BMessage(MSG_ARTIST_CB));
 
@@ -154,7 +80,6 @@ EditorView::InitView()
         commentTextControl = new BTextControl("commentTC", 0, "", 0);
        
         genreCheckBox = new BCheckBox("genreCB", GENRE_COLUMN, new BMessage(MSG_GENRE_CB));
-
 
         genreBox = new BBox(B_FANCY_BORDER);
 
@@ -218,33 +143,6 @@ EditorView::InitView()
 			.Add(genreBox, 1, 6)
 			.Add(applyButton, 10, 10)
 		.End();
-
-        /*AddChild(artistCheckBox);
-        AddChild(artistTextControl);
-
-        AddChild(albumCheckBox);
-        AddChild(albumTextControl);
-
-        AddChild(titleCheckBox);
-        AddChild(titleTextControl);
-
-        AddChild(trackCheckBox);
-        AddChild(trackTextControl);
-
-        AddChild(yearCheckBox);
-        AddChild(yearTextControl);
-
-        AddChild(commentCheckBox);
-        AddChild(commentTextControl);
-
-        AddChild(genreCheckBox);
-        AddChild(genreBox);
-        genreBox->AddChild(genreMenuField);
-        genreBox->AddChild(genreTextControl);
-
-        AddChild(applyButton);
-
-        ResizeToPreferred();*/
 }
 
 void
@@ -284,22 +182,6 @@ EditorView::AttachedToWindow()
         SetEnabled(trackCheckBox, trackTextControl);
         SetEnabled(genreCheckBox, genreMenuField);
         SetEnabled(genreCheckBox, genreTextControl);
-}
-
-void
-EditorView::GetPreferredSize(float* width, float* height)
-{
-        PRINT(("EditorView::GetPreferredSize(float* float*)\n"));
-
-        int space = 6;
-
-        *width = commentTextControl->Frame().right + space;
-        *height = yearTextControl->Frame().bottom + space;
-        float ht = 100; //genreBox->Frame().bottom + 3*space +
-        //      applyButton->Frame().Height();
-        if (ht > *height) {
-                *height = ht;
-        }
 }
 
 void
@@ -559,9 +441,6 @@ EditorView::MessageReceived(BMessage* message)
         //PRINT(("EditorView::MessageReceived(BMessage*)\n"));
 
         switch (message->what) {
-                case LIST_SELECTION_MSG:
-                        ListSelectionChanged(message);
-                        break;
                 case APPLY_MSG:
                         Apply();
                         break;
