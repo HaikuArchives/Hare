@@ -33,18 +33,6 @@ Settings::Settings()
 	encoder = NULL;
 	strcpy(encoderName, DEFAULT_ENCODER);
 
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		columnDisplayOrder[i] = i;
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		columnsShown[i] = true;
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		columnWidths[i] = 0.0;
-	}
-
 	app_info info;
 	be_app->GetAppInfo(&info);
 
@@ -72,6 +60,12 @@ Settings::Settings(BMessage* archive)
 		windowFrame = BRect(50, 50, 50, 50);
 	}
 */
+
+	status = archive->FindMessage("columnsState", &columnsState);
+	if (status != B_OK) {
+		PRINT(("Error loading Columns State"));
+	}
+
 	encoding = false;
 	encoder = NULL;
 	status = archive->FindString("encoderName", &tmp);
@@ -80,47 +74,6 @@ Settings::Settings(BMessage* archive)
 		strcpy(encoderName, DEFAULT_ENCODER);
 	} else {
 		strcpy(encoderName, tmp.String());
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		status = archive->FindInt32("columnDisplayOrder", i,
-									&columnDisplayOrder[i]);
-		if (status != B_OK) {
-			PRINT(("Error loading COLUMN_DISPLAY_ORDER\n"));
-			break;
-		}
-	}
-	if (status != B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnDisplayOrder[i] = i;
-		}
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		status = archive->FindBool("columnsShown", i,
-								   &columnsShown[i]);
-		if (status != B_OK) {
-			PRINT(("Error loading COLUMNS_SHOWN\n"));
-			break;
-		}
-	}
-	if (status != B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnsShown[i] = true;
-		}
-	}
-
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		status = archive->FindFloat("columnWidths", i, &columnWidths[i]);
-		if (status != B_OK) {
-			PRINT(("Error loading COLUMN_WIDTHS\n"));
-			break;
-		}
-	}
-	if (status != B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnWidths[i] = 0.0;
-		}
 	}
 
 	app_info info;
@@ -172,32 +125,8 @@ Settings::Archive(BMessage* archive, bool deep) const
 	if (status == B_OK) {
 		status = archive->AddString("encoderName", encoderName);
 	}
-
 	if (status == B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			status = archive->AddInt32("columnDisplayOrder", columnDisplayOrder[i]);
-			if (status != B_OK) {
-				break;
-			}
-		}
-	}
-
-	if (status == B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			status = archive->AddBool("columnsShown", columnsShown[i]);
-			if (status != B_OK) {
-				break;
-			}
-		}
-	}
-
-	if (status == B_OK) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			status = archive->AddFloat("columnWidths", columnWidths[i]);
-			if (status != B_OK) {
-				break;
-			}
-		}
+		status = archive->AddMessage("columnsState", &columnsState);
 	}
 
 	return status;
@@ -244,6 +173,19 @@ Settings::SaveSettings()
 	if (settings.InitCheck() == B_OK) {
 		archive.Flatten(&settings);
 	}
+}
+
+
+void
+Settings::SetColumnsState(BMessage* message)
+{
+	columnsState = *message;
+}
+
+BMessage*
+Settings::ColumnsState()
+{
+	return &columnsState;
 }
 /*
 BRect
@@ -308,66 +250,6 @@ Settings::SetEncoderName(const char* value)
 
 	if (value && !encoding) {
 		strcpy(encoderName, value);
-	}
-}
-
-int32*
-Settings::ColumnDisplayOrder()
-{
-	PRINT(("Settings::ColumnDisplayOrder()\n"));
-
-	return columnDisplayOrder;
-}
-
-void
-Settings::SetColumnDisplayOrder(const int32* value)
-{
-	PRINT(("Settings::SetColumnDisplayOrder(const int32*)\n"));
-
-	if (!encoding) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnDisplayOrder[i] = value[i];
-		}
-	}
-}
-
-bool*
-Settings::ColumnsShown()
-{
-	PRINT(("Settings::ColumnsShown()\n"));
-
-	return columnsShown;
-}
-
-void
-Settings::SetColumnsShown(const bool* value)
-{
-	PRINT(("Settings::SetColumnsShown(const bool*)\n"));
-
-	if (!encoding) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnsShown[i] = value[i];
-		}
-	}
-}
-
-float*
-Settings::ColumnWidths()
-{
-	PRINT(("Settings::ColumnWidths()\n"));
-
-	return columnWidths;
-}
-
-void
-Settings::SetColumnWidths(const float* value)
-{
-	PRINT(("Settings::SetColumnWidths(const float*)\n"));
-
-	if (!encoding) {
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			columnWidths[i] = value[i];
-		}
 	}
 }
 

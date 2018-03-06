@@ -32,7 +32,7 @@
 
 AppWindow::AppWindow()
 	: 
-	BWindow(BRect(0,0,0,0) , APPLICATION, B_DOCUMENT_WINDOW, 
+	BWindow(BRect(0,0,0,0) , APPLICATION, B_TITLED_WINDOW,
 				B_ASYNCHRONOUS_CONTROLS| B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	PRINT(("AppWindow::AppWindow()\n"));
@@ -127,7 +127,6 @@ AppWindow::InitMenus()
 
 	BMenu* fileMenu = new BMenu(FILE_MENU);
 	BMenu* editMenu = new BMenu(EDIT_MENU);
-	BMenu* columnMenu = new BMenu(COLUMN_MENU);
 
 	loadCdMenu = new BMenu(LOAD_CD_SUBMENU);
 	LoadCDMenu();
@@ -146,37 +145,11 @@ AppWindow::InitMenus()
 	editMenu->AddItem(new BMenuItem(REMOVE,
 									new BMessage(MENU_ITEM_SELECTED), 'R'));
 
-	columnMenu->AddItem(new BMenuItem(FILE_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '1'));
-	columnMenu->AddItem(new BMenuItem(SAVE_AS_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '2'));
-	columnMenu->AddItem(new BMenuItem(ARTIST_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '3'));
-	columnMenu->AddItem(new BMenuItem(ALBUM_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '4'));
-	columnMenu->AddItem(new BMenuItem(TITLE_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '5'));
-	columnMenu->AddItem(new BMenuItem(YEAR_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '6'));
-	columnMenu->AddItem(new BMenuItem(COMMENT_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '7'));
-	columnMenu->AddItem(new BMenuItem(TRACK_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '8'));
-	columnMenu->AddItem(new BMenuItem(GENRE_COLUMN,
-									  new BMessage(MENU_ITEM_SELECTED), '9'));
-
-	bool* columnsShown = settings->ColumnsShown();
-	for (int i = 1; i < NUM_OF_COLUMNS; i++) {
-		BMenuItem* item = columnMenu->ItemAt(i - 1);
-		item->SetMarked(columnsShown[i]);
-	}
-
 	encoderMenu = new BMenu(ENCODER_MENU);
 	encoderMenu->SetRadioMode(true);
 
 	menuBar->AddItem(fileMenu);
 	menuBar->AddItem(editMenu);
-	menuBar->AddItem(columnMenu);
 	menuBar->AddItem(encoderMenu);
 	LoadEncoderMenu();
 
@@ -340,13 +313,6 @@ AppWindow::MenuItemSelected(BMessage* message)
 			} else {
 				AddVolumeToList(item->Label());
 			}
-		} else if (strcmp(menu->Name(), COLUMN_MENU) == 0) {
-			item->SetMarked(!item->IsMarked());
-			BMessage msg(COLUMN_SET_SHOWN);
-			msg.AddBool("show", item->IsMarked());
-			int32 column = menu->IndexOf(item) + 1;
-			msg.AddInt32("column", column);
-			viewMessenger->SendMessage(&msg);
 		} else if (strcmp(menu->Name(), ENCODER_MENU) == 0) {
 			if (!settings->IsEncoding()) {
 				PRINT(("ENCODER SELECTED: %s\n", item->Label()));
