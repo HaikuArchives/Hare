@@ -2,7 +2,7 @@
 #define __APP_DEFS_H__
 
 #define COMPANY "Originally created by FlipSide Software"
-#define COMPANY_WWW "http://dev.osdrawer.net/projects/show/hare"
+#define COMPANY_WWW "https://github.com/HaikuArchives/Hare"
 #define COMPANY_EMAIL "haiku@scottmc.com"
 #define APPLICATION "Hare"
 #define VERSION "1.0.8"
