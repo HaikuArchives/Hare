@@ -10,6 +10,7 @@
 #include <File.h>
 #include <FindDirectory.h>
 #include <fs_info.h>
+#include <InterfaceDefs.h>
 #include <image.h>
 #include <LayoutBuilder.h>
 #include <Message.h>
@@ -110,6 +111,8 @@ AppWindow::InitWindow()
 	viewShortcut = new BMessage(VIEW_SHORTCUT);
 	viewShortcut->AddInt32("view", 2);
 	AddShortcut('L', 0, viewShortcut, appView);
+	
+	AddShortcut(B_DELETE, 0, new BMessage(REMOVE_MSG), appView);
 }
 
 BMenuBar*
