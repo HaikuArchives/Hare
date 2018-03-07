@@ -22,6 +22,8 @@
 #include <Volume.h>
 #include <VolumeRoster.h>
 
+#include <AboutWindow.h>
+
 #include "AEEncoder.h"
 
 #include "AppDefs.h"
@@ -398,18 +400,10 @@ AppWindow::AboutRequested()
 {
 	PRINT(("AppWindow::AboutRequested()\n"));
 
-	BString msg;
-	msg = APPLICATION;
-	msg << " ";
-	msg << VERSION;
-	msg << "\n";
-	msg << COMPANY;
-	msg << "\n";
-	msg << COMPANY_WWW;
-	msg << "\n";
-	msg << COMPANY_EMAIL;
-	BAlert* alert = new BAlert("AboutBox", msg.String(), ABOUT_BTN);
-	alert->Go(NULL);
+	BAboutWindow* about = new BAboutWindow(APPLICATION, SIGNATURE);
+	about->AddExtraInfo(COMPANY_WWW);
+	about->AddExtraInfo(COMPANY);
+	about->Show();
 }
 
 void
