@@ -10,6 +10,7 @@
 #include <File.h>
 #include <FindDirectory.h>
 #include <fs_info.h>
+#include <InterfaceDefs.h>
 #include <image.h>
 #include <LayoutBuilder.h>
 #include <Message.h>
@@ -21,6 +22,8 @@
 #include <String.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
+
+#include <AboutWindow.h>
 
 #include "AEEncoder.h"
 
@@ -108,6 +111,8 @@ AppWindow::InitWindow()
 	viewShortcut = new BMessage(VIEW_SHORTCUT);
 	viewShortcut->AddInt32("view", 2);
 	AddShortcut('L', 0, viewShortcut, appView);
+	
+	AddShortcut(B_DELETE, 0, new BMessage(REMOVE_MSG), appView);
 }
 
 BMenuBar*
@@ -398,18 +403,10 @@ AppWindow::AboutRequested()
 {
 	PRINT(("AppWindow::AboutRequested()\n"));
 
-	BString msg;
-	msg = APPLICATION;
-	msg << " ";
-	msg << VERSION;
-	msg << "\n";
-	msg << COMPANY;
-	msg << "\n";
-	msg << COMPANY_WWW;
-	msg << "\n";
-	msg << COMPANY_EMAIL;
-	BAlert* alert = new BAlert("AboutBox", msg.String(), ABOUT_BTN);
-	alert->Go(NULL);
+	BAboutWindow* about = new BAboutWindow(APPLICATION, SIGNATURE);
+	about->AddExtraInfo(COMPANY_WWW);
+	about->AddExtraInfo(COMPANY);
+	about->Show();
 }
 
 void
