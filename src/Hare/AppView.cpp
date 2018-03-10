@@ -76,11 +76,11 @@ AppView::InitView()
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fileNamePatternView = new FileNamePatternView();
-	fileNamePatternView->SetExplicitMinSize(BSize(240, 400));
+	fileNamePatternView->SetExplicitMinSize(BSize(240, 350));
 	fileNamePatternView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	editorView = new EditorView();
-	editorView->SetExplicitMinSize(BSize(295, 400));
+	editorView->SetExplicitMinSize(BSize(295, 350));
 	editorView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 	
 	encodeButton = new BButton("encodeButton", ENCODE_BTN,
@@ -448,17 +448,23 @@ AppView::SetSaveAsColumn(BRefRow* row)
 	if (tmpField != NULL) genre = tmpField->String();
 	if (genre == NULL) genre = "";
 
+	BString finalPath;
 	AEEncoder* encoder = settings->Encoder();
 	if (encoder) {
-		BString fileNamePattern = encoder->GetPattern();
-		fileNamePattern.ReplaceAll("%a", artist);
-		fileNamePattern.ReplaceAll("%n", album);
-		fileNamePattern.ReplaceAll("%t", title);
-		fileNamePattern.ReplaceAll("%y", year);
-		fileNamePattern.ReplaceAll("%c", comment);
-		fileNamePattern.ReplaceAll("%k", track);
-		fileNamePattern.ReplaceAll("%g", genre);
-		row->SetField(new BStringField(fileNamePattern.String()), SAVE_AS_COLUMN_INDEX);
+		BString filePath = encoder->GetFilePath();
+		BString namePattern = encoder->GetPattern();
+		namePattern.ReplaceAll("%a", artist);
+		namePattern.ReplaceAll("%n", album);
+		namePattern.ReplaceAll("%t", title);
+		namePattern.ReplaceAll("%y", year);
+		namePattern.ReplaceAll("%c", comment);
+		namePattern.ReplaceAll("%k", track);
+		namePattern.ReplaceAll("%g", genre);
+		
+		finalPath += filePath;
+		finalPath += "/";
+		finalPath += namePattern;
+		row->SetField(new BStringField(finalPath.String()), SAVE_AS_COLUMN_INDEX);
 	}
 }
 

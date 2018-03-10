@@ -125,7 +125,7 @@ EditorView::InitView()
 
 		// Build the layout
         
-    	BLayoutBuilder::Grid<>(this)
+    	BLayoutBuilder::Grid<>(this, B_USE_DEFAULT_SPACING, 0.25)
     		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)   
 			.Add(artistCheckBox, 0, 0)
 			.Add(artistTextControl,1, 0)

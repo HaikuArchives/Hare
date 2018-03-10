@@ -173,7 +173,7 @@ int32
 MP3Lame::LoadDefaultPattern() {
 	PRINT(("MP3Lame::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/MP3/%a/%n/%a - %n - %k - %t.mp3";
+	pattern = "%a/%n/%a - %n - %k - %t.mp3";
 
 	return B_OK;
 }

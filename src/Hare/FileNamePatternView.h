@@ -14,7 +14,6 @@ public:
 	FileNamePatternView();
 	~FileNamePatternView();
 	virtual void AttachedToWindow();
-	virtual void GetPreferredSize(float* width, float* height);
 	virtual void MessageReceived(BMessage* message);
 	virtual void MakeFocus(bool focused = true);
 	void SetEnabled(bool value);
@@ -27,7 +26,8 @@ private:
 	BStringView* commentStringView;
 	BStringView* trackStringView;
 	BStringView* genreStringView;
-	BTextControl* fileNamePatternTextControl;
+	BTextControl* filePathTextControl;
+	BTextControl* namePatternTextControl;
 	BButton* applyButton;
 };
 

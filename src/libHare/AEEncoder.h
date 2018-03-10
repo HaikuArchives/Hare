@@ -28,8 +28,10 @@ public:
 
 	int32 InitCheck();
 	const char* GetName();
+	const char* GetFilePath();
 	const char* GetPattern();
-	void SetPattern(const char* value);
+	void SetFilePath(const char* thePath);
+	void SetPattern(const char* thePattern);
 	BMenu* GetMenu();
 	virtual int32 InitEncoder();
 	virtual int32 Encode(BMessage* encodeMessage);
@@ -38,6 +40,7 @@ public:
 protected:
 	int32 error;
 	BString name;
+	BString path;
 	BString pattern;
 	BMenu* menu;
 

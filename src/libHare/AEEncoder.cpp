@@ -92,6 +92,21 @@ AEEncoder::GetName()
 }
 
 const char*
+AEEncoder::GetFilePath()
+{
+	PRINT(("AEEncoder::GetFilePath()\n"));
+	
+	if (path == "")
+	{
+		BPath temp;
+		find_directory(B_USER_DIRECTORY, &temp);
+		path = temp.Path();
+	}
+	
+	return path.String();	
+}
+
+const char*
 AEEncoder::GetPattern()
 {
 	PRINT(("AEEncoder::GetPattern()\n"));
@@ -105,13 +120,31 @@ AEEncoder::GetPattern()
 }
 
 void
-AEEncoder::SetPattern(const char* value)
+AEEncoder::SetFilePath(const char* thePath)
+{
+	PRINT(("AEEncoder::SetFilePath()\n"));
+	
+	BPath* testPath = new BPath(thePath, NULL, true);
+	
+	if ((thePath == "") || (testPath->InitCheck() != B_OK))
+	{
+		BPath temp;
+		find_directory(B_USER_DIRECTORY, &temp);
+		path = temp.Path();
+		return;
+	}
+	
+	path = testPath->Path();
+}
+
+void
+AEEncoder::SetPattern(const char* thePattern)
 {
 	PRINT(("AEEncoder::SetPattern(const char*)\n"));
 
-	if(value)
+	if(thePattern)
 	{
-		pattern = value;
+		pattern = thePattern;
 	}
 	else
 	{
@@ -215,7 +248,7 @@ AEEncoder::LoadSettings()
 	}
 
 	menu = new BMenu(&settingsArchive);
-
+	
 	status = settingsArchive.FindString("pattern",&pattern);
 	if(status != B_OK)
 	{
@@ -261,8 +294,8 @@ AEEncoder::SaveSettings()
 	{
 		return status;
 	}
-
-	status = settingsArchive.AddString("pattern",pattern);
+	
+	status = settingsArchive.AddString("pattern", pattern);
 	if(status != B_OK)
 	{
 		return status;
