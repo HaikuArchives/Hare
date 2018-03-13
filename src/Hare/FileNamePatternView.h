@@ -28,7 +28,6 @@ private:
 	BStringView* trackStringView;
 	BStringView* genreStringView;
 	BTextControl* fileNamePatternTextControl;
-	BButton* applyButton;
 };
 
 #endif

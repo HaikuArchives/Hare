@@ -56,25 +56,23 @@ FileNamePatternView::InitView()
 		str = encoder->GetPattern();
 	}
 	fileNamePatternTextControl = new BTextControl("fileNamePatternTextControl",
-													B_EMPTY_STRING, str.String(), NULL);
+												"Save as"	/*B_EMPTY_STRING*/, str.String(), NULL);
 
-	applyButton = new BButton("applyButton", APPLY_BTN,
-							  new BMessage(FILE_NAME_PATTERN_CHANGED));
-	
+	fileNamePatternTextControl->SetModificationMessage(new BMessage(FILE_NAME_PATTERN_CHANGED));
+
 	BLayoutBuilder::Group<>(this, B_VERTICAL)
 		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)
-		.AddGrid(1.0f, 0.0f)
+		.AddGrid()
 			.Add(artistStringView, 0, 0)
 			.Add(albumStringView, 1, 0)
 			.Add(titleStringView, 2, 0)
-			.Add(yearStringView, 0, 1)
-			.Add(trackStringView, 1, 1)
-			.Add(genreStringView, 2, 1)
-			.Add(commentStringView, 0, 2)
+			.Add(yearStringView, 3, 0)
+			.Add(trackStringView, 4, 0)
+			.Add(genreStringView, 5, 0)
+			.Add(commentStringView, 6, 0)
 		.End()
 		.AddGroup(B_VERTICAL, 0.0f)
 			.Add(fileNamePatternTextControl)
-			.Add(applyButton)
 		.End()
 	.End();
 }
@@ -93,7 +91,6 @@ FileNamePatternView::SetEnabled(bool value)
 	PRINT(("FileNamePatternView::SetEnabled(bool)\n"));
 
 	fileNamePatternTextControl->SetEnabled(value);
-	applyButton->SetEnabled(value);
 }
 
 void
@@ -104,19 +101,13 @@ FileNamePatternView::AttachedToWindow()
 	InitView();
 
 	fileNamePatternTextControl->SetTarget(this);
-	applyButton->SetTarget(this);
 }
 
 void
 FileNamePatternView::GetPreferredSize(float* width, float* height)
 {
 	PRINT(("FileNamePatternView::GetPreferredSize(float*,float*)\n"));
-
-	int space = 6;
-
-	*width = genreStringView->Frame().right + space;
-	*height = fileNamePatternTextControl->Frame().bottom + 2 * space +
-			  applyButton->Frame().Height();
+	BBox::GetPreferredSize(width, height);
 }
 
 void
