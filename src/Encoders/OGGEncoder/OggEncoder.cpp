@@ -171,7 +171,7 @@ int32
 OggEncoder::LoadDefaultPattern() {
 	PRINT(("OggEncoder::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/OGG/%a/%n/%a - %n - %k - %t.ogg";
+	pattern = "%a/%n/%a - %n - %k - %t.ogg";
 
 	return B_OK;
 }

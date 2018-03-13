@@ -134,7 +134,7 @@ int32
 M3UCreator::LoadDefaultPattern() {
 	PRINT(("M3UCreator::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/home/playlists/%a.m3u";
+	pattern = "%a.m3u";
 
 	return B_OK;
 }

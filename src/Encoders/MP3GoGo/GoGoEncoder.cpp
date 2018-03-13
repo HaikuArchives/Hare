@@ -170,7 +170,7 @@ int32
 GoGoEncoder::LoadDefaultPattern() {
 	PRINT(("GoGoEncoder::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/MP3/%a/%n/%a - %n - %k - %t.mp3";
+	pattern = "%a/%n/%a - %n - %k - %t.mp3";
 
 	return B_OK;
 }

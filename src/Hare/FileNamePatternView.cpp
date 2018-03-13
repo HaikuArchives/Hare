@@ -2,9 +2,11 @@
 
 #include <Button.h>
 #include <Debug.h>
+#include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Message.h>
 #include <Messenger.h>
+#include <Path.h>
 #include <Rect.h>
 #include <String.h>
 #include <StringView.h>
@@ -51,31 +53,34 @@ FileNamePatternView::InitView()
 	genreStringView = new BStringView("genre", GENRE_LABEL);
 
 	AEEncoder* encoder = settings->Encoder();
-	BString str;
+	BString patternStr;
 	if (encoder) {
-		str = encoder->GetPattern();
+		patternStr = encoder->GetPattern();
 	}
-	fileNamePatternTextControl = new BTextControl("fileNamePatternTextControl",
-													B_EMPTY_STRING, str.String(), NULL);
+	
+	BPath defaultPath;
+	find_directory(B_USER_DIRECTORY, &defaultPath);
+	
+	filePathTextControl = new BTextControl("filePathTextControl",
+													"File Path:", defaultPath.Path(), NULL);
+	namePatternTextControl = new BTextControl("namePatternTextControl",
+													"File Pattern:", patternStr.String(), NULL);
 
 	applyButton = new BButton("applyButton", APPLY_BTN,
 							  new BMessage(FILE_NAME_PATTERN_CHANGED));
-	
+
 	BLayoutBuilder::Group<>(this, B_VERTICAL)
 		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)
-		.AddGrid(1.0f, 0.0f)
-			.Add(artistStringView, 0, 0)
-			.Add(albumStringView, 1, 0)
-			.Add(titleStringView, 2, 0)
-			.Add(yearStringView, 0, 1)
-			.Add(trackStringView, 1, 1)
-			.Add(genreStringView, 2, 1)
-			.Add(commentStringView, 0, 2)
-		.End()
-		.AddGroup(B_VERTICAL, 0.0f)
-			.Add(fileNamePatternTextControl)
-			.Add(applyButton)
-		.End()
+		.Add(artistStringView)
+		.Add(albumStringView)
+		.Add(titleStringView)
+		.Add(yearStringView)
+		.Add(trackStringView)
+		.Add(genreStringView)
+		.Add(commentStringView)
+		.Add(filePathTextControl)
+		.Add(namePatternTextControl)
+		.Add(applyButton)
 	.End();
 }
 
@@ -84,7 +89,7 @@ FileNamePatternView::MakeFocus(bool focused)
 {
 	PRINT(("FileNamePatternView::MakeFocused(bool)\n"));
 
-	fileNamePatternTextControl->MakeFocus(focused);
+	filePathTextControl->MakeFocus(focused);
 }
 
 void
@@ -92,7 +97,8 @@ FileNamePatternView::SetEnabled(bool value)
 {
 	PRINT(("FileNamePatternView::SetEnabled(bool)\n"));
 
-	fileNamePatternTextControl->SetEnabled(value);
+	filePathTextControl->SetEnabled(value);
+	namePatternTextControl->SetEnabled(value);
 	applyButton->SetEnabled(value);
 }
 
@@ -103,20 +109,9 @@ FileNamePatternView::AttachedToWindow()
 
 	InitView();
 
-	fileNamePatternTextControl->SetTarget(this);
+	filePathTextControl->SetTarget(this);
+	namePatternTextControl->SetTarget(this);
 	applyButton->SetTarget(this);
-}
-
-void
-FileNamePatternView::GetPreferredSize(float* width, float* height)
-{
-	PRINT(("FileNamePatternView::GetPreferredSize(float*,float*)\n"));
-
-	int space = 6;
-
-	*width = genreStringView->Frame().right + space;
-	*height = fileNamePatternTextControl->Frame().bottom + 2 * space +
-			  applyButton->Frame().Height();
 }
 
 void
@@ -130,7 +125,8 @@ FileNamePatternView::MessageReceived(BMessage* message)
 		case FILE_NAME_PATTERN_CHANGED: {
 				AEEncoder* encoder = settings->Encoder();
 				if (encoder) {
-					encoder->SetPattern(fileNamePatternTextControl->Text());
+					encoder->SetFilePath(filePathTextControl->Text());
+					encoder->SetPattern(namePatternTextControl->Text());
 					parentMessenger.SendMessage(message);
 				}
 			}
@@ -138,7 +134,8 @@ FileNamePatternView::MessageReceived(BMessage* message)
 		case ENCODER_CHANGED: {
 				AEEncoder* encoder = settings->Encoder();
 				if (encoder) {
-					fileNamePatternTextControl->SetText(encoder->GetPattern());
+					filePathTextControl->SetText(encoder->GetFilePath());
+					namePatternTextControl->SetText(encoder->GetPattern());
 					BMessage msg(FILE_NAME_PATTERN_CHANGED);
 					parentMessenger.SendMessage(&msg);
 				}
