@@ -76,7 +76,7 @@ AppView::InitView()
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fileNamePatternView = new FileNamePatternView();
-	fileNamePatternView->SetExplicitMinSize(BSize(240, 400));
+	// fileNamePatternView->SetExplicitMinSize(BSize(540, B_SIZE_UNSET));
 	fileNamePatternView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	editorView = new EditorView();
@@ -103,12 +103,10 @@ AppView::InitView()
 		.SetInsets(B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS, 
 						B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS)
 		.AddSplit(B_VERTICAL, B_USE_HALF_ITEM_SPACING)
-			.AddSplit(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
-				.Add(fileNamePatternView, 0.0f)
-				.Add(editorView, 0.0f)
-				.End()
+			.Add(editorView, 0.0f)
+			.Add(fileNamePatternView, 0.0f)
 			.Add(listView, 1.0f)
-			.End()
+		.End()
 		.AddGroup(B_HORIZONTAL)
 			.Add(statusBar, 0.0f)
 				.AddGroup(B_VERTICAL)
