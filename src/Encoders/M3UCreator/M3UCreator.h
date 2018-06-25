@@ -18,10 +18,7 @@ public:
 
 	virtual int32 Encode(BMessage* encodeMessage);
 	virtual int32 UninitEncoder();
-
-protected:
-	virtual int32 LoadDefaultPattern();
-
+	virtual const char* GetDefaultPattern();
 private:
 	BList fileList;
 };

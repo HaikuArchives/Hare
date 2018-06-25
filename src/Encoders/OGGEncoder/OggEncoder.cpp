@@ -8,7 +8,9 @@
 #include <be/interface/Menu.h>
 #include <be/interface/MenuItem.h>
 #include <be/storage/File.h>
+#include <be/storage/FindDirectory.h>
 #include <be/storage/NodeInfo.h>
+#include <be/storage/Path.h>
 #include <be/storage/Volume.h>
 #include <be/support/Debug.h>
 
@@ -167,13 +169,21 @@ OggEncoder::Encode(BMessage* message) {
 	return B_OK;
 }
 
-int32
-OggEncoder::LoadDefaultPattern() {
+const char*
+OggEncoder::GetDefaultPattern() {
 	PRINT(("OggEncoder::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/OGG/%a/%n/%a - %n - %k - %t.ogg";
+	BPath home;
+	BString pattern;
 
-	return B_OK;
+	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
+		pattern += home.Path(); 
+		pattern += "/OGG/%a/%n/%a - %n - %k - %t.ogg";
+	} else {
+		pattern = "/boot/home/OGG/%a/%n/%a - %n - %k - %t.ogg";
+	}
+	
+	return pattern.String();
 }
 
 int32

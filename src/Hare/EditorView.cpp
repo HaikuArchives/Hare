@@ -35,7 +35,7 @@
 
 EditorView::EditorView()
         :
-        BBox("editorView")
+        BView("editorView", B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP)
 {
         PRINT(("EditorView::EditorView(BRect)\n"));
 }
@@ -49,8 +49,6 @@ void
 EditorView::InitView()
 {
         PRINT(("EditorView::InitView()\n"));
-
-		SetLabel(EDITOR_LABEL);
 
         numSelected = 0;
         selectedIndexes = 0;
@@ -125,7 +123,7 @@ EditorView::InitView()
 
 		// Build the layout
         
-    	BLayoutBuilder::Grid<>(this)
+    	BLayoutBuilder::Grid<>(this, B_USE_DEFAULT_SPACING, B_USE_SMALL_SPACING)
     		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS, B_USE_DEFAULT_SPACING, B_USE_DEFAULT_SPACING)   
 			.Add(artistCheckBox, 0, 0)
 			.Add(artistTextControl,1, 0)
@@ -473,6 +471,6 @@ EditorView::MessageReceived(BMessage* message)
                         genreTextControl->SetText("");
                         break;
                 default:
-                        BBox::MessageReceived(message);
+                        BView::MessageReceived(message);
         }
 }

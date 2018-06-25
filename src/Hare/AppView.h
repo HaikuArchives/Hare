@@ -1,6 +1,7 @@
 #ifndef __APP_VIEW_H__
 #define __APP_VIEW_H__
 
+#include <Box.h>
 #include <Node.h>
 #include <View.h>
 
@@ -14,7 +15,7 @@ class BStringView;
 class BTextControl;
 class EditorView;
 class EncoderListView;
-class FileNamePatternView;
+class PrefWindow;
 
 class AppView : public BView {
 public:
@@ -37,9 +38,11 @@ private:
 	void Cancel();
 	void AlertUser(const char* message);
 	static int32 EncodeThread(void* args);
+	PrefWindow* prefWin;
 	EncoderListView* listView;
-	FileNamePatternView* fileNamePatternView;
 	EditorView* editorView;
+	BBox* editorBoxView;
+	BScrollView* editorScrollView;
 	BButton* encodeButton;
 	BButton* cancelButton;
 	BStatusBar* statusBar;

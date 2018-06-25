@@ -3,6 +3,7 @@
 
 #include <Box.h>
 #include <Control.h>
+#include <View.h>
 
 #include "RefRow.h"
 
@@ -15,7 +16,7 @@ class BRadioButton;
 class BRect;
 class BTextControl;
 
-class EditorView : public BBox {
+class EditorView : public BView {
 public:
 	EditorView();
 	~EditorView();

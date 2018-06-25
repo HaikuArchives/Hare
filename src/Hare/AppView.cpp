@@ -47,8 +47,8 @@
 #include "CheckMark.h"
 #include "EditorView.h"
 #include "EncoderListView.h"
-#include "FileNamePatternView.h"
 #include "GUIStrings.h"
+#include "PrefWindow.h"
 #include "RefRow.h"
 #include "Settings.h"
 #include "StatusBarFilter.h"
@@ -75,22 +75,23 @@ AppView::InitView()
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fileNamePatternView = new FileNamePatternView();
-	fileNamePatternView->SetExplicitMinSize(BSize(240, 400));
-	fileNamePatternView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
-
 	editorView = new EditorView();
-	editorView->SetExplicitMinSize(BSize(295, 400));
-	editorView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
+	editorScrollView = new BScrollView("editorScrollView", editorView, 
+										B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_FRAME_EVENTS,
+										false, true, B_NO_BORDER);
+
+	editorBoxView = new BBox("editorBoxView");
+	editorBoxView->SetLabel(EDITOR_LABEL);
+	editorBoxView->SetExplicitMinSize(BSize(0, 125));
+	editorBoxView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 	
 	encodeButton = new BButton("encodeButton", ENCODE_BTN,
 							   new BMessage(ENCODE_MSG));
-
 	cancelButton = new BButton("cancelButton", CANCEL_BTN,
 							   new BMessage(CANCEL_MSG));
 
 	listView = new EncoderListView();
-	listView->SetExplicitMinSize(BSize(0, 150));
+	listView->SetExplicitMinSize(BSize(0, 125));
 	listView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
 	BString remaining(STATUS_TRAILING_LABEL);
@@ -99,26 +100,29 @@ AppView::InitView()
 							   remaining.String());
 	statusBar->AddFilter(new StatusBarFilter());
 	
+	BLayoutBuilder::Group<>(editorBoxView, B_HORIZONTAL)
+		.SetInsets(B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS,
+					B_USE_DEFAULT_SPACING, B_USE_BIG_INSETS)
+		.Add(editorScrollView, 0.0f)
+	.End();
+	
 	BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_DEFAULT_SPACING)
 		.SetInsets(B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS, 
 						B_USE_WINDOW_INSETS, B_USE_WINDOW_INSETS)
 		.AddSplit(B_VERTICAL, B_USE_HALF_ITEM_SPACING)
-			.AddSplit(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
-				.Add(fileNamePatternView, 0.0f)
-				.Add(editorView, 0.0f)
-				.End()
-			.Add(listView, 1.0f)
-			.End()
+			.Add(editorBoxView, 0.0f)
+			.Add(listView, 0.0f)
+		.End()
 		.AddGroup(B_HORIZONTAL)
 			.Add(statusBar, 0.0f)
-				.AddGroup(B_VERTICAL)
-					.AddStrut(B_USE_HALF_ITEM_SPACING)
-					.AddGroup(B_HORIZONTAL)
-						.Add(cancelButton, 1.0f)
-						.Add(encodeButton, 1.0f)
-					.End()
+			.AddGroup(B_VERTICAL)
+				.AddStrut(B_USE_HALF_ITEM_SPACING)
+				.AddGroup(B_HORIZONTAL)
+					.Add(cancelButton, 1.0f)
+					.Add(encodeButton, 1.0f)
 				.End()
 			.End()
+		.End()
 	.End();
 }
 
@@ -146,12 +150,9 @@ AppView::MessageReceived(BMessage* message)
 				PRINT(("View Shortcut: %d\n", view));
 				switch (view) {
 					case 0:
-						fileNamePatternView->MakeFocus(true);
-						break;
-					case 1:
 						editorView->MakeFocus(true);
 						break;
-					case 2:
+					case 1:
 						listView->MakeFocus(true);
 						break;
 				}
@@ -184,6 +185,10 @@ AppView::MessageReceived(BMessage* message)
 				}
 			}
 			break;
+		case PREFS_MSG: {
+			PrefWindow* prefWin = new PrefWindow();
+			prefWin->Show();
+		}
 		case LIST_SELECTION_MSG: {
 			editorView->ListSelectionChanged(message);
 			break;
@@ -199,11 +204,6 @@ AppView::MessageReceived(BMessage* message)
 					SetSaveAsColumn(row);
 					listView->InvalidateRow(row);
 				}
-			}
-			break;
-		case ENCODER_CHANGED: {
-				BMessenger msgr(fileNamePatternView);
-				msgr.SendMessage(message);
 			}
 			break;
 		case B_REFS_RECEIVED:
@@ -724,7 +724,6 @@ AppView::EncodeThread(void* args)
 
 	if (view->LockLooper()) {
 		view->editorView->SetEnabled(false);
-		view->fileNamePatternView->SetEnabled(false);
 		view->encodeButton->SetEnabled(false);
 		menuBar->SetEnabled(false);
 		view->UnlockLooper();
@@ -781,7 +780,6 @@ AppView::EncodeThread(void* args)
 				remaining << 0;
 				view->statusBar->Reset(STATUS_LABEL, remaining.String());
 				view->editorView->SetEnabled(true);
-				view->fileNamePatternView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
 				menuBar->SetEnabled(true);
@@ -805,7 +803,6 @@ AppView::EncodeThread(void* args)
 				remaining << 0;
 				view->statusBar->Reset(STATUS_LABEL, remaining.String());
 				view->editorView->SetEnabled(true);
-				view->fileNamePatternView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
 				menuBar->SetEnabled(true);
@@ -828,7 +825,6 @@ AppView::EncodeThread(void* args)
 				remaining << 0;
 				view->statusBar->Reset(STATUS_LABEL, remaining.String());
 				view->editorView->SetEnabled(true);
-				view->fileNamePatternView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
 				menuBar->SetEnabled(true);
@@ -852,7 +848,6 @@ AppView::EncodeThread(void* args)
 				remaining << 0;
 				view->statusBar->Reset(STATUS_LABEL, remaining.String());
 				view->editorView->SetEnabled(true);
-				view->fileNamePatternView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
 				menuBar->SetEnabled(true);
@@ -873,7 +868,6 @@ AppView::EncodeThread(void* args)
 				remaining << 0;
 				view->statusBar->Reset(STATUS_LABEL, remaining.String());
 				view->editorView->SetEnabled(true);
-				view->fileNamePatternView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
 				menuBar->SetEnabled(true);
@@ -940,7 +934,6 @@ AppView::EncodeThread(void* args)
 						remaining << 0;
 						view->statusBar->Reset(STATUS_LABEL, remaining.String());
 						view->editorView->SetEnabled(true);
-						view->fileNamePatternView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
 						menuBar->SetEnabled(true);
@@ -964,7 +957,6 @@ AppView::EncodeThread(void* args)
 							remaining << 0;
 							view->statusBar->Reset(STATUS_LABEL, remaining.String());
 							view->editorView->SetEnabled(true);
-							view->fileNamePatternView->SetEnabled(true);
 							view->encodeButton->SetEnabled(true);
 							view->cancelButton->SetEnabled(true);
 							menuBar->SetEnabled(true);
@@ -985,7 +977,6 @@ AppView::EncodeThread(void* args)
 						remaining << 0;
 						view->statusBar->Reset(STATUS_LABEL, remaining.String());
 						view->editorView->SetEnabled(true);
-						view->fileNamePatternView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
 						menuBar->SetEnabled(true);
@@ -1024,7 +1015,6 @@ AppView::EncodeThread(void* args)
 						remaining << 0;
 						view->statusBar->Reset(STATUS_LABEL, remaining.String());
 						view->editorView->SetEnabled(true);
-						view->fileNamePatternView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
 						menuBar->SetEnabled(true);
@@ -1054,7 +1044,6 @@ AppView::EncodeThread(void* args)
 		remaining << 0;
 		view->statusBar->Reset(STATUS_LABEL, remaining.String());
 		view->editorView->SetEnabled(true);
-		view->fileNamePatternView->SetEnabled(true);
 		view->encodeButton->SetEnabled(true);
 		view->cancelButton->SetEnabled(true);
 		menuBar->SetEnabled(true);
