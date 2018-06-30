@@ -305,7 +305,7 @@ Settings::PrintToStream()
 	PRINT(("\n"));
 	PRINT(("\tENCODER NAME = %s\n", encoderName));
 	PRINT(("\tADD_ON_DIR = %s\n", addonDirectory));
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		PRINT(("\tCOLUMN_DISPLAY_ORDER[%d] = %d\n", i, columnDisplayOrder[i]));
-	}
+	PRINT(("\tPATH_PATTERN = %s\n", pathPattern));
+	PRINT(("\tIS_ENCODING = %s\n", encoding));
+	PRINT_OBJECT(columnsState);
 }

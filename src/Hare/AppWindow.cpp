@@ -391,9 +391,8 @@ AppWindow::AddVolumeToList(dev_t device)
 	BVolume volume(device);
 	BDirectory dir;
 	volume.GetRootDirectory(&dir);
-	BEntry entry;
-	dir.FindEntry("wav", &entry);
-	if ((entry.InitCheck() == B_OK) && (dir.SetTo(&entry) == B_OK)) {
+	
+	if (dir.InitCheck() == B_OK) {
 		BMessage refMsg(B_REFS_RECEIVED);
 		entry_ref ref;
 		dir.Rewind();

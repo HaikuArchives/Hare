@@ -356,9 +356,11 @@ AppView::InitializeColumn(BRefRow* row)
 			album.Remove(index, album.Length() - index);
 			artist.Trim();
 			album.Trim();
+			BString title(ref->name);
+			title.Truncate(title.FindLast("."));
 			row->SetField(new BStringField(artist.String()), ARTIST_COLUMN_INDEX);
 			row->SetField(new BStringField(album.String()), ALBUM_COLUMN_INDEX);
-			row->SetField(new BStringField(ref->name), TITLE_COLUMN_INDEX);
+			row->SetField(new BStringField(title.String()), TITLE_COLUMN_INDEX);
 		} else {
 			row->SetField(new BStringField((const char*)0), ARTIST_COLUMN_INDEX);
 			row->SetField(new BStringField((const char*)0), ALBUM_COLUMN_INDEX);

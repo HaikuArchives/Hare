@@ -71,13 +71,10 @@ PrefWindow::InitWindow()
 	titleStringView = new BStringView("title", TITLE_LABEL);
 	genreStringView = new BStringView("genre", GENRE_LABEL);
 
-	AEEncoder* encoder = settings->Encoder();
-	BString str;
-	if (encoder) {
-		str = encoder->GetPattern();
-	}
+	const char* str = "";
+	str = settings->PathPattern();
 	fileNamePatternTextControl = new BTextControl("fileNamePatternTextControl",
-													B_EMPTY_STRING, str.String(), NULL);
+													B_EMPTY_STRING, str, NULL);
 
 	applyButton = new BButton("applyButton", APPLY_BTN,
 							  new BMessage(SAVE_PREFS));

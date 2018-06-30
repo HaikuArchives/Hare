@@ -22,6 +22,8 @@ Application::Application()
 
 	window = AppWindow::GetInstance();
 	window->Show();
+	
+	settings->PrintToStream();
 }
 
 Application::~Application()

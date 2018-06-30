@@ -8,7 +8,7 @@
 #define CANCEL_BTN "Cancel"
 #define APPLY_BTN "Apply"
 #define REVERT_BTN "Revert"
-#define ENCODER_PATTERN_BTN "Revert to Encoder\nDefault Pattern"
+#define ENCODER_PATTERN_BTN "Use Encoder Pattern"
 
 #define STATUS_LABEL "Encoding Song: "
 #define STATUS_TRAILING_LABEL "Songs Remaining: "
