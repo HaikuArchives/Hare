@@ -79,6 +79,9 @@ AppView::InitView()
 	editorScrollView = new BScrollView("editorScrollView", editorView, 
 										B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE | B_FRAME_EVENTS,
 										false, true, B_NO_BORDER);
+	editorScrollView->SetExplicitMinSize(BSize(0, 0));
+	editorScrollView->ScrollBar(B_VERTICAL)->SetRange(0, 250);
+	editorScrollView->ScrollBar(B_VERTICAL)->SetProportion(0.5);
 
 	editorBoxView = new BBox("editorBoxView");
 	editorBoxView->SetLabel(EDITOR_LABEL);
