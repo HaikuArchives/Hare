@@ -149,6 +149,9 @@ AppWindow::InitMenus()
 									new BMessage(MENU_ITEM_SELECTED), 'D'));
 	editMenu->AddItem(new BMenuItem(REMOVE,
 									new BMessage(MENU_ITEM_SELECTED), 'R'));
+	editMenu->AddSeparatorItem();
+	editMenu->AddItem(new BMenuItem(PREFS,
+									new BMessage(MENU_ITEM_SELECTED), 'P'));
 
 	encoderMenu = new BMenu(ENCODER_MENU);
 	encoderMenu->SetRadioMode(true);
@@ -309,6 +312,9 @@ AppWindow::MenuItemSelected(BMessage* message)
 			} else if (strcmp(item->Label(), REMOVE) == 0) {
 				BMessage msg(REMOVE_MSG);
 				viewMessenger->SendMessage(&msg);
+			} else if (strcmp(item->Label(), PREFS) == 0) {
+				BMessage msg(PREFS_MSG);
+				viewMessenger->SendMessage(&msg);
 			}
 		} else if (strcmp(menu->Name(), LOAD_CD_SUBMENU) == 0) {
 			PRINT(("CD SELECTED: %s\n", item->Label()));
@@ -385,9 +391,8 @@ AppWindow::AddVolumeToList(dev_t device)
 	BVolume volume(device);
 	BDirectory dir;
 	volume.GetRootDirectory(&dir);
-	BEntry entry;
-	dir.FindEntry("wav", &entry);
-	if ((entry.InitCheck() == B_OK) && (dir.SetTo(&entry) == B_OK)) {
+	
+	if (dir.InitCheck() == B_OK) {
 		BMessage refMsg(B_REFS_RECEIVED);
 		entry_ref ref;
 		dir.Rewind();
@@ -487,6 +492,9 @@ AppWindow::MessageReceived(BMessage* message)
 			break;
 		case MENU_ITEM_SELECTED:
 			MenuItemSelected(message);
+			break;
+		case FILE_NAME_PATTERN_CHANGED:
+			viewMessenger->SendMessage(message);
 			break;
 		case B_ABOUT_REQUESTED:
 			AboutRequested();

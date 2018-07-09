@@ -67,14 +67,14 @@ EncoderListView::InitView()
 	minWidth = StringWidth(TITLE_COLUMN) + 20;
 	AddColumn(new BStringColumn(TITLE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TITLE_COLUMN_INDEX);
 
+	minWidth = StringWidth(TRACK_COLUMN) + 20;
+	AddColumn(new BStringColumn(TRACK_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TRACK_COLUMN_INDEX);
+
 	minWidth = StringWidth(YEAR_COLUMN) + 20;
 	AddColumn(new BStringColumn(YEAR_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), YEAR_COLUMN_INDEX);
 
 	minWidth = StringWidth(COMMENT_COLUMN) + 20;
 	AddColumn(new BStringColumn(COMMENT_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), COMMENT_COLUMN_INDEX);
-
-	minWidth = StringWidth(TRACK_COLUMN) + 20;
-	AddColumn(new BStringColumn(TRACK_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TRACK_COLUMN_INDEX);
 
 	minWidth = StringWidth(GENRE_COLUMN) + 20;
 	AddColumn(new BStringColumn(GENRE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), GENRE_COLUMN_INDEX);

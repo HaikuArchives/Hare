@@ -58,9 +58,9 @@ public:
 	~OggEncoder();
 
 	virtual int32 Encode(BMessage* encodeMessage);
+	virtual const char* GetDefaultPattern();
 
 protected:
-	virtual int32 LoadDefaultPattern();
 	virtual int32 LoadDefaultMenu();
 
 private:

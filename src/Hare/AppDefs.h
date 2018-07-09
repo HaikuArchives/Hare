@@ -4,6 +4,7 @@
 #define COMPANY "Originally created by FlipSide Software"
 #define COMPANY_WWW "https://www.github.com/HaikuArchives/Hare"
 #define APPLICATION "Hare"
+#define PREFS "Preferences"
 
 #define WINDOW_FILE "Hare Window"
 #define SETTINGS "Hare Settings"

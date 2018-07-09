@@ -4,9 +4,11 @@
 #include <Beep.h>
 #include <Debug.h>
 #include <Message.h>
+#include <Messenger.h>
 
 #include "AppDefs.h"
 #include "AppWindow.h"
+#include "CommandConstants.h"
 #include "GUIStrings.h"
 #include "Settings.h"
 
@@ -20,6 +22,8 @@ Application::Application()
 
 	window = AppWindow::GetInstance();
 	window->Show();
+	
+	settings->PrintToStream();
 }
 
 Application::~Application()
@@ -41,6 +45,11 @@ Application::MessageReceived(BMessage* message)
 	//PRINT(("Application::MessageReceived(BMessage*)\n"));
 
 	switch (message->what) {
+		case FILE_NAME_PATTERN_CHANGED: {
+			BMessenger sender(window);
+			sender.SendMessage(message);
+			}
+			break;
 		default:
 			BApplication::MessageReceived(message);
 	}

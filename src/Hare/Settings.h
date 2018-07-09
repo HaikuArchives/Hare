@@ -31,6 +31,9 @@ public:
 
 	const char* EncoderName();
 	void SetEncoderName(const char* value);
+	
+	const char* PathPattern();
+	void SetPathPattern(const char* value);
 
 	const char* AddOnsDirectory();
 
@@ -43,6 +46,7 @@ private:
 	bool encoding;
 	AEEncoder* encoder;
 	char encoderName[B_FILE_NAME_LENGTH];
+	char pathPattern[B_PATH_NAME_LENGTH];
 	char addonDirectory[B_PATH_NAME_LENGTH];
 	BMessage columnsState;
 

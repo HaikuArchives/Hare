@@ -7,7 +7,9 @@
 #include <be/media/MediaFormats.h>
 #include <be/media/MediaTrack.h>
 #include <be/storage/Entry.h>
+#include <be/storage/FindDirectory.h>
 #include <be/storage/NodeInfo.h>
+#include <be/storage/Path.h>
 #include <be/storage/Volume.h>
 #include <be/support/Debug.h>
 #include <be/support/String.h>
@@ -237,13 +239,21 @@ BeEncoder::Encode(BMessage* message) {
 	return result;
 }
 
-int32
-BeEncoder::LoadDefaultPattern() {
+const char*
+BeEncoder::GetDefaultPattern() {
 	PRINT(("BeEncoder::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/MP3/%a/%n/%a - %n - %k - %t.mp3";
+	BPath home;
+	BString pattern;
+	
+	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
+		pattern += home.Path();
+		pattern += "/MP3/%a/%n/%a - %n - %k - %t.mp3";
+	} else { 
+		pattern = "/boot/home/MP3/%a/%n/%a - %n - %k - %t.mp3";
+	}
 
-	return B_OK;
+	return pattern.String();
 }
 
 int32

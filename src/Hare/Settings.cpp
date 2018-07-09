@@ -19,8 +19,8 @@
 
 Settings* settings = 0;
 
-#define DEFAULT_ENCODER "MP3 GoGo"
-#define DEFAULT_NUMBER_OF_SORT_KEYS 0
+#define DEFAULT_ENCODER "BeEncoder"
+#define DEFAULT_PATHPATTERN "/boot/home/Encoded/%t.mp3"
 
 Settings::Settings()
 	:
@@ -75,6 +75,22 @@ Settings::Settings(BMessage* archive)
 	} else {
 		strcpy(encoderName, tmp.String());
 	}
+	
+	status = archive->FindString("pathPattern", &tmp);
+	if (status != B_OK) {
+		PRINT(("Couldn't find pattern from settings"));
+		
+		AEEncoder* encoder = Encoder();
+		BString str;
+		if (encoder) {
+			str = encoder->GetPattern();
+			strcpy(pathPattern, str.String());
+		} else {
+			strcpy(pathPattern, DEFAULT_PATHPATTERN);
+		}
+	} else {
+		strcpy(pathPattern, tmp.String());
+	}
 
 	app_info info;
 	be_app->GetAppInfo(&info);
@@ -124,6 +140,9 @@ Settings::Archive(BMessage* archive, bool deep) const
 */
 	if (status == B_OK) {
 		status = archive->AddString("encoderName", encoderName);
+	}
+	if (status == B_OK) {
+		status = archive->AddString("pathPattern", pathPattern);	
 	}
 	if (status == B_OK) {
 		status = archive->AddMessage("columnsState", &columnsState);
@@ -254,6 +273,25 @@ Settings::SetEncoderName(const char* value)
 }
 
 const char*
+Settings::PathPattern()
+{
+	PRINT(("Settings::PathPattern()\n"));
+	
+	return pathPattern;
+}
+
+void
+Settings::SetPathPattern(const char* value)
+{
+	PRINT(("Settings::SetPathPattern(const char*)\n"));
+	
+	if (value) {
+		strcpy(pathPattern, value);	
+	}
+	
+}
+
+const char*
 Settings::AddOnsDirectory()
 {
 	PRINT(("Settings::AddOnsDirectory()\n"));
@@ -267,7 +305,7 @@ Settings::PrintToStream()
 	PRINT(("\n"));
 	PRINT(("\tENCODER NAME = %s\n", encoderName));
 	PRINT(("\tADD_ON_DIR = %s\n", addonDirectory));
-	for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-		PRINT(("\tCOLUMN_DISPLAY_ORDER[%d] = %d\n", i, columnDisplayOrder[i]));
-	}
+	PRINT(("\tPATH_PATTERN = %s\n", pathPattern));
+	PRINT(("\tIS_ENCODING = %s\n", encoding));
+	PRINT_OBJECT(columnsState);
 }

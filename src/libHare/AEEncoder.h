@@ -34,6 +34,7 @@ public:
 	virtual int32 InitEncoder();
 	virtual int32 Encode(BMessage* encodeMessage);
 	virtual int32 UninitEncoder();
+	virtual const char* GetDefaultPattern();
 
 protected:
 	int32 error;
@@ -41,7 +42,6 @@ protected:
 	BString pattern;
 	BMenu* menu;
 
-	virtual int32 LoadDefaultPattern();
 	virtual int32 LoadDefaultMenu();
 
 	int32 FindExecutable(const char* executable, char* path);
@@ -52,6 +52,7 @@ private:
 
 	AEEncoder();
 	AEEncoder(AEEncoder& enc);
+	int32 LoadDefaultPattern();
 	int32 LoadSettings();
 	int32 SaveSettings();
 	int32 QueryForExecutable(const char* executable,

@@ -5,7 +5,9 @@
 #include <be/app/Messenger.h>
 #include <be/interface/Menu.h>
 #include <be/storage/File.h>
+#include <be/storage/FindDirectory.h>
 #include <be/storage/NodeInfo.h>
+#include <be/storage/Path.h>
 #include <be/support/Debug.h>
 
 #include "M3UCreator.h"
@@ -130,13 +132,21 @@ M3UCreator::UninitEncoder() {
 	return B_OK;
 }
 
-int32
-M3UCreator::LoadDefaultPattern() {
+const char*
+M3UCreator::GetDefaultPattern() {
 	PRINT(("M3UCreator::LoadDefaultPattern()\n"));
 
-	pattern = "/boot/home/playlists/%a.m3u";
+	BPath home;
+	BString pattern;
 
-	return B_OK;
+	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
+		pattern += home.Path();
+		pattern += "/playlists/%a.m3u";
+	} else {
+		pattern = "/boot/home/playlists/%a.m3u";
+	}
+
+	return pattern.String();
 }
 
 //function called to get new AEEncoder subclass

@@ -92,6 +92,14 @@ AEEncoder::GetName()
 }
 
 const char*
+AEEncoder::GetDefaultPattern()
+{
+	PRINT(("AEEncoder::GetDefaultPattern()\n"));
+	
+	return "";
+}
+
+const char*
 AEEncoder::GetPattern()
 {
 	PRINT(("AEEncoder::GetPattern()\n"));
@@ -162,7 +170,7 @@ int32
 AEEncoder::LoadDefaultPattern()
 {
 	PRINT(("AEEncoder::LoadDefaultPattern()\n"));
-	SetPattern(0);
+	SetPattern(GetDefaultPattern());
 	return B_OK;
 }
 

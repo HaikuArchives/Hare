@@ -7,6 +7,8 @@
 #define ENCODE_BTN "Encode"
 #define CANCEL_BTN "Cancel"
 #define APPLY_BTN "Apply"
+#define REVERT_BTN "Revert"
+#define ENCODER_PATTERN_BTN "Use Encoder Pattern"
 
 #define STATUS_LABEL "Encoding Song: "
 #define STATUS_TRAILING_LABEL "Songs Remaining: "
@@ -25,6 +27,7 @@
 #define SELECT_ALL "Select All"
 #define DESELECT_ALL "Deselect All"
 #define REMOVE "Remove"
+#define PREFS "Preferences"
 
 #define COLUMN_MENU		"Columns"
 #define FILE_COLUMN		"File"
