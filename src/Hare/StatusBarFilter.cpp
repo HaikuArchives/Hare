@@ -1,3 +1,7 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include "StatusBarFilter.h"
 
 #include <Handler.h>

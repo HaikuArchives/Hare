@@ -1,18 +1,22 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <be/kernel/fs_info.h>
-#include <be/kernel/image.h>
-#include <be/app/Message.h>
-#include <be/interface/Menu.h>
-#include <be/interface/MenuItem.h>
-#include <be/storage/File.h>
-#include <be/storage/FindDirectory.h>
-#include <be/storage/NodeInfo.h>
-#include <be/storage/Path.h>
-#include <be/storage/Volume.h>
-#include <be/support/Debug.h>
+#include <fs_info.h>
+#include <image.h>
+#include <Message.h>
+#include <Menu.h>
+#include <MenuItem.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <NodeInfo.h>
+#include <Path.h>
+#include <Volume.h>
+#include <Debug.h>
 
 #include "AudioAttributes.h"
 #include "ID3Tags.h"
@@ -255,6 +259,8 @@ GoGoEncoder::LoadDefaultMenu() {
 						 new BMessage(FSS_MENU_ITEM_SELECTED));
 	item->SetMarked(true);
 	menu->AddItem(item);
+	
+	return B_OK;
 }
 
 int32

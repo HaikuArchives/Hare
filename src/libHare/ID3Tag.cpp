@@ -1,5 +1,9 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <string.h>
-#include <be/support/Debug.h>
+#include <Debug.h>
 #include <String.h>
 #include "ID3Tag.h"
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __ID3_TAG_H__
 #define __ID3_TAG_H__
 

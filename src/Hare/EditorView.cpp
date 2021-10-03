@@ -1,4 +1,7 @@
-
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include "EditorView.h"
 
 #include <stdlib.h>
@@ -24,6 +27,7 @@
 #include <RadioButton.h>
 #include <Rect.h>
 #include <TextControl.h>
+#include <String.h>
 
 #include <ColumnTypes.h>
 
@@ -87,9 +91,10 @@ EditorView::InitView()
                 menu->SetLabelFromMarked(true);
                 int genres = GenreList::NumGenres();
                 BList genreList;
+                GenreList genreObject;
                 for (int i = 0; i < genres; i++) {
-                        char* genre = GenreList::Genre(i);
-                        genreList.AddItem(genre);
+                	char* genre = (char*)GenreList::Genre(i).String();
+                	genreList.AddItem(genre);
                 }
 
                 genreList.SortItems(&GenreList::GenreSort);
@@ -98,6 +103,7 @@ EditorView::InitView()
                 for (int i = 0; i < genres; i++) {
                         char* genre = (char*)genreList.ItemAt(i);
                         current = genre[0];
+                        // current = genreObject.Genre(0);  //was [0]
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }

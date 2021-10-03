@@ -1,3 +1,7 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __STATUS_BAR_FILTER_H__
 #define __STATUS_BAR_FILTER_H__
 

@@ -1,5 +1,9 @@
-#ifndef __OGG_ENCODER_H__
-#define __OGG_ENCODER_H__
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
+#ifndef __M3U_CREATOR_H__
+#define __M3U_CREATOR_H__
 
 #include "AEEncoder.h"
 

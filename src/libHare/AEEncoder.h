@@ -1,11 +1,15 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __AE_ENCDER_H__
 #define __AE_ENCDER_H__
 
-#include <be/app/Message.h>
-#include <be/interface/Menu.h>
-#include <be/storage/Volume.h>
-#include <be/support/Archivable.h>
-#include <be/support/String.h>
+#include <Message.h>
+#include <Menu.h>
+#include <Volume.h>
+#include <Archivable.h>
+#include <String.h>
 
 #ifdef __FSS_BUILD
 #define __FSS_EXPORT __declspec(dllexport)
@@ -59,6 +63,6 @@ private:
 							 BVolume* volume, char* path);
 };
 
-extern "C" __FSS_EXPORT AEEncoder* load_encoder();
+// extern "C" __FSS_EXPORT AEEncoder* load_encoder();
 
 #endif

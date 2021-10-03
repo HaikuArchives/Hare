@@ -1,3 +1,7 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __VOLUME_MENU_ITEM_H__
 #define __VOLUME_MENU_ITEM_H__
 

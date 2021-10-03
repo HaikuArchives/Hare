@@ -1,7 +1,11 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <stdlib.h>
 #include <string.h>
 
-#include <be/support/Debug.h>
+#include <Debug.h>
 #include <Node.h>
 #include <NodeInfo.h>
 #include <String.h>
@@ -12,8 +16,6 @@
 
 #include "GenreList.h"
 #include "ID3Tags.h"
-
-//using namespace TagLib;
 
 ID3Tags::ID3Tags(const char* filename)
 	:	AudioInfo(),
@@ -124,14 +126,15 @@ ID3Tags::~ID3Tags() {
 bool
 ID3Tags::HasID3Tags() {
 	PRINT(("ID3Tags::HasID3Tags()\n"));
-
-	return true;
+	//not implemented yet so return B_ERROR
+	return B_ERROR;
 }
 
 int
 ID3Tags::CreateID3Tags() {
 	PRINT(("ID3Tags::CreateID3Tags()\n"));
-
+	//not implemented yet so return B_ERROR	
+    return B_ERROR;
 }
 
 const char*

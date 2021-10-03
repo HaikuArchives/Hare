@@ -1,8 +1,12 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __MEDIA_MENU_ITEM_H__
 #define __MEDIA_MENU_ITEM_H__
 
-#include <be/interface/MenuItem.h>
-#include <be/media/MediaFormats.h>
+#include <MenuItem.h>
+#include <MediaFormats.h>
 
 class BArchivable;
 class BMessage;

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __GUI_STRINGS_H__
 #define __GUI_STRINGS_H__
 

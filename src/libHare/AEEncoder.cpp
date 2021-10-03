@@ -1,15 +1,19 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <string.h>
-#include <kernel/OS.h>
-#include <storage/Directory.h>
-#include <storage/Entry.h>
-#include <storage/File.h>
-#include <storage/FindDirectory.h>
-#include <storage/Path.h>
-#include <storage/Query.h>
-#include <storage/Volume.h>
-#include <storage/VolumeRoster.h>
-#include <support/Debug.h>
-#include <support/String.h>
+#include <OS.h>
+#include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <Path.h>
+#include <Query.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
+#include <Debug.h>
+#include <String.h>
 #include "AEEncoder.h"
 
 #define COMPANY "Haiku"

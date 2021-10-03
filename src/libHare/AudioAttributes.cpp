@@ -1,9 +1,13 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <stdlib.h>
 #include <string.h>
-#include <be/storage/File.h>
-#include <be/support/Debug.h>
-#include <be/support/TypeConstants.h>
-#include <be/support/String.h>
+#include <File.h>
+#include <Debug.h>
+#include <TypeConstants.h>
+#include <String.h>
 #include "AudioAttributes.h"
 #include "AudioAttribute.h"
 

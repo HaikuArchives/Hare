@@ -1,14 +1,19 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <stdlib.h>
 #include <string.h>
-#include <be/kernel/fs_info.h>
-#include <be/app/Message.h>
-#include <be/app/Messenger.h>
-#include <be/interface/Menu.h>
-#include <be/storage/File.h>
-#include <be/storage/FindDirectory.h>
-#include <be/storage/NodeInfo.h>
-#include <be/storage/Path.h>
-#include <be/support/Debug.h>
+
+#include <fs_info.h>
+#include <Message.h>
+#include <Messenger.h>
+#include <Menu.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <NodeInfo.h>
+#include <Path.h>
+#include <Debug.h>
 
 #include "M3UCreator.h"
 

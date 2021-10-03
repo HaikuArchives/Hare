@@ -1,15 +1,19 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <be/interface/InterfaceDefs.h>
-#include <be/kernel/fs_attr.h>
-#include <be/kernel/fs_index.h>
-#include <be/storage/File.h>
-#include <be/storage/Mime.h>
-#include <be/storage/NodeInfo.h>
-#include <be/support/Debug.h>
-#include <be/support/TypeConstants.h>
-#include <be/support/String.h>
+#include <InterfaceDefs.h>
+#include <fs_attr.h>
+#include <fs_index.h>
+#include <File.h>
+#include <Mime.h>
+#include <NodeInfo.h>
+#include <Debug.h>
+#include <TypeConstants.h>
+#include <String.h>
 
 #include "AudioAttribute.h"
 
