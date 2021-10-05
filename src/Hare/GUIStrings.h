@@ -7,7 +7,6 @@
 
 #include "AppDefs.h"
 
-#define ABOUT_BTN "Rock On!"
 #define ENCODE_BTN "Encode"
 #define CANCEL_BTN "Cancel"
 #define APPLY_BTN "Apply"
@@ -18,8 +17,8 @@
 #define STATUS_TRAILING_LABEL "Songs Remaining: "
 
 #define OK "Ok"
-#define YES "Yes, Please."
-#define NO "Hell No!"
+#define YES "Yes"
+#define NO "No"
 
 #define FILE_MENU "File"
 #define LOAD_CD_SUBMENU "Load CD"

@@ -16,7 +16,7 @@
 #include <String.h>
 #include "AEEncoder.h"
 
-#define COMPANY "Haiku"
+#define COMPANY "HaikuArchives"
 #define APPLICATION "Hare"
 
 AEEncoder::AEEncoder()

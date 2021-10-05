@@ -58,31 +58,18 @@ EditorView::InitView()
         selectedIndexes = 0;
 
         artistCheckBox = new BCheckBox("artistCB", ARTIST_COLUMN, new BMessage(MSG_ARTIST_CB));
-
         artistTextControl = new BTextControl("artistTC", 0, "", 0);
-
         albumCheckBox = new BCheckBox("albumCB", ALBUM_COLUMN, new BMessage(MSG_ALBUM_CB));
-
         albumTextControl = new BTextControl("albumTC", 0, "", 0);
-       
         titleCheckBox = new BCheckBox("titleCB", TITLE_COLUMN, new BMessage(MSG_TITLE_CB));
-        
         titleTextControl = new BTextControl("titleTC", 0, "", 0);
-
         trackCheckBox = new BCheckBox("trackCB", TRACK_COLUMN, new BMessage(MSG_TRACK_CB));
-
         trackTextControl = new BTextControl("trackTC", 0, "", 0);
-
         yearCheckBox = new BCheckBox("yearCB", YEAR_COLUMN, new BMessage(MSG_YEAR_CB));
-
         yearTextControl = new BTextControl("yearTC", 0, "", 0);
-
         commentCheckBox = new BCheckBox("commentCB", COMMENT_COLUMN, new BMessage(MSG_COMMENT_CB));
-
         commentTextControl = new BTextControl("commentTC", 0, "", 0);
-       
         genreCheckBox = new BCheckBox("genreCB", GENRE_COLUMN, new BMessage(MSG_GENRE_CB));
-
         genreBox = new BBox(B_FANCY_BORDER);
 
         // INSIDE THE BOX
