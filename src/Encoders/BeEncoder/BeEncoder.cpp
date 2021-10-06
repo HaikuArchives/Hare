@@ -1,18 +1,22 @@
-#include <be/app/Message.h>
-#include <be/app/Messenger.h>
-#include <be/interface/Menu.h>
-#include <be/kernel/fs_info.h>
-#include <be/media/MediaDefs.h>
-#include <be/media/MediaFile.h>
-#include <be/media/MediaFormats.h>
-#include <be/media/MediaTrack.h>
-#include <be/storage/Entry.h>
-#include <be/storage/FindDirectory.h>
-#include <be/storage/NodeInfo.h>
-#include <be/storage/Path.h>
-#include <be/storage/Volume.h>
-#include <be/support/Debug.h>
-#include <be/support/String.h>
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
+#include <Message.h>
+#include <Messenger.h>
+#include <Menu.h>
+#include <fs_info.h>
+#include <MediaDefs.h>
+#include <MediaFile.h>
+#include <MediaFormats.h>
+#include <MediaTrack.h>
+#include <Entry.h>
+#include <FindDirectory.h>
+#include <NodeInfo.h>
+#include <Path.h>
+#include <Volume.h>
+#include <Debug.h>
+#include <String.h>
 
 #include "AudioAttributes.h"
 #include "ID3Tags.h"
@@ -310,7 +314,7 @@ int32
 BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 	PRINT(("BeEncoder::WriteDetails(BMessage*,bool)\n"));
 
-	BFile file;
+	BFile beencfile;
 	const char* outputFile;
 	const char* artist;
 	const char* album;
@@ -325,7 +329,7 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 		return B_ERROR;
 	}
 
-	if (file.SetTo(outputFile, B_READ_WRITE) != B_OK) {
+	if (beencfile.SetTo(outputFile, B_READ_WRITE) != B_OK) {
 		PRINT(("Error opening output file.\n"));
 		return B_ERROR;
 	}
@@ -351,7 +355,7 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 	}
 
 	if (vol.KnowsMime()) {
-		BNodeInfo info(&file);
+		BNodeInfo info(&beencfile);
 		if (info.InitCheck() != B_OK) {
 			PRINT(("Error init'ing BNodeInfo.\n"));
 			return B_ERROR;
@@ -364,7 +368,7 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 	}
 
 	if (vol.KnowsAttr()) {
-		AudioAttributes attributes(&file);
+		AudioAttributes attributes(&beencfile);
 		attributes.SetArtist(artist);
 		attributes.SetAlbum(album);
 		attributes.SetTitle(title);
@@ -394,6 +398,8 @@ BeEncoder::WriteDetails(BMessage* msg, const char* mime, bool tags) {
 			return B_ERROR;
 		}
 	}
+	
+	return B_OK;
 }
 
 //function called by Flipside A.E. to get new AEEncoder subclass

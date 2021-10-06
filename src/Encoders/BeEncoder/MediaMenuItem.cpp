@@ -1,8 +1,12 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include <string.h>
-#include <be/app/Message.h>
-#include <be/support/Archivable.h>
-#include <be/support/Debug.h>
-#include <be/support/TypeConstants.h>
+#include <Message.h>
+#include <Archivable.h>
+#include <Debug.h>
+#include <TypeConstants.h>
 #include "MediaMenuItem.h"
 
 MediaMenuItem::MediaMenuItem(const char* label, media_file_format* mfi,

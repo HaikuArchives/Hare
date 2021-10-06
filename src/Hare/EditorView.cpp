@@ -1,4 +1,7 @@
-
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #include "EditorView.h"
 
 #include <stdlib.h>
@@ -24,6 +27,7 @@
 #include <RadioButton.h>
 #include <Rect.h>
 #include <TextControl.h>
+#include <String.h>
 
 #include <ColumnTypes.h>
 
@@ -54,31 +58,18 @@ EditorView::InitView()
         selectedIndexes = 0;
 
         artistCheckBox = new BCheckBox("artistCB", ARTIST_COLUMN, new BMessage(MSG_ARTIST_CB));
-
         artistTextControl = new BTextControl("artistTC", 0, "", 0);
-
         albumCheckBox = new BCheckBox("albumCB", ALBUM_COLUMN, new BMessage(MSG_ALBUM_CB));
-
         albumTextControl = new BTextControl("albumTC", 0, "", 0);
-       
         titleCheckBox = new BCheckBox("titleCB", TITLE_COLUMN, new BMessage(MSG_TITLE_CB));
-        
         titleTextControl = new BTextControl("titleTC", 0, "", 0);
-
         trackCheckBox = new BCheckBox("trackCB", TRACK_COLUMN, new BMessage(MSG_TRACK_CB));
-
         trackTextControl = new BTextControl("trackTC", 0, "", 0);
-
         yearCheckBox = new BCheckBox("yearCB", YEAR_COLUMN, new BMessage(MSG_YEAR_CB));
-
         yearTextControl = new BTextControl("yearTC", 0, "", 0);
-
         commentCheckBox = new BCheckBox("commentCB", COMMENT_COLUMN, new BMessage(MSG_COMMENT_CB));
-
         commentTextControl = new BTextControl("commentTC", 0, "", 0);
-       
         genreCheckBox = new BCheckBox("genreCB", GENRE_COLUMN, new BMessage(MSG_GENRE_CB));
-
         genreBox = new BBox(B_FANCY_BORDER);
 
         // INSIDE THE BOX
@@ -87,9 +78,10 @@ EditorView::InitView()
                 menu->SetLabelFromMarked(true);
                 int genres = GenreList::NumGenres();
                 BList genreList;
+                GenreList genreObject;
                 for (int i = 0; i < genres; i++) {
-                        char* genre = GenreList::Genre(i);
-                        genreList.AddItem(genre);
+                	char* genre = (char*)GenreList::Genre(i).String();
+                	genreList.AddItem(genre);
                 }
 
                 genreList.SortItems(&GenreList::GenreSort);
@@ -98,6 +90,7 @@ EditorView::InitView()
                 for (int i = 0; i < genres; i++) {
                         char* genre = (char*)genreList.ItemAt(i);
                         current = genre[0];
+                        // current = genreObject.Genre(0);  //was [0]
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }

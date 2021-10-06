@@ -1,8 +1,12 @@
+/*
+ * Copyright 2000-2021, Hare Team. All rights reserved.
+ * Distributed under the terms of the MIT License.
+ */
 #ifndef __APP_DEFS_H__
 #define __APP_DEFS_H__
 
-#define COMPANY "Originally created by FlipSide Software"
-#define COMPANY_WWW "https://www.github.com/HaikuArchives/Hare"
+#define COMPANY "HaikuArchives"
+#define COMPANY_WWW "github.com/HaikuArchives/Hare"
 #define APPLICATION "Hare"
 #define PREFS "Preferences"
 
