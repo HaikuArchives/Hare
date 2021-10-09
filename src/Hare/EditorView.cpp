@@ -90,7 +90,6 @@ EditorView::InitView()
                 for (int i = 0; i < genres; i++) {
                         char* genre = (char*)genreList.ItemAt(i);
                         current = genre[0];
-                        // current = genreObject.Genre(0);  //was [0]
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }
@@ -357,6 +356,7 @@ EditorView::SetControlValues(BRefRow* row)
                 trackTextControl->SetText(track);
 
                 BMenu* menu = genreMenuField->Menu();
+                menu->SetMaxContentWidth(StringWidth("contemporary classical WWWWW "));
                 BMenuItem* menuItem = menu->FindItem(genre);
 
                 if (menuItem && (strcmp(genre, "") != 0)) {
