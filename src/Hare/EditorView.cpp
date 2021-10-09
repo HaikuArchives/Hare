@@ -213,6 +213,7 @@ EditorView::Apply()
                         message.AddString("genre", genreTextControl->Text());
                 } else {
                         BMenu* menu = genreMenuField->Menu();
+                        menu->SetMaxContentWidth(StringWidth("contemporary classical WWWWW "));
                         BMenuItem* item = menu->FindMarked();
                         message.AddString("genre", item->Label());
                 }
