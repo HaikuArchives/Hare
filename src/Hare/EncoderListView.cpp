@@ -53,34 +53,36 @@ EncoderListView::InitView()
 	float minWidth;
 	float maxWidth = 1000;
 	int32 truncate = 3;
+	float extraspace = 0;
 	
 	AddColumn(new BBitmapColumn("Icon", 16, 16, 16, B_ALIGN_CENTER), COMPLETE_COLUMN_INDEX);
 	
-	minWidth = StringWidth(FILE_COLUMN) + 20;
+	extraspace = StringWidth("WW"); // add extraspace equal to width of WW
+	minWidth = StringWidth(FILE_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(FILE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), FILE_COLUMN_INDEX);
 
-	minWidth = StringWidth(SAVE_AS_COLUMN) + 20;
+	minWidth = StringWidth(SAVE_AS_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(SAVE_AS_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), SAVE_AS_COLUMN_INDEX);
 
-	minWidth = StringWidth(ARTIST_COLUMN) + 20;
+	minWidth = StringWidth(ARTIST_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(ARTIST_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), ARTIST_COLUMN_INDEX);
 
-	minWidth = StringWidth(ALBUM_COLUMN) + 20;
+	minWidth = StringWidth(ALBUM_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(ALBUM_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), ALBUM_COLUMN_INDEX);
 
-	minWidth = StringWidth(TITLE_COLUMN) + 20;
+	minWidth = StringWidth(TITLE_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(TITLE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TITLE_COLUMN_INDEX);
 
-	minWidth = StringWidth(TRACK_COLUMN) + 20;
+	minWidth = StringWidth(TRACK_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(TRACK_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), TRACK_COLUMN_INDEX);
 
-	minWidth = StringWidth(YEAR_COLUMN) + 20;
+	minWidth = StringWidth(YEAR_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(YEAR_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), YEAR_COLUMN_INDEX);
 
-	minWidth = StringWidth(COMMENT_COLUMN) + 20;
+	minWidth = StringWidth(COMMENT_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(COMMENT_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), COMMENT_COLUMN_INDEX);
 
-	minWidth = StringWidth(GENRE_COLUMN) + 20;
+	minWidth = StringWidth(GENRE_COLUMN) + extraspace;
 	AddColumn(new BStringColumn(GENRE_COLUMN, minWidth, minWidth, maxWidth, truncate, B_ALIGN_LEFT), GENRE_COLUMN_INDEX);
 
 	LoadState(settings->ColumnsState());

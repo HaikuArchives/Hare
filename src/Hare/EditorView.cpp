@@ -214,6 +214,7 @@ EditorView::Apply()
                         message.AddString("genre", genreTextControl->Text());
                 } else {
                         BMenu* menu = genreMenuField->Menu();
+                        menu->SetMaxContentWidth(StringWidth("contemporary classical WWWWW "));
                         BMenuItem* item = menu->FindMarked();
                         message.AddString("genre", item->Label());
                 }
@@ -357,6 +358,7 @@ EditorView::SetControlValues(BRefRow* row)
                 trackTextControl->SetText(track);
 
                 BMenu* menu = genreMenuField->Menu();
+                menu->SetMaxContentWidth(StringWidth("contemporary classical WWWWW "));
                 BMenuItem* menuItem = menu->FindItem(genre);
 
                 if (menuItem && (strcmp(genre, "") != 0)) {

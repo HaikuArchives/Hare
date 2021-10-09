@@ -185,7 +185,7 @@ AppWindow::LoadCDMenu()
 			BMessage* menuMessage = new BMessage(MENU_ITEM_SELECTED);
 			menuMessage->AddInt32("dev", volume.Device());
 			loadCdMenu->AddItem(new BMenuItem(info.volume_name, menuMessage,
-											  shortcut, B_CONTROL_KEY));
+											  shortcut, B_COMMAND_KEY));
 			shortcut++;
 		}
 	}
