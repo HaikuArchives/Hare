@@ -90,6 +90,7 @@ EditorView::InitView()
                 for (int i = 0; i < genres; i++) {
                         char* genre = (char*)genreList.ItemAt(i);
                         current = genre[0];
+                        // current = genreObject.Genre(0);  //was [0]
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }
