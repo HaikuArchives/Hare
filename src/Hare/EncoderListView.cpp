@@ -3,6 +3,7 @@
  * Distributed under the terms of the MIT License.
  */
 #include "EncoderListView.h"
+#include "RefRow.h"
 
 #include <string.h>
 
@@ -127,6 +128,31 @@ EncoderListView::SelectionChanged()
 	BMessenger messenger(Parent());
 	messenger.SendMessage(listSelectMsg);
 	delete listSelectMsg;
+}
+
+void
+EncoderListView::KeyDown(const char* bytes, int32 numBytes)
+{
+	uint8 byte = bytes[0];
+
+	switch(byte)
+	{
+		case B_BACKSPACE:
+			// fallthrough
+		case B_DELETE:
+			{
+				for (int32 i = CountRows()-1; i >= 0; i--) {
+					BRow* currentrow = this->RowAt(i);
+					if (currentrow->IsSelected()) {
+						RemoveRow(currentrow);
+					}
+					// May need to add code to delete associated BRefRow?
+		        }
+	        }
+			break;
+		default:
+			break;
+	}
 }
 
 BBitmap*
