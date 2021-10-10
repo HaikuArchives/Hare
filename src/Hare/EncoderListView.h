@@ -19,6 +19,7 @@ public:
 	virtual void MessageDropped(BMessage* message, BPoint point);
 	virtual void MessageReceived(BMessage* message);
 	virtual void SelectionChanged();
+	virtual void KeyDown(const char* bytes, int32 numBytes);
 	BBitmap* GetCheckMark();
 private:
 	void InitView();
