@@ -63,6 +63,6 @@ private:
 							 BVolume* volume, char* path);
 };
 
-// extern "C" __FSS_EXPORT AEEncoder* load_encoder();
+extern "C" __FSS_EXPORT AEEncoder* load_encoder();
 
 #endif
