@@ -5,11 +5,11 @@
 #ifndef __AE_ENCDER_H__
 #define __AE_ENCDER_H__
 
-#include <Message.h>
-#include <Menu.h>
-#include <Volume.h>
 #include <Archivable.h>
+#include <Menu.h>
+#include <Message.h>
 #include <String.h>
+#include <Volume.h>
 
 #ifdef __FSS_BUILD
 #define __FSS_EXPORT __declspec(dllexport)

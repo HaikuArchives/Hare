@@ -3,17 +3,19 @@
  * Distributed under the terms of the MIT License.
  */
 #include <string.h>
-#include <OS.h>
+
 #include <Directory.h>
+#include <Debug.h>
 #include <Entry.h>
 #include <File.h>
 #include <FindDirectory.h>
+#include <OS.h>
 #include <Path.h>
 #include <Query.h>
+#include <String.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
-#include <Debug.h>
-#include <String.h>
+
 #include "AEEncoder.h"
 
 #define COMPANY "HaikuArchives"

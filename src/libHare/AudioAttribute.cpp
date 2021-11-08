@@ -5,15 +5,16 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <InterfaceDefs.h>
+
+#include <Debug.h>
+#include <File.h>
 #include <fs_attr.h>
 #include <fs_index.h>
-#include <File.h>
+#include <InterfaceDefs.h>
 #include <Mime.h>
 #include <NodeInfo.h>
-#include <Debug.h>
-#include <TypeConstants.h>
 #include <String.h>
+#include <TypeConstants.h>
 
 #include "AudioAttribute.h"
 

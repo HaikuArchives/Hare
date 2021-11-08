@@ -9,8 +9,13 @@
 
 #include <Button.h>
 #include <CheckBox.h>
+#include <ColumnTypes.h>
 #include <Debug.h>
 #include <Entry.h>
+#include <GridLayout.h>
+#include <GridLayoutBuilder.h>
+#include <GroupLayout.h>
+#include <GroupLayoutBuilder.h>
 #include <LayoutBuilder.h>
 #include <List.h>
 #include <ListView.h>
@@ -19,22 +24,15 @@
 #include <MenuItem.h>
 #include <Message.h>
 #include <Messenger.h>
-#include <GridLayout.h>
-#include <GroupLayout.h>
 #include <OptionPopUp.h>
-#include <GroupLayoutBuilder.h>
-#include <GridLayoutBuilder.h>
 #include <RadioButton.h>
 #include <Rect.h>
-#include <TextControl.h>
 #include <String.h>
-
-#include <ColumnTypes.h>
-
-#include "GenreList.h"
+#include <TextControl.h>
 
 #include "AppDefs.h"
 #include "CommandConstants.h"
+#include "GenreList.h"
 #include "GUIStrings.h"
 
 EditorView::EditorView()
@@ -80,8 +78,8 @@ EditorView::InitView()
                 BList genreList;
                 GenreList genreObject;
                 for (int i = 0; i < genres; i++) {
-                	char* genre = (char*)GenreList::Genre(i).String();
-                	genreList.AddItem(genre);
+                    char* genre = (char*)GenreList::Genre(i).String();
+                    genreList.AddItem(genre);
                 }
 
                 genreList.SortItems(&GenreList::GenreSort);
@@ -90,7 +88,6 @@ EditorView::InitView()
                 for (int i = 0; i < genres; i++) {
                         char* genre = (char*)genreList.ItemAt(i);
                         current = genre[0];
-                        // current = genreObject.Genre(0);  //was [0]
                         if (current != last) {
                                 menu->AddSeparatorItem();
                         }
