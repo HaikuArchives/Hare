@@ -730,7 +730,10 @@ AppView::EncodeThread(void* args)
 	if (view->LockLooper()) {
 		view->editorView->SetEnabled(false);
 		view->encodeButton->SetEnabled(false);
+		view->cancelButton->SetEnabled(false);
+		view->Invalidate();
 		menuBar->SetEnabled(false);
+		menuBar->Invalidate();
 		view->UnlockLooper();
 	}
 
@@ -833,7 +836,9 @@ AppView::EncodeThread(void* args)
 				view->editorView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
+				view->Invalidate();
 				menuBar->SetEnabled(true);
+				menuBar->Invalidate();
 				view->UnlockLooper();
 			}
 			settings->SetEncoding(false);
@@ -855,7 +860,9 @@ AppView::EncodeThread(void* args)
 				view->editorView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
+				view->Invalidate();
 				menuBar->SetEnabled(true);
+				menuBar->Invalidate();
 				view->UnlockLooper();
 			}
 			settings->SetEncoding(false);
@@ -878,7 +885,9 @@ AppView::EncodeThread(void* args)
 				view->editorView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
+				view->Invalidate();
 				menuBar->SetEnabled(true);
+				menuBar->Invalidate();
 				view->UnlockLooper();
 			}
 			settings->SetEncoding(false);
@@ -898,7 +907,9 @@ AppView::EncodeThread(void* args)
 				view->editorView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
+				view->Invalidate();
 				menuBar->SetEnabled(true);
+				menuBar->Invalidate();
 				view->UnlockLooper();
 			}
 			settings->SetEncoding(false);
@@ -964,7 +975,9 @@ AppView::EncodeThread(void* args)
 						view->editorView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
+						view->Invalidate();
 						menuBar->SetEnabled(true);
+						menuBar->Invalidate();
 						view->UnlockLooper();
 					}
 					settings->SetEncoding(false);
@@ -987,7 +1000,9 @@ AppView::EncodeThread(void* args)
 							view->editorView->SetEnabled(true);
 							view->encodeButton->SetEnabled(true);
 							view->cancelButton->SetEnabled(true);
+							view->Invalidate();
 							menuBar->SetEnabled(true);
+							menuBar->Invalidate();
 							view->UnlockLooper();
 						}
 						settings->SetEncoding(false);
@@ -1045,7 +1060,9 @@ AppView::EncodeThread(void* args)
 						view->editorView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
+						view->Invalidate();
 						menuBar->SetEnabled(true);
+						menuBar->Invalidate();
 						view->UnlockLooper();
 					}
 					settings->SetEncoding(false);
@@ -1074,7 +1091,9 @@ AppView::EncodeThread(void* args)
 		view->editorView->SetEnabled(true);
 		view->encodeButton->SetEnabled(true);
 		view->cancelButton->SetEnabled(true);
+		view->Invalidate();
 		menuBar->SetEnabled(true);
+		menuBar->Invalidate();
 		view->UnlockLooper();
 	}
 
