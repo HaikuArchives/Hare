@@ -3,8 +3,10 @@
  * Distributed under the terms of the MIT License.
  */
 #include <string.h>
+
 #include <Debug.h>
 #include <String.h>
+
 #include "ID3Tag.h"
 
 ID3Tag::ID3Tag(TagLib::FileRef* file, TagLib::Tag* tag, int tag_item)

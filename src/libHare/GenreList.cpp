@@ -32,19 +32,25 @@ static BString genres[NUM_GENRES] = {
 };
 
 GenreList::GenreList() {
+	PRINT(("GenreList::GenreList()\n"));
 }
 
 GenreList::~GenreList() {
+	PRINT(("GenreList::~GenreList()\n"));
 }
 
-BString GenreList::Genre(int genreindex) {
+BString
+GenreList::Genre(int genreindex) {
 	if ((genreindex >= 0) && (genreindex < NUM_GENRES)) {
 		return genres[genreindex];
 	}
 	return genres[OTHER_INDEX];
 }
 
-int GenreList::Genre(BString genreToFind) {
+int
+GenreList::Genre(BString genreToFind) {
+	PRINT(("GenreList::Genre(const char*)\n"));
+
 	for (int i = 0; i < NUM_GENRES; i++) {
 		if (genres[i] == genreToFind) {
 			return i;
@@ -53,11 +59,17 @@ int GenreList::Genre(BString genreToFind) {
 	return OTHER_INDEX;
 }
 
-int GenreList::NumGenres() {
+int
+GenreList::NumGenres() {
+	PRINT(("GenreList::NumGenres()\n"));
+
 	return NUM_GENRES;
 }
 
-int GenreList::GenreSort(const void* g1, const void* g2) {
+int
+GenreList::GenreSort(const void* g1, const void* g2) {
+	PRINT(("GenreList::GenreSort()\n"));
+
 	char* genre1 = *((char**) g1);
 	char* genre2 = *((char**) g2);
 	return strcmp(genre1, genre2);

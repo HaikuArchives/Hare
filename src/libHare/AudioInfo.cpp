@@ -3,7 +3,9 @@
  * Distributed under the terms of the MIT License.
  */
 #include <stdio.h>
+
 #include <Debug.h>
+
 #include "AudioInfo.h"
 
 AudioInfo::AudioInfo() {
