@@ -1022,7 +1022,9 @@ AppView::EncodeThread(void* args)
 						view->editorView->SetEnabled(true);
 						view->encodeButton->SetEnabled(true);
 						view->cancelButton->SetEnabled(true);
+						view->Invalidate();
 						menuBar->SetEnabled(true);
+						menuBar->Invalidate();
 						view->UnlockLooper();
 					}
 					settings->SetEncoding(false);
