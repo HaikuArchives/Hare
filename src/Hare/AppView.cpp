@@ -740,15 +740,36 @@ AppView::EncodeThread(void* args)
 	BStringField* tmpStringField;
 	
 	int32 numRows = view->listView->CountRows();
+	int32 numSelected = 0;
+	for (int i = 0; i < numRows; i++) {
+		if (view->listView->RowAt(i)->IsSelected()) {
+			numSelected++;
+		}
+	}
 	if (view->LockLooper()) {
-		for (int i = 0; i < numRows; i++) {
-			row = (BRefRow*)view->listView->RowAt(i);
-			row->SetField(new BBitmapField((BBitmap*)NULL), COMPLETE_COLUMN_INDEX);
-			objList.AddItem(row);
-			view->listView->InvalidateRow(row);
+		if ((numSelected == 0) || (numSelected == numRows)) {
+		// if none are selected, or all are selected, then encode all
+			for (int i = 0; i < numRows; i++) {
+				row = (BRefRow*)view->listView->RowAt(i);
+				row->SetField(new BBitmapField((BBitmap*)NULL), COMPLETE_COLUMN_INDEX);
+				objList.AddItem(row);
+				view->listView->InvalidateRow(row);
+			}
+		} else {
+		// otherwise only encode the selected ones
+			for (int i = 0; i < numRows; i++) {
+				if (view->listView->RowAt(i)->IsSelected()) {
+					row = (BRefRow*)view->listView->RowAt(i);
+					row->SetField(new BBitmapField((BBitmap*)NULL), COMPLETE_COLUMN_INDEX);
+					objList.AddItem(row);
+					view->listView->InvalidateRow(row);
+				}
+			}
+			numRows = numSelected;
 		}
 		view->UnlockLooper();
 	}
+
 
 	for (int i = 0; i < numRows; i++) {
 		row = objList.ItemAt(i);
@@ -787,7 +808,9 @@ AppView::EncodeThread(void* args)
 				view->editorView->SetEnabled(true);
 				view->encodeButton->SetEnabled(true);
 				view->cancelButton->SetEnabled(true);
+				view->Invalidate();
 				menuBar->SetEnabled(true);
+				menuBar->Invalidate();
 				view->UnlockLooper();
 			}
 			settings->SetEncoding(false);
