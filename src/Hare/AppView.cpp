@@ -53,6 +53,9 @@
 #include "Settings.h"
 #include "StatusBarFilter.h"
 
+#define SLASH "/"
+#define ALT_SLASH "∕"
+
 AppView::AppView()
 	:
 	BView("AppView", B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE_JUMP)
@@ -423,13 +426,13 @@ AppView::SetSaveAsColumn(BRefRow* row)
 	PRINT(("AppView::SetSaveAsColumn(BRefRow*)\n"));
 
 	BStringField* tmpField;
-	const char* artist;
-	const char* album;
-	const char* title;
-	const char* year;
-	const char* comment;
-	const char* track;
-	const char* genre;
+	BString artist;
+	BString album;
+	BString title;
+	BString year;
+	BString comment;
+	BString track;
+	BString genre;
 
 	tmpField = (BStringField*)row->GetField(ARTIST_COLUMN_INDEX);
 	if (tmpField != NULL) artist = tmpField->String();
@@ -452,6 +455,14 @@ AppView::SetSaveAsColumn(BRefRow* row)
 	tmpField = (BStringField*)row->GetField(GENRE_COLUMN_INDEX);
 	if (tmpField != NULL) genre = tmpField->String();
 	if (genre == NULL) genre = "";
+
+	artist.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	album.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	title.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	year.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	comment.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	track.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	genre.ReplaceAllChars(SLASH,ALT_SLASH, 0);
 
 	AEEncoder* encoder = settings->Encoder();
 	if (encoder) {
