@@ -4,10 +4,10 @@
  */
 #include <stdlib.h>
 #include <string.h>
-#include <File.h>
 #include <Debug.h>
-#include <TypeConstants.h>
+#include <File.h>
 #include <String.h>
+#include <TypeConstants.h>
 #include "AudioAttributes.h"
 #include "AudioAttribute.h"
 
