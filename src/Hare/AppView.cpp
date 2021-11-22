@@ -55,6 +55,25 @@
 
 #define SLASH "/"
 #define ALT_SLASH "∕"
+#define QUESTIONMARK "?"
+#define ALT_QUESTIONMARK "❓"
+#define BACKSLASH "\\"
+#define ALT_BACKSLASH "〵"
+#define QUOTE "\""
+#define ALT_QUOTE "″"
+#define ASTERISK "*"
+#define ALT_ASTERISK "✱"
+#define GREATERTHAN ">"
+#define ALT_GREATERTHAN "〉"
+#define LESSTHAN "<"
+#define ALT_LESSTHAN "〈"
+#define COLON ":"
+#define ALT_COLON "∶"
+#define PIPE "|"
+#define ALT_PIPE "⏐"
+#define DASH "-"
+#define UNDERSCORE "_"
+
 
 AppView::AppView()
 	:
@@ -456,13 +475,14 @@ AppView::SetSaveAsColumn(BRefRow* row)
 	if (tmpField != NULL) genre = tmpField->String();
 	if (genre == NULL) genre = "";
 
-	artist.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	album.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	title.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	year.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	comment.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	track.ReplaceAllChars(SLASH,ALT_SLASH, 0);
-	genre.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+	int32 charswapmode = 2;
+	artist = ReplaceInvalidFileCharsInBString(artist, charswapmode);
+	album = ReplaceInvalidFileCharsInBString(album, charswapmode);
+	title = ReplaceInvalidFileCharsInBString(title, charswapmode);
+	year = ReplaceInvalidFileCharsInBString(year, charswapmode);
+	comment = ReplaceInvalidFileCharsInBString(comment, charswapmode);
+	track = ReplaceInvalidFileCharsInBString(track, charswapmode);
+	genre = ReplaceInvalidFileCharsInBString(genre, charswapmode);
 
 	AEEncoder* encoder = settings->Encoder();
 	if (encoder) {
@@ -1135,4 +1155,51 @@ AppView::AlertUser(const char* message)
 	BAlert* alert = new BAlert("alert", message, OK, NULL, NULL, B_WIDTH_AS_USUAL,
 							   B_WARNING_ALERT);
 	alert->Go();
+}
+
+
+BString
+AppView::ReplaceInvalidFileCharsInBString(BString filestr, int32 swaptype)
+{
+	// Swap types
+	// 1) ASCII to Dash
+	// 2) ASCII to Underscore
+	// 3) ASCII to UTF8 close match
+	switch (swaptype)
+	{
+		case 1:
+			filestr.ReplaceAllChars(SLASH, DASH, 0);
+			filestr.ReplaceAllChars(BACKSLASH, DASH, 0);
+			filestr.ReplaceAllChars(ASTERISK, DASH, 0);
+			filestr.ReplaceAllChars(QUOTE, DASH, 0);
+			filestr.ReplaceAllChars(COLON, DASH, 0);
+			filestr.ReplaceAllChars(QUESTIONMARK, DASH, 0);
+			filestr.ReplaceAllChars(GREATERTHAN, DASH, 0);
+			filestr.ReplaceAllChars(LESSTHAN, DASH, 0);
+			filestr.ReplaceAllChars(PIPE, DASH, 0);
+			break;
+		case 2:
+			filestr.ReplaceAllChars(SLASH,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(BACKSLASH,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(ASTERISK, UNDERSCORE, 0);
+			filestr.ReplaceAllChars(QUOTE,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(COLON,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(QUESTIONMARK,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(GREATERTHAN,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(LESSTHAN,UNDERSCORE, 0);
+			filestr.ReplaceAllChars(PIPE,UNDERSCORE, 0);
+			break;
+		case 3:
+			filestr.ReplaceAllChars(SLASH,ALT_SLASH, 0);
+			filestr.ReplaceAllChars(BACKSLASH,ALT_BACKSLASH, 0);
+			filestr.ReplaceAllChars(ASTERISK, ALT_ASTERISK, 0);
+			filestr.ReplaceAllChars(QUOTE,ALT_QUOTE, 0);
+			filestr.ReplaceAllChars(COLON,ALT_COLON, 0);
+			filestr.ReplaceAllChars(QUESTIONMARK,ALT_QUESTIONMARK, 0);
+			filestr.ReplaceAllChars(GREATERTHAN,ALT_GREATERTHAN, 0);
+			filestr.ReplaceAllChars(LESSTHAN,ALT_LESSTHAN, 0);
+			filestr.ReplaceAllChars(PIPE,ALT_PIPE, 0);
+			break;
+	}
+	return filestr;
 }

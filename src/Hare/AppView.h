@@ -35,6 +35,7 @@ private:
 	void ApplyAttributeChanges(BMessage* message);
 	void RemoveNodeFromList(node_ref* ref);
 	void RemoveDeviceItemsFromList(int32 device);
+	BString ReplaceInvalidFileCharsInBString(BString filestr, int32 swaptype);
 	int32 UpdateItem(BMessage* message);
 	static int32 RefsRecievedWrapper(void* args);
 	static int32 RemoveItemsFromList(void* args);
