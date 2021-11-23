@@ -476,13 +476,13 @@ AppView::SetSaveAsColumn(BRefRow* row)
 	if (genre == NULL) genre = "";
 
 	int32 charswapmode = 2;
-	artist = ReplaceInvalidFileCharsInBString(artist, charswapmode);
-	album = ReplaceInvalidFileCharsInBString(album, charswapmode);
-	title = ReplaceInvalidFileCharsInBString(title, charswapmode);
-	year = ReplaceInvalidFileCharsInBString(year, charswapmode);
-	comment = ReplaceInvalidFileCharsInBString(comment, charswapmode);
-	track = ReplaceInvalidFileCharsInBString(track, charswapmode);
-	genre = ReplaceInvalidFileCharsInBString(genre, charswapmode);
+	artist = ReplaceInvalidFileChars(artist, charswapmode);
+	album = ReplaceInvalidFileChars(album, charswapmode);
+	title = ReplaceInvalidFileChars(title, charswapmode);
+	year = ReplaceInvalidFileChars(year, charswapmode);
+	comment = ReplaceInvalidFileChars(comment, charswapmode);
+	track = ReplaceInvalidFileChars(track, charswapmode);
+	genre = ReplaceInvalidFileChars(genre, charswapmode);
 
 	AEEncoder* encoder = settings->Encoder();
 	if (encoder) {
@@ -1159,7 +1159,7 @@ AppView::AlertUser(const char* message)
 
 
 BString
-AppView::ReplaceInvalidFileCharsInBString(BString filestr, int32 swaptype)
+AppView::ReplaceInvalidFileChars(BString filestr, int32 swaptype)
 {
 	// Swap types
 	// 1) ASCII to Dash
