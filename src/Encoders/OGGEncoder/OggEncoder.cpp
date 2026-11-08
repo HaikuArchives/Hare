@@ -298,18 +298,22 @@ OggEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 		prevc = c;
 		c = fgetc(out);
 
-		if (c != 0 && c != 13) {
-			if (c == 'E' && prevc == 13) {
-				i = 0;
-			} else if (c == '%') {
+		if (c == 13) {
+			buffer[i] = 0;
+			PRINT(("%s\n", buffer));
+			i = 0;
+		} else if (c != 0) {
+			if (c == '%') {
 				buffer[i] = '\0';
 				char* tmp;
-				if (buffer[i-5] != ' ') {
+				if (i >= 5 && buffer[i-5] != ' ') {
 					tmp = &(buffer[i-5]);
-				} else if (buffer[i-4] != ' ') {
+				} else if (i >= 4 && buffer[i-4] != ' ') {
 					tmp = &(buffer[i-4]);
-				} else {
+				} else if (i >= 3) {
 					tmp = &(buffer[i-3]);
+				} else {
+					tmp = buffer;
 				}
 				curr = atof(tmp);
 				float delta = curr - prev;
@@ -318,11 +322,10 @@ OggEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 				updateMessage.AddFloat("delta", delta);
 				messenger->SendMessage(&updateMessage);
 			}
-			buffer[i] = c;
-			i++;
-		} else if (c == 13) {
-			buffer[i] = 0;
-			PRINT(("%s\n", buffer));
+			if (i < (int)sizeof(buffer) - 1) {
+				buffer[i] = c;
+				i++;
+			}
 		}
 
 		if (c == 'D' && prevc == 10) {
