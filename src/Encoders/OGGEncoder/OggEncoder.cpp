@@ -181,16 +181,15 @@ OggEncoder::GetDefaultPattern() {
 	PRINT(("OggEncoder::LoadDefaultPattern()\n"));
 
 	BPath home;
-	BString pattern;
 
 	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
-		pattern = home.Path(); 
-		pattern += "/OGG/%a/%n/%a - %n - %k - %t.ogg";
+		defaultPattern = home.Path();
+		defaultPattern += "/OGG/%a/%n/%a - %n - %k - %t.ogg";
 	} else {
-		pattern = "/boot/home/OGG/%a/%n/%a - %n - %k - %t.ogg";
+		defaultPattern = "/boot/home/OGG/%a/%n/%a - %n - %k - %t.ogg";
 	}
 	
-	return pattern.String();
+	return defaultPattern.String();
 }
 
 int32
