@@ -17,7 +17,7 @@
 #define _160KBPS "160 Kbps"
 #define _192KBPS "192 Kbps"
 #define _256KBPS "256 Kbps"
-#define _350KBPS "320 Kbps"
+#define _320KBPS "320 Kbps"
 
 #define OGG_MIME_TYPE "audio/x-vorbis"
 #define WAV_MIME_TYPE "audio/wav"

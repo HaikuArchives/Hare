@@ -44,6 +44,7 @@ protected:
 	int32 error;
 	BString name;
 	BString pattern;
+	BString defaultPattern;
 	BMenu* menu;
 
 	virtual int32 LoadDefaultMenu();
