@@ -222,7 +222,7 @@ OggEncoder::LoadDefaultMenu() {
 	item = new BMenuItem(_256KBPS, NULL);
 	bitrateMenu->AddItem(item);
 
-	item = new BMenuItem(_350KBPS, NULL);
+	item = new BMenuItem(_320KBPS, NULL);
 	bitrateMenu->AddItem(item);
 
 	menu->AddItem(bitrateMenu);
@@ -262,8 +262,8 @@ OggEncoder::GetBitrate(char* bitrate) {
 		strcpy(bitrate, "192");
 	} else if (strcmp(label, _256KBPS) == 0) {
 		strcpy(bitrate, "256");
-	} else if (strcmp(label, _350KBPS) == 0) {
-		strcpy(bitrate, "350");
+	} else if (strcmp(label, _320KBPS) == 0) {
+		strcpy(bitrate, "320");
 	}
 
 	return B_OK;
