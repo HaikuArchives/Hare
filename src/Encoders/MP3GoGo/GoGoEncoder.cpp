@@ -410,6 +410,7 @@ GoGoEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 	char buffer[2048];
 	unsigned char c = 0;
 	int i = 0;
+	bool inBracket = false;
 
 	while (1) {
 		if (CheckForCancel()) {
@@ -432,7 +433,8 @@ GoGoEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 		if (c != 0 && c != 13) {
 			if (c == '{') {
 				i = 0;
-			} else if (c == '%') {
+				inBracket = true;
+			} else if (c == '%' && inBracket) {
 				buffer[i] = '\0';
 				char* tmp;
 				if (buffer[i-5] != ' ') {
