@@ -545,17 +545,17 @@ thread_id
 GoGoEncoder::CommandIO(int* filedes, int argc, const char** argv) {
 	PRINT(("GoGoEncoder::CommandIO(int*,int,const char**)\n"));
 
-	int oldstdout;
+	int oldstderr;
 
 	pipe(filedes);
-	oldstdout = dup(STDOUT_FILENO);
-	close(STDOUT_FILENO);
-	dup2(filedes[1], STDOUT_FILENO);
+	oldstderr = dup(STDERR_FILENO);
+	close(STDERR_FILENO);
+	dup2(filedes[1], STDERR_FILENO);
 
 	thread_id ret = load_image(argc, argv, (const char**)environ);
 
-	dup2(oldstdout, STDOUT_FILENO);
-	close(oldstdout);
+	dup2(oldstderr, STDERR_FILENO);
+	close(oldstderr);
 
 	return ret;
 }
