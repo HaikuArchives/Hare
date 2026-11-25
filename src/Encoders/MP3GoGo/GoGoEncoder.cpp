@@ -95,7 +95,9 @@ GoGoEncoder::Encode(BMessage* message) {
 		return B_ERROR;
 	}
 	char mime[B_MIME_TYPE_LENGTH];
-	info.GetType(mime);
+	if (info.GetType(mime) != B_OK) {
+		return FSS_INPUT_NOT_SUPPORTED;
+	}
 	if ((strcmp(mime, WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_MIME_TYPE) != 0)) {
@@ -408,6 +410,7 @@ GoGoEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 	char buffer[2048];
 	unsigned char c = 0;
 	int i = 0;
+	bool inBracket = false;
 
 	while (1) {
 		if (CheckForCancel()) {
@@ -430,7 +433,8 @@ GoGoEncoder::UpdateStatus(FILE* out, BMessenger* messenger) {
 		if (c != 0 && c != 13) {
 			if (c == '{') {
 				i = 0;
-			} else if (c == '%') {
+				inBracket = true;
+			} else if (c == '%' && inBracket) {
 				buffer[i] = '\0';
 				char* tmp;
 				if (buffer[i-5] != ' ') {
@@ -545,17 +549,17 @@ thread_id
 GoGoEncoder::CommandIO(int* filedes, int argc, const char** argv) {
 	PRINT(("GoGoEncoder::CommandIO(int*,int,const char**)\n"));
 
-	int oldstdout;
+	int oldstderr;
 
 	pipe(filedes);
-	oldstdout = dup(STDOUT_FILENO);
-	close(STDOUT_FILENO);
-	dup2(filedes[1], STDOUT_FILENO);
+	oldstderr = dup(STDERR_FILENO);
+	close(STDERR_FILENO);
+	dup2(filedes[1], STDERR_FILENO);
 
 	thread_id ret = load_image(argc, argv, (const char**)environ);
 
-	dup2(oldstdout, STDOUT_FILENO);
-	close(oldstdout);
+	dup2(oldstderr, STDERR_FILENO);
+	close(oldstderr);
 
 	return ret;
 }
