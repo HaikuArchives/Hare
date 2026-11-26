@@ -182,16 +182,15 @@ MP3Lame::GetDefaultPattern() {
 	PRINT(("MP3Lame::LoadDefaultPattern()\n"));
 
 	BPath home;
-	BString pattern;
 
 	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
-		pattern += home.Path();
-		pattern += "/MP3/%a/%n/%a - %n - %k - %t.mp3";
+		defaultPattern = home.Path();
+		defaultPattern += "/MP3/%a/%n/%a - %n - %k - %t.mp3";
 	} else {
-		pattern = "/boot/home/MP3/%a/%n/%a - %n - %k - %t.mp3";
+		defaultPattern = "/boot/home/MP3/%a/%n/%a - %n - %k - %t.mp3";
 	}
 
-	return pattern.String();
+	return defaultPattern.String();
 }
 
 int32
