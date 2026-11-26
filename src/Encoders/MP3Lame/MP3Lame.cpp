@@ -97,7 +97,9 @@ MP3Lame::Encode(BMessage* message) {
 		return B_ERROR;
 	}
 	char mime[B_MIME_TYPE_LENGTH];
-	info.GetType(mime);
+	if (info.GetType(mime) != B_OK) {
+		return FSS_INPUT_NOT_SUPPORTED;
+	}
 	if ((strcmp(mime, WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_MIME_TYPE) != 0)) {
@@ -180,16 +182,15 @@ MP3Lame::GetDefaultPattern() {
 	PRINT(("MP3Lame::LoadDefaultPattern()\n"));
 
 	BPath home;
-	BString pattern;
 
 	if (find_directory(B_USER_DIRECTORY, &home) == B_OK) {
-		pattern += home.Path();
-		pattern += "/MP3/%a/%n/%a - %n - %k - %t.mp3";
+		defaultPattern = home.Path();
+		defaultPattern += "/MP3/%a/%n/%a - %n - %k - %t.mp3";
 	} else {
-		pattern = "/boot/home/MP3/%a/%n/%a - %n - %k - %t.mp3";
+		defaultPattern = "/boot/home/MP3/%a/%n/%a - %n - %k - %t.mp3";
 	}
 
-	return pattern.String();
+	return defaultPattern.String();
 }
 
 int32
@@ -498,7 +499,7 @@ MP3Lame::UpdateStatus(FILE* out, BMessenger* messenger) {
 			if (c == '(') {
 				save = true;
 				i = 0;
-			} else if (c == '/') {
+			} else if (c == '%') {
 				save = false;
 				buffer[i] = 0;
 				prev = curr;

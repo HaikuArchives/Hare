@@ -11,12 +11,6 @@
 #include <String.h>
 #include <Volume.h>
 
-#ifdef __FSS_BUILD
-#define __FSS_EXPORT __declspec(dllexport)
-#else
-#define __FSS_EXPORT __declspec(dllimport)
-#endif
-
 #define FSS_ENCODE 'enc'
 #define FSS_SETMAX_STATUS_BAR 'max'
 #define FSS_MENU_ITEM_SELECTED 'mnu'
@@ -64,6 +58,6 @@ private:
 							 BVolume* volume, char* path);
 };
 
-extern "C" __FSS_EXPORT AEEncoder* load_encoder();
+extern "C" AEEncoder* load_encoder();
 
 #endif
