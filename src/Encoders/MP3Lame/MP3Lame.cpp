@@ -97,7 +97,9 @@ MP3Lame::Encode(BMessage* message) {
 		return B_ERROR;
 	}
 	char mime[B_MIME_TYPE_LENGTH];
-	info.GetType(mime);
+	if (info.GetType(mime) != B_OK) {
+		return FSS_INPUT_NOT_SUPPORTED;
+	}
 	if ((strcmp(mime, WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_WAV_MIME_TYPE) != 0)
 			&& (strcmp(mime, RIFF_MIME_TYPE) != 0)) {
