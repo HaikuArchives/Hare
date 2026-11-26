@@ -498,7 +498,7 @@ MP3Lame::UpdateStatus(FILE* out, BMessenger* messenger) {
 			if (c == '(') {
 				save = true;
 				i = 0;
-			} else if (c == '/') {
+			} else if (c == '%') {
 				save = false;
 				buffer[i] = 0;
 				prev = curr;
