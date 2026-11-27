@@ -8,7 +8,7 @@
 
 CheckMark::CheckMark()
 	:
-	BBitmap(BRect(0, 0, kImageWidth, kImageHeight), kImageColorSpace)
+	BBitmap(BRect(0, 0, kImageWidth - 1, kImageHeight - 1), kImageColorSpace)
 {
 	SetBits(kImageBits, BitsLength(), 0, kImageColorSpace);
 }
