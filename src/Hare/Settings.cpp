@@ -23,7 +23,7 @@
 
 Settings* settings = 0;
 
-#define DEFAULT_ENCODER "BeEncoder"
+#define DEFAULT_ENCODER "MP3 Lame"
 #define DEFAULT_PATHPATTERN "/boot/home/Encoded/%t.mp3"
 
 Settings::Settings()
