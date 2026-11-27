@@ -1,6 +1,4 @@
-SUBDIRS := src/Encoders/BeEncoder \
-		   src/Encoders/M3UCreator \
-		   src/Encoders/MP3GoGo \
+SUBDIRS := src/Encoders/MP3GoGo \
 		   src/Encoders/MP3Lame \
 		   src/Encoders/OGGEncoder
 
