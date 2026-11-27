@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include <AppFileInfo.h>
 #include <Application.h>
 #include <Alert.h>
 #include <Debug.h>
@@ -19,6 +20,7 @@
 #include <MenuItem.h>
 #include <NodeMonitor.h>
 #include <Path.h>
+#include <Roster.h>
 #include <String.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
@@ -409,6 +411,23 @@ AppWindow::AboutRequested()
 	PRINT(("AppWindow::AboutRequested()\n"));
 
 	BAboutWindow* about = new BAboutWindow(APPLICATION, SIGNATURE);
+	app_info appinfo;
+	if (be_app->GetAppInfo(&appinfo) == B_OK) {
+		BFile file(&appinfo.ref, B_READ_ONLY);
+		BAppFileInfo appFileInfo(&file);
+		version_info verInfo;
+		if (appFileInfo.GetVersionInfo(&verInfo, B_APP_VERSION_KIND)
+				== B_OK) {
+			BString ver;
+			ver << verInfo.major << "." << verInfo.middle << "." << verInfo.minor;
+			if (verInfo.variety != B_FINAL_VERSION && verInfo.variety < 5) {
+				const char* varietyNames[] =
+					{ "development", "alpha", "beta", "gamma", "golden master"};
+				ver << " (" << varietyNames[verInfo.variety] << ")";
+			}
+			about->SetVersion(ver.String());
+		}
+	}
 	about->AddExtraInfo(COMPANY_WWW);
 	about->AddExtraInfo(COMPANY);
 	about->Show();
